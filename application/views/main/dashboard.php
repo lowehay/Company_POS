@@ -124,9 +124,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                    <div id="error-message" class="alert alert-danger" style="display: none;">
-    Error: Invalid Philippine contact number or empty fields.
-</div>
+                    <div id="error-message" class="alert alert-danger"  style="display: none;">
+                        Error: Invalid Philippine contact number or empty fields.
+                    </div>
+
                         <div class="form-group">
                             <label>First Name</label>
                             <input type="text" placeholder="First Name"  id="customer_fname" name="customer_fname" class ="form-control">
@@ -268,15 +269,18 @@ $(document).ready(function() {
 
         // Check if any of the fields are empty
         if (customer_fname === "" || customer_lname === "" || contact_no === "") {
-            alert("Please fill in all fields.");
-            return false; // Prevent form submission
+        return false;
+        }
+        else{
+            alert("saksespul.");
+            ;
         }
     });
 });
 
 $(document).ready(function () {
         // Delay in milliseconds (e.g., 3000ms = 3 seconds)
-        var delay = 3000;
+        var delay = 3000;x
 
   
         var successMessage = $('#success-message');
