@@ -71,6 +71,7 @@
             </div>
         </div>
     </div>
+    
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -114,11 +115,11 @@
                 const total = (parseFloat(weight) * parseFloat(price)).toFixed(2);
 
                 // Create a new list item for the cart
-                const listItem = `<li class="list-group-item">${productName} - Weight: ${weight}, Price: ${price}, Total: ₱${total}</li>`;
+                const listItem = `<li class="list-group-item">${productName} <br> ${weight}kgs at ₱${price}/kg Total: ₱${total}</li>`;
 
                 // Append the list item to the cart
                 $('#cart-items').append(listItem);
-
+ 
                 // Update the total in the cart
                 updateTotal();
 
