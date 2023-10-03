@@ -17,7 +17,7 @@
                             <?php foreach ($result as $product) { ?>
                                 <div class="col-md-4 mb-2">
                                     <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
-                                        <div class="card-body">
+                                        <div class="card-body" id="product">
                                             <h5 class="card-title"><?php echo $product->product_name; ?></h5>
                                             <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-height: 100px;">
                                         </div>
@@ -34,133 +34,135 @@
                     <div class="card-header">
                         <h2>Cart</h2>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body" id="card-ah">
                         <ul class="list-group" id="cart-items">
                             <!-- Cart items will be added here -->
                         </ul>
                         <p>Total: ₱<span id="total">0.00</span></p>
                     </div>
+                     </div>
+                                
+                    
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- Modal for entering weight and price -->
-    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="itemModalLabel">Enter Weight and Price for Product</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="itemForm">
-                        <div class="mb-3">
-                            <label for="price">Price:</label>
-                            <input type="text" class="form-control" id="price" name="price" required>
+                <div class="col-md-4" style="background-color: #ffffff;">
+                        <div class="card shadow">
+                            <div class="card-body" id="numpad">
+                                <button class="numpad-button" data-value="1">1</button>
+                                <button class="numpad-button" data-value="2">2</button>
+                                <button class="numpad-button" data-value="3">3</button>
+                                <button class="numpad-button" data-value="4">4</button>
+                                <button class="numpad-button" data-value="5">5</button>
+                                <button class="numpad-button" data-value="6">6</button>
+                                <button class="numpad-button" data-value="7">7</button>
+                                <button class="numpad-button" data-value="8">8</button>
+                                <button class="numpad-button" data-value="9">9</button>
+                                <button class="numpad-button" data-value="0">0</button>
+                                <button class="numpad-button" id="numpad-cancel">Cancel</button>
+                                <button class="numpad-button" id="numpad-enter">Enter</button>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="weight">Weight:</label>
-                            <input type="text" class="form-control" id="weight" name="weight" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="addToCart">Add to Cart</button>
-                </div>
-            </div>
+                    </div>
+            </div>         
         </div>
-    </div>
-    
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            // Handle clicking on a product card
-            $('.product-card').on('click', function() {
-                const productCard = $(this);
-                const productName = productCard.data('product-name');
-                const productImage = productCard.data('product-image');
-
-                // Reset the form fields and error message
-                $('#itemForm')[0].reset();
-                $('#validationError').text('');
-
-                // Set modal title and image
-                $('#itemModalLabel').text(`Enter Weight and Price for ${productName}`);
-                $('#itemModal img').attr('src', productImage);
-
-                // Store the selected product name in a data attribute
-                $('#addToCart').data('product-name', productName);
-
-                // Show the modal
-                $('#itemModal').modal('show');
-            });
-
-            // Handle adding to cart
-            $('#addToCart').on('click', function() {
-                const weight = $('#weight').val();
-                const price = $('#price').val();
-                const productName = $('#addToCart').data('product-name');
-
-                // Validate the form fields
-                if (weight === '' || price === '') {
-                    $('#validationError').text('Please fill in all fields.');
-                    return; // Don't proceed if validation fails
-                }
-
-                // Calculate the total
-                const total = (parseFloat(weight) * parseFloat(price)).toFixed(2);
-
-                // Create a new list item for the cart
-                const listItem = `<li class="list-group-item">${productName} <br> ${weight}kgs at ₱${price}/kg Total: ₱${total}</li>`;
-
-                // Append the list item to the cart
-                $('#cart-items').append(listItem);
- 
-                // Update the total in the cart
-                updateTotal();
-
-                // Close the modal and reset the form
-                $('#itemModal').modal('hide');
-                $('#itemForm')[0].reset();
-                $('#validationError').text('');
-            });
-
-            // Function to update the total in the cart
-            function updateTotal() {
-                let total = 0.00;
-                $('#cart-items li').each(function() {
-                    const itemText = $(this).text();
-                    const itemTotal = parseFloat(itemText.split('Total: ₱')[1]);
-                    total += itemTotal;
-                });
-
-                $('#total').text(total.toFixed(2));
-            }
-        });
-    </script>
-    <!-- Add this script at the end of your page, after including jQuery -->
-    <script>
-        $(document).ready(function() {
-            $('#search-button').on('click', function() {
-                var searchTerm = $('#product-search').val().toLowerCase();
-
-                // Loop through each product card
-                $('.product-card').each(function() {
-                    var productName = $(this).data('product-name').toLowerCase();
-
-                    // Check if the product name contains the search term
-                    if (productName.includes(searchTerm)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
+                <style>
+                    #numpad{
+                        width: 500px; /* Set the width of your card */
+                        height: 150px; /* Set the height of your card */
+                        background-color: #fff;
+                        border: 1px solid #ccc;
+                        position: absolute;
+                        bottom: 100px; /* Adjust this value to cosntrol the distance from the bottom */
+                        right: -800px; /* Adjust this value to control the distance from the right */
+                        /* Add other styles for your card as needed */
+                         display: grid;
+                        grid-template-columns: repeat(3, 1fr);
+                        gap: 10px;
+                        max-width: 200px;
+                        margin: 0 auto;
                     }
+                    .numpad {
+ 
+}
+
+.numpad-button {
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  color: #333;
+  font-size: 24px;
+  border: 2px solid #333;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.numpad-button:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Optional: Add shadow for a subtle touch */
+.numpad-button:active {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+                    #card-ah{
+                        max-height: 250px;
+                        overflow-y: auto;
+                    }
+                    #product-list{
+                        max-height: 550px;
+                        overflow-y: auto;
+                    }
+
+                </style>
+                        
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+        <script>
+            // Get references to the product cards and cart items container
+            var productCards = document.querySelectorAll(".product-card");
+            var cartItemsContainer = document.getElementById("cart-items");
+            var totalSpan = document.getElementById("total");
+
+            // Function to add a product to the cart
+            function addToCart(productName) {
+                // Create a new item element
+                var itemElement = document.createElement("div");
+                itemElement.classList.add("cart-item");
+                itemElement.innerHTML = `
+                    <div class="cart-item-details">
+                        <h5>${productName}</h5>
+                        <span>Weight</span>
+                        <button class="btn btn-danger btn-sm delete-button">Delete</button>
+                    </div>
+                    
+                `;
+
+            // Add the item to the cart
+            cartItemsContainer.appendChild(itemElement);
+
+
+            // Add a click event listener to the delete button
+            var deleteButton = itemElement.querySelector(".delete-button");
+            deleteButton.addEventListener("click", function () {
+                itemElement.remove();
+                // Update the total price when an item is deleted
+                var currentTotal = parseFloat(totalSpan.innerText);
+                totalSpan.innerText = (currentTotal - productPrice).toFixed(2);
+            });
+        }
+
+            // Add click event listeners to each product card
+            productCards.forEach(function (card) {
+                card.addEventListener("click", function () {
+                    var productName = card.getAttribute("data-product-name");
+                    // Add the product to the cart
+                    addToCart(productName);
                 });
             });
-        });
+
     </script>
 
 </body>
