@@ -25,10 +25,12 @@ class Product_model extends CI_Model
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
+		$product_price = (string) $this->input->post('product_price');
 
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
+			'product_price' => $product_price,
 			'product_image' => $image_file_name,  // Add the image file name to the data array
 		);
 
@@ -63,6 +65,7 @@ class Product_model extends CI_Model
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
+		$product_price = (string) $this->input->post('product_price');
 
 		// Initialize the product_image variable
 		$product_image = '';
@@ -111,6 +114,7 @@ class Product_model extends CI_Model
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
+			'product_price' => $product_price,
 			'product_image' => $product_image, // Update the product image filename
 		);
 

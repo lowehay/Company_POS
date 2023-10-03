@@ -25,6 +25,11 @@
                 <span style="color: red;"><?php echo form_error('product_name'); ?></span>
             </div>
             <div class="form-group">
+                <label for="product_price" class="bold-label">Product Price</label>
+                <input type="number" id="product_price" placeholder="product_price Name" name="product_price" value="<?php echo set_value('product_price'); ?>" class="form-control <?php echo form_error('product_price') ? 'is-invalid' : ''; ?>">
+                <span style="color: red;"><?php echo form_error('product_price'); ?></span>
+            </div>
+            <div class="form-group">
                 <label for="product_image" class="bold-label">Product Image</label>
                 <input type="file" id="product_image" name="product_image" value="<?php echo set_value('product_image'); ?>" class="form-control <?php echo form_error('product_image') ? 'is-invalid' : ''; ?>">
                 <span style="color: red;"><?php echo form_error('product_image'); ?></span>
