@@ -27,6 +27,7 @@
               <th>Product Image</th>
               <th>Product Code</th>
               <th>Product Name</th>
+              <th>Product Price</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -44,6 +45,7 @@
                   <td><img src="<?php echo base_url('assets/images/' . $product_image); ?>" alt="Product Image" style="max-width: 100px;"></td>
                   <td><?php echo $row->product_code; ?></td>
                   <td><?php echo ucfirst($row->product_name); ?></td>
+                  <td>₱<?php echo $row->product_price; ?></td>
                   <td>
                     <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" style="color:gold; padding-left:6px;" title="Click here to edit product details"><i class="fas fa-edit"></i></a>
                     <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" style="color:red; padding-left:6px;" title="Click here to delete product"><i class="fas fa-trash"></i></a>

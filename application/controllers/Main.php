@@ -128,6 +128,7 @@ class Main extends CI_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required|is_unique[product.product_code]');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required|is_unique[product.product_name]', array('is_unique' => 'The Product Name is already taken.'));
+			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
 				$config['upload_path']   = './assets/images/';  // Set the upload directory
@@ -187,6 +188,7 @@ class Main extends CI_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required');
+			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
 				$this->load->model('product_model');
