@@ -264,4 +264,14 @@ class Main extends CI_Controller
 
 		redirect('main/product');
 	}
+
+
+	function payment()
+	{
+
+		
+		$this->load->view('main/header');
+		$this->load->view('main/payment');
+		$this->load->view('main/footer');
+	}
 }
