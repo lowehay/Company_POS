@@ -132,6 +132,7 @@
                             <button class="btn btn-secondary numeric-button">0</button>
                             <button class="btn btn-danger clear-button">Clear</button>
                             <button class="btn btn-warning payment-button">Payment</button>
+                          
                         </div>
 
                     </div>
@@ -293,5 +294,47 @@
                 updateTotal(totalPrice);
             }
         });
+
+
+
+        function calculateTotal() {
+    var total = 0;
+    $('#cart-items li').each(function() {
+        var productPrice = parseFloat($(this).data('product-price'));
+        var weight = parseFloat($(this).find('.weight-text').text());
+        weight = isNaN(weight) ? 0 : weight;
+        var totalPrice = weight * productPrice;
+        total += totalPrice;
+    });
+    return total;
+}
+
+
+
+        $(document).ready(function() {
+    // ... (existing code)
+
+    $('#numeric-keypad .payment-button').on('click', function() {
+        // Calculate the total price
+        var total = calculateTotal();
+
+        // Store the selected products and total price in localStorage
+        var selectedProducts = [];
+        $('#cart-items li').each(function() {
+            var productName = $(this).text().split(' - ')[0];
+            var weight = $(this).find('.weight-text').text();
+            selectedProducts.push({ name: productName, weight: weight });
+        });
+
+        localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+        localStorage.setItem('totalPrice', total.toFixed(2));
+
+        // Redirect to the payment page
+        window.location.href = 'main/payment'; // Update this to the actual URL of your payment page
+    });
+
+    // ... (existing code)
+});
+
     </script>
 </body>
