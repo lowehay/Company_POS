@@ -75,7 +75,7 @@
     <button class="btn btn-secondary numeric-button">0</button>
     <button class="btn btn-danger clear-button">.</button>
     <button class="btn btn-danger clear-button">Clear</button>
-    <button class="btn btn-warning payment-button">Checkouts</button>
+    <button class="btn btn-warning payment-button">Checkout</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
