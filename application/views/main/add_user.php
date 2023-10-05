@@ -7,7 +7,7 @@
 	}
 </style>
 <div class="container mt-5">
-	<h2>Edit Product</h2>
+	<h2>Add User</h2>
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<div class="row mb-2">
