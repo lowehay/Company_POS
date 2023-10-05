@@ -26,13 +26,14 @@
     }
 
     .payment-button {
-        grid-column: span 1;
-        background-color: #56C94E;
+        grid-column: span 3;
+        padding: 15px;
+        background-color: #EED11A;
         color: #fff;
     }
 
     .payment-button:hover {
-        background-color: #2a3b57;
+        background-color: #C0A810;
     }
 
     .clear-button:hover {
@@ -74,6 +75,17 @@
     .card-title {
         font-weight: bold;
     }
+
+    .card product-card {
+        background: linear-gradient(49deg, #2d4de0 0, #9f71f0 30%, #fc6277 58%, #f8ef6f 95%);
+
+        width: 380px;
+        height: 350px;
+
+        border-radius: 12px;
+
+        position: relative;
+    }
 </style>
 
 <body>
@@ -93,11 +105,11 @@
                     <div class="card-body" id="product-list">
                         <div class="row">
                             <?php foreach ($result as $product) { ?>
-                                <div class="col-md-4 mb-2">
+                                <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
                                     <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-price="<?php echo $product->product_price; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
-                                        <div class="card-body">
-                                            <h5 class="card-title"><?php echo $product->product_name; ?></h5>
-                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-height: 100px;">
+                                        <div class="card-body" style="height: 200px;">
+                                            <h5 class="card-title" style="max-width: 100%;"><?php echo $product->product_name; ?></h5>
+                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-width: 100%; max-height: 100px;">
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +128,7 @@
                         <ul class="list-group" id="cart-items">
                             <!-- Cart items will be added here -->
                         </ul>
-                        <p class="total-price">Total Price: ₱<span id="total">0.00</span></p>
+                        <p class="total-price">Total Amount: ₱<span id="total">0.00</span></p>
 
                         <!-- Numeric Keypad for Weight Input -->
                         <div id="numeric-keypad">
@@ -130,10 +142,10 @@
                             <button class="btn btn-secondary numeric-button">8</button>
                             <button class="btn btn-secondary numeric-button">9</button>
                             <button class="btn btn-secondary numeric-button">0</button>
-                            <button class="btn btn-danger clear-button">Clear</button>
-                            <button class="btn btn-warning payment-button">Payment</button>
+                            <button class="btn btn-secondary numeric-button">.</button>
+                            <button class="btn btn-secondary clear-button">Clear</button>
+                            <a href="<?php echo site_url('main/payment'); ?>" class="btn btn-warning payment-button"> Payment <i class="fas fa-arrow-right"></i></a>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -185,9 +197,14 @@
                 var productName = $(this).data('product-name');
                 var productPrice = parseFloat($(this).data('product-price'));
 
+                // Check if the product is already in the cart
+                if (isProductInCart(productName)) {
+                    alert('This product is already in the cart.');
+                    return; // Exit the function to prevent adding duplicates
+                }
+
                 // Create a new cart item element with weight text
                 var cartItem = $('<li class="list-group-item" data-product-price="' + productPrice.toFixed(2) + '">' + productName + ' - ₱' + productPrice.toFixed(2) + ' Weight: <span class="weight-text">0</span> kg Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i></li>');
-
 
                 // Append the cart item to the cart
                 $('#cart-items').append(cartItem);
@@ -210,6 +227,20 @@
                 });
             });
 
+            // Function to check if a product is already in the cart
+            function isProductInCart(productName) {
+                var inCart = false;
+                $('#cart-items li').each(function() {
+                    var cartProductName = $(this).text().split(' - ')[0].trim(); // Extract product name from the cart item
+                    if (cartProductName === productName) {
+                        inCart = true;
+                        return false; // Exit the loop early since we found a match
+                    }
+                });
+                return inCart;
+            }
+
+
             function updateTotal() {
                 // Calculate and update the total price for all products in the cart
                 var total = 0;
@@ -219,12 +250,19 @@
                     weight = isNaN(weight) ? 0 : weight; // Ensure weight is a valid number
                     var totalPrice = weight * productPrice;
                     total += totalPrice;
-
                     // Update the individual product's total
                     $(this).find('.product-total').text(totalPrice.toFixed(2));
                 });
 
                 $('#total').text(total.toFixed(2));
+
+                // Store the total price in a JavaScript variable
+                var totalPriceForCheckout = total;
+
+                // Update the total price on the payment page (assuming you have a way to pass this data)
+                // For example, you can use a query parameter in the URL or use localStorage.
+                // Here, we'll update the total price in localStorage.
+                localStorage.setItem('totalPriceForCheckout', totalPriceForCheckout);
             }
 
             var selectedCartItem = null; // Initialize the selectedCartItem variable
@@ -262,19 +300,73 @@
                 listItem.remove();
             });
 
+            // Add a keydown event listener to the entire document
+            $(document).on('keydown', function(event) {
+                // Check if a numeric key or decimal point was pressed
+                if (event.key.match(/[0-9.]/)) {
+                    // Simulate a click on the corresponding numeric keypad button
+                    var digit = event.key;
+                    $('#numeric-keypad .numeric-button:contains(' + digit + ')').click();
+                } else if (event.key === 'Enter') {
+                    // Handle Enter key press (e.g., perform a search if necessary)
+                    performSearch();
+                } else if (event.key === 'Backspace') {
+                    // Handle Backspace key press (e.g., clear the selected item's weight)
+                    $('#numeric-keypad .clear-button').click();
+                }
+            });
+
+            function isCartEmpty() {
+                return $('#cart-items li').length === 0;
+            }
+
+            // Click event handler for the "Payment" button
+            $('.payment-button').on('click', function(e) {
+                // Check if the cart is empty
+                if (isCartEmpty()) {
+                    e.preventDefault(); // Prevent the default behavior (proceeding to payment)
+                    alert('There are no products in the cart. Please add products before proceeding to payment.');
+                } else if (hasUnspecifiedWeights()) {
+                    e.preventDefault(); // Prevent the default behavior (proceeding to payment)
+                    alert('Please specify the weights for all products in the cart before proceeding to payment.');
+                }
+            });
+
+            // Function to check if there are products in the cart without a specified weight
+            function hasUnspecifiedWeights() {
+                var hasUnspecifiedWeight = false;
+                $('#cart-items li').each(function() {
+                    var weightText = $(this).find('.weight-text').text();
+                    if (!weightText || parseFloat(weightText) <= 0) {
+                        hasUnspecifiedWeight = true;
+                        return false; // Exit the loop early since we found a product without a weight
+                    }
+                });
+                return hasUnspecifiedWeight;
+            }
+
             // Numeric Keypad Logic (same as before)...
             $('#numeric-keypad .numeric-button').on('click', function() {
                 var digit = $(this).text();
                 var selectedItem = $('.selected-item');
                 var weightText = selectedItem.find('.weight-text');
-                var currentWeight = parseFloat(weightText.text());
-                currentWeight = isNaN(currentWeight) ? 0 : currentWeight; // Ensure currentWeight is a valid number
-                var newWeight = currentWeight === 0 ? digit : currentWeight + digit;
-                weightText.text(newWeight);
+
+                var currentWeight = weightText.text(); // Get the current weight as a string
+
+                if (digit === '.') {
+                    // If the clicked button is a decimal point (.), add it to the current weight text
+                    if (!currentWeight.includes('.')) {
+                        weightText.text(currentWeight + digit);
+                    }
+                } else {
+                    // If the clicked button is a digit (0-9), update the weight text
+                    var newWeight = currentWeight === '0' ? digit : currentWeight + digit;
+                    weightText.text(newWeight);
+                }
 
                 // Update the total price as the weight text changes
                 var productPrice = parseFloat(selectedItem.data('product-price'));
-                var totalPrice = parseFloat(newWeight) * productPrice;
+                var totalPrice = parseFloat(weightText.text()) * productPrice;
                 totalPrice = isNaN(totalPrice) ? 0 : totalPrice; // Ensure totalPrice is a valid number
                 updateTotal();
             });
@@ -287,10 +379,11 @@
                 var weightText = selectedItem.find('.weight-text');
                 weightText.text('0');
 
-                // Update the total price as the weight text changes
-                var productPrice = parseFloat(selectedItem.data('product-price'));
-                var totalPrice = parseFloat(0) * productPrice;
-                updateTotal(totalPrice);
+                // Trigger the 'input' event to update the total price in real-time
+                weightText.trigger('input');
+
+                // Remove the 'selected-item' class
+                selectedItem.removeClass('selected-item');
             }
         });
     </script>
