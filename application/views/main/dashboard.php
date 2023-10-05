@@ -106,7 +106,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Right Column - Cart -->
+            <!-- Right Column - Cart waw -->
             <div class="col-md-4" style="background-color: #ffffff;">
                 <div class="card shadow">
                     <div class="card-header">

@@ -53,7 +53,7 @@
     </div>
     <div class="card-body" style="flex-grow: 1;">
         <div class="row">
-            <!-- Left column for payment method -->
+            <!-- Left column for payment method waw-->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">
