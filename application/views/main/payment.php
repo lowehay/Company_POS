@@ -131,7 +131,7 @@
     });
 
 
-   // Add a variable to store the entered cash amount
+    // Add a variable to store the entered cash amount
 // Add a variable to store the entered cash amount
 var cashAmount = '';
 
