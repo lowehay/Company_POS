@@ -107,7 +107,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Right Column - Cart -->
+            <!-- Right Column - Cart waw -->
             <div class="col-md-4" style="background-color: #ffffff;">
                 <div class="card shadow">
                     <div class="card-header">
@@ -132,7 +132,8 @@
                             <button class="btn btn-secondary numeric-button">9</button>
                             <button class="btn btn-secondary numeric-button">0</button>
                             <button class="btn btn-danger clear-button">Clear</button>
-                            <button class="btn btn-warning payment-button">Payment</button>
+                            <button class="btn btn-warning payment-button" id="payment-button">Payment</button>
+
                           
                         </div>
 
@@ -183,34 +184,46 @@
                 }
             }
 
-            $(document).on('click', '.product-card', function() {
-                var productName = $(this).data('product-name');
-                var productPrice = parseFloat($(this).data('product-price'));
+    //para sa pag select product.................
+     $(document).ready(function() {
+    $('#product-list').on('click', '.product-card', function() {
+        var productName = $(this).data('product-name');
+        
+        // Check if the product is already selected
+        if ($(this).data('selected')) {
+            return; // Exit the function if the product is already selected
+        }
 
-                // Create a new cart item element with weight text
-                var cartItem = $('<li class="list-group-item" data-product-price="' + productPrice.toFixed(2) + '">' + productName + ' - ₱' + productPrice.toFixed(2) + ' Weight: <span class="weight-text">0</span> kg Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i></li>');
+        // Mark the product as selected
+        $(this).data('selected', true);
 
+        // Rest of your code to add the product to the cart
+        var productPrice = parseFloat($(this).data('product-price'));
 
-                // Append the cart item to the cart
-                $('#cart-items').append(cartItem);
+        // Create a new cart item element with weight text
+        var cartItem = $('<li class="list-group-item" data-product-price="' + productPrice.toFixed(2) + '">' + productName + ' - ₱' + productPrice.toFixed(2) + ' Weight: <span class="weight-text">0</span> kg Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i></li>');
 
-                // Update the total price in the cart
-                updateTotal(productPrice);
+        // Append the cart item to the cart
+        $('#cart-items').append(cartItem);
 
-                // Add a weight text field to the cart item
-                var weightText = cartItem.find('.weight-text');
+        // Update the total price in the cart
+        updateTotal(productPrice);
 
-                // Update the total price as the weight text changes
-                weightText.on('input', function() {
-                    var weight = parseFloat($(this).text());
-                    var productPrice = parseFloat(cartItem.data('product-price'));
-                    var productTotal = weight * productPrice;
-                    $(this).closest('li').find('.product-total').text(productTotal.toFixed(2));
+        // Add a weight text field to the cart item
+        var weightText = cartItem.find('.weight-text');
 
-                    // Update the total price for all products in the cart
-                    updateTotal();
-                });
-            });
+        // Update the total price as the weight text changes
+        weightText.on('input', function() {
+            var weight = parseFloat($(this).text());
+            var productPrice = parseFloat(cartItem.data('product-price'));
+            var productTotal = weight * productPrice;
+            $(this).closest('li').find('.product-total').text(productTotal.toFixed(2));
+
+            updateTotal();
+        });
+    });
+});
+
 
             function updateTotal() {
                 // Calculate and update the total price for all products in the cart
@@ -309,9 +322,7 @@
     });
     return total;
 }
-
-
-
+ 
         $(document).ready(function() {
     // ... (existing code)
 
@@ -336,6 +347,58 @@
 
     // ... (existing code)
 });
+
+$(document).ready(function() {
+    function updatePaymentButtonState() {
+        var selectedItemsCount = $('#cart-items li').length;
+        if (selectedItemsCount > 0) {
+            // Enable the payment button
+            $('#payment-button').prop('disabled', false);
+        } else {
+            // Disable the payment button
+            $('#payment-button').prop('disabled', true);
+        }
+    }
+
+    // Call the function initially to set the initial state of the payment button
+    updatePaymentButtonState();
+
+    // Event handler for selecting items in the cart
+    $('#cart-items').on('click', 'li', function() {
+
+        updatePaymentButtonState();
+    });
+
+
+});
+
+
+
+$(document).ready(function() {
+    function updatePaymentButtonState() {
+        var selectedItemsCount = $('#cart-items li').length;
+        if (selectedItemsCount > 0) {
+            // Enable the payment button
+            $('#payment-button').prop('disabled', false);
+        } else {
+            // Disable the payment button
+            $('#payment-button').prop('disabled', true);
+        }
+    }
+
+    // Call the function initially to set the initial state of the payment button
+    updatePaymentButtonState();
+
+    // Event handler for selecting items in the cart
+    $('#cart-items').on('click', 'li', function() {
+
+        updatePaymentButtonState();
+    });
+
+
+});
+
+
 
         });
     </script>
