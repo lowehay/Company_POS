@@ -9,6 +9,88 @@
     .row {
       margin-top: 10px;
     }
+    button {
+  position: relative;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline-offset: 4px;
+  transition: filter 250ms;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: hsl(0deg 0% 0% / 0.25);
+  will-change: transform;
+  transform: translateY(2px);
+  transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
+
+.edge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(
+    to left,
+    #2B24D0, /* Change this to your desired blue color */
+    #2B24D0 /* Change this to your desired blue color */
+  );
+}
+
+.front {
+  display: block;
+  position: relative;
+  padding: 12px 27px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  color: white;
+  background: #1F70E2; /* Change this to your desired blue color */
+  will-change: transform;
+  transform: translateY(-4px);
+  transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+}
+
+button:hover {
+  filter: brightness(110%);
+}
+
+button:hover .front {
+  transform: translateY(-6px);
+  transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+button:active .front {
+  transform: translateY(-2px);
+  transition: transform 34ms;
+}
+
+button:hover .shadow {
+  transform: translateY(4px);
+  transition: transform 250ms cubic-bezier(.3, .7, .4, 1.5);
+}
+
+button:active .shadow {
+  transform: translateY(1px);
+  transition: transform 34ms;
+}
+
+button:focus:not(:focus-visible) {
+  outline: none;
+}
+.link{
+  text-decoration: none !important;
+}
   </style>
   <div class="row mb-2">
     <div class="col-sm-6">
@@ -16,7 +98,11 @@
   </div><!-- /.row -->
   <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header">
-      <a href="<?php echo site_url('main/add_user'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-user-plus"></i> Add User </a>
+     <button>
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <a href="<?php echo site_url('main/add_user'); ?>" class="link"> <span class="front text"> Add User </span> </a>
+      </button>
     </div>
     <div class="card-body">
       <div class="table-responsive">
