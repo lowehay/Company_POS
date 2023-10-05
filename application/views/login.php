@@ -11,7 +11,7 @@
   <title>FISH PORT</title>
   <style>
     body {
-      background-image: url(<?php echo base_url('assets/images/login_bg.png'); ?>);
+      background-image: url(<?php echo base_url('assets/images/bg.jpg'); ?>);
       background-position: center;
       /* Center the image */
       background-repeat: no-repeat;
