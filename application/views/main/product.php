@@ -73,7 +73,7 @@ button:hover .front {
 button:active .front {
   transform: translateY(-2px);
   transition: transform 34ms;
-}
+} 
 
 button:hover .shadow {
   transform: translateY(4px);
