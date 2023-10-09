@@ -19,7 +19,7 @@
 <body>
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #2a3b57;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="<?= base_url('main') ?>">
+      <a class="navbar-brand" href="<?= base_url('main/landingpage') ?>">
         <i class="fas fa-fish"></i> FISH PORT
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,9 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li>
+          <span id="datetime" class="navbar-text"></span> 
+        </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="<?= base_url('main/user') ?>">User</a>
           </li>
@@ -48,3 +51,17 @@
       </div>
     </div>
   </nav>
+
+
+  <script>
+  function updateDateTime() {
+    const datetimeElement = document.getElementById("datetime");
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    const currentDateTime = new Date().toLocaleDateString(undefined, options);
+    datetimeElement.textContent = currentDateTime;
+  }
+
+  // Update the date and time immediately and then every second
+  updateDateTime();
+  setInterval(updateDateTime, 1000);
+</script>

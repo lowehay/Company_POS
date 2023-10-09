@@ -20,6 +20,7 @@ class Main extends CI_Controller
 		$this->load->view('main/user', $this->data);
 		$this->load->view('main/footer');
 	}
+	
 
 	function add_user()
 	{
@@ -129,6 +130,8 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required|is_unique[product.product_code]');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required|is_unique[product.product_name]', array('is_unique' => 'The Product Name is already taken.'));
 			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
+			$this->form_validation->set_rules('product_qty', 'Product Quantity', 'trim|required');
+
 
 			if ($this->form_validation->run() != FALSE) {
 				$config['upload_path']   = './assets/images/';  // Set the upload directory
@@ -274,4 +277,149 @@ class Main extends CI_Controller
 		$this->load->view('main/payment');
 		$this->load->view('main/footer');
 	}
+
+	function receipt()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/receipt');
+		$this->load->view('main/footer');
+	}
+	function landingpage()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/landingpage');
+		$this->load->view('main/footer');
+	}
+
+	
+	function supplier()
+	{ 	
+		
+		$this->load->model('supplier_model');
+		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
+		$this->load->view('main/header');
+		$this->load->view('main/supplier' ,$this->data);
+		$this->load->view('main/footer');
+	}
+	function add_supplier()
+	{
+	
+		$this->add_supplier_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/addsupplier');
+		$this->load->view('main/footer');
+	}
+
+
+	function add_supplier_submit()
+	{
+	
+		if ($_SERVER['REQUEST_METHOD']=='POST') 
+		{
+			$this->form_validation->set_rules('supplier_name','Supplier','trim|required|is_unique[suppliers.supplier_name]');
+			$this->form_validation->set_rules('company_name','Company','trim|required|is_unique[suppliers.company_name]');
+			$this->form_validation->set_rules('supplier_contact','Contact','trim|required|is_unique[suppliers.supplier_contact]');
+			$this->form_validation->set_rules('supplier_street','Street','trim|required');
+			$this->form_validation->set_rules('supplier_barangay','Barangay','trim|required');
+			$this->form_validation->set_rules('supplier_city','City','trim|required');
+			$this->form_validation->set_rules('supplier_province','Province','trim|required');
+
+			if($this->form_validation->run()!=FALSE)
+			{
+				$this->load->model('supplier_model');
+				$response = $this->supplier_model->insertsupplier();
+				if ($response) 
+				{
+					$success_message = 'Supplier added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				}
+				else
+				{
+					$error_message = 'Supplier was not added successfully.';
+					$this->session->set_flashdata('success', $error_message);
+				}
+				redirect('main/add_supplier');
+			}
+		}
+
+	}
+	function view_supplier($supplier_id)
+	{ 
+	
+		$this->load->model('supplier_model');
+		$this->data['supplier'] = $this->supplier_model->get_supplier($supplier_id);
+		$this->load->view('main/header');
+		$this->load->view('main/viewsupplier',$this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_supplier($supplier_id)
+	{ 	
+		
+		$this->edit_supplier_submit();
+		$this->load->model('supplier_model');
+		$this->data['supplier'] = $this->supplier_model->get_supplier($supplier_id);
+
+		$this->load->view('main/header');
+		$this->load->view('main/sidebar',$this->data);
+		$this->load->view('main/editsupplier');
+		$this->load->view('main/footer');
+	}
+
+	function edit_supplier_submit()
+	{
+	
+		if ($_SERVER['REQUEST_METHOD']=='POST') 
+		{
+			$this->form_validation->set_rules('supplier_name','Supplier Name','trim|required');
+			$this->form_validation->set_rules('company_name','Company Name','trim|required');
+			$this->form_validation->set_rules('supplier_contact','Supplier Contact','trim|required');
+			$this->form_validation->set_rules('supplier_street','Supplier Street','trim|required');
+			$this->form_validation->set_rules('supplier_barangay','Supplier Barangay','trim|required');
+			$this->form_validation->set_rules('supplier_city','Supplier City','trim|required');
+			$this->form_validation->set_rules('supplier_province','Supplier Province','trim|required');
+
+			if($this->form_validation->run()!=FALSE)
+			{
+				$this->load->model('supplier_model');
+
+				$response = $this->supplier_model->update_added_supplier();
+
+				if ($response) 
+				{
+					$success_message = 'Supplier updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				}
+				else
+				{
+					$error_message = 'Supplier was not updated successfully.';
+					
+				}
+				redirect('main/supplier');
+			}
+		}
+
+	}
+
+	public function delete_supplier($id)
+	{
+		
+		$this->load->model('supplier_model');
+		$response = $this->supplier_model->delete_supplier($id);
+
+		if ($response) 
+		{
+			$success_message = 'Supplier deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+
+		}
+		else
+		{
+			$error_message = 'Supplier was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/supplier');
+	}
+
 }
