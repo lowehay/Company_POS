@@ -49,7 +49,7 @@
     }
 
     #cart-items {
-        max-height: 450px;
+        max-height: 200px;
         /* Adjust the height as needed */
         overflow-y: auto;
     }
@@ -110,7 +110,7 @@
             <div class="col-md-4" style="background-color: #ffffff;">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h2>Cart</h2>
+                        <h2>Selected Products</h2>
                     </div>
                     <div class="card-body">
                         <ul class="list-group" id="cart-items">
@@ -131,11 +131,8 @@
                             <button class="btn btn-secondary numeric-button">9</button>
                             <button class="btn btn-secondary numeric-button">0</button>
                             <button class="btn btn-danger clear-button">Clear</button>
-                            <button class="btn btn-warning payment-button" id="payment-button">Payment</button>
-
-                          
+                            <button class="btn btn-warning payment-button" id="payment-button">Payment</button>                    
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -145,7 +142,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Add this script at the end of your page, after including jQuery -->
+    
     <script>
         $(document).ready(function() {
 
@@ -310,7 +307,7 @@
 
 
 
-        function calculateTotal() {
+    function calculateTotal() {
     var total = 0;
     $('#cart-items li').each(function() {
         var productPrice = parseFloat($(this).data('product-price'));
@@ -343,8 +340,6 @@
         // Redirect to the payment page
         window.location.href = 'main/payment'; // Update this to the actual URL of your payment page
     });
-
-    // ... (existing code)
 });
 
 $(document).ready(function() {
@@ -367,7 +362,6 @@ $(document).ready(function() {
 
         updatePaymentButtonState();
     });
-
 
 });
 

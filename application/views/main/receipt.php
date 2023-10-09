@@ -40,7 +40,6 @@
     color: #727070;
     font-weight: 300;
 }
-
 .receipt_header h2 span {
     display: block;
 }
@@ -52,7 +51,6 @@
 table {
     width: 100%;
 }
-
 thead, tfoot {
     position: relative;
 }
@@ -177,13 +175,9 @@ h3 {
     </div>
 </div>
 <script>
-
-
-
 document.getElementById('printButton').addEventListener('click', function() {
     this.style.display = 'none';
     window.print();
     this.style.display = 'block';
 });
-
 </script>

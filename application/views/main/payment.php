@@ -148,7 +148,7 @@ $(document).ready(function() {
     $('#numeric-keypadding .numeric-button').click(function() {
         var buttonValue = $(this).text();
 
-        if (buttonValue === 'Clear') {
+        if (buttonValue === 'clear-button') {
             // Clear the cash amount
             cashAmount = '';
         } else if (buttonValue === 'Checkout') {
