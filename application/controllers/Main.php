@@ -4,10 +4,8 @@ class Main extends CI_Controller
 {
 	function index()
 	{
-		$this->load->model('product_model');
-		$this->data['result'] = $this->product_model->get_all_product();
 		$this->load->view('main/header');
-		$this->load->view('main/dashboard', $this->data);
+		$this->load->view('main/dashboard');
 		$this->load->view('main/footer');
 	}
 
@@ -103,7 +101,30 @@ class Main extends CI_Controller
 
 		redirect('main/user');
 	}
-
+	function supplier()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/supplier');
+		$this->load->view('main/footer');
+	}
+	function purchase_order()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/purchase_order');
+		$this->load->view('main/footer');
+	}
+	function goods_received()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/goods_received');
+		$this->load->view('main/footer');
+	}
+	function back_order()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/back_order');
+		$this->load->view('main/footer');
+	}
 	function product()
 	{
 		$this->load->model('product_model');
@@ -130,10 +151,10 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
-				$config['upload_path']   = './assets/images/';  // Set the upload directory
-				$config['allowed_types'] = 'jpg|jpeg|png|gif';  // Allowed file types
-				$config['max_size']      = 2048;  // Maximum file size in kilobytes
-				$config['encrypt_name']  = TRUE;  // Encrypt the file name for security
+				$config['upload_path'] = './assets/images/'; // Set the upload directory
+				$config['allowed_types'] = 'jpg|jpeg|png|gif'; // Allowed file types
+				$config['max_size'] = 2048; // Maximum file size in kilobytes
+				$config['encrypt_name'] = TRUE; // Encrypt the file name for security
 
 				$this->load->library('upload', $config);
 
@@ -153,7 +174,7 @@ class Main extends CI_Controller
 					// Make sure you have a column in your database table to store the file name.
 
 					$this->load->model('product_model');
-					$response = $this->product_model->insert_product($unique_filename);  // Pass the unique filename to the model
+					$response = $this->product_model->insert_product($unique_filename); // Pass the unique filename to the model
 
 					if ($response) {
 						$success_message = 'Product added successfully.';
@@ -197,10 +218,10 @@ class Main extends CI_Controller
 
 				if ($_FILES['product_image']['name']) {
 					$update_image = true;
-					$config['upload_path']   = './assets/images/';
+					$config['upload_path'] = './assets/images/';
 					$config['allowed_types'] = 'jpg|jpeg|png|gif';
-					$config['max_size']      = 2048;
-					$config['encrypt_name']  = TRUE;
+					$config['max_size'] = 2048;
+					$config['encrypt_name'] = TRUE;
 
 					$this->load->library('upload', $config);
 
@@ -262,10 +283,54 @@ class Main extends CI_Controller
 
 		redirect('main/product');
 	}
+	function inventory_adjustment()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/inventory_adjustment');
+		$this->load->view('main/footer');
+	}
+	function inventory_ledger()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/inventory_ledger');
+		$this->load->view('main/footer');
+	}
+	function stock_requisition()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/stock_requisition');
+		$this->load->view('main/footer');
+	}
+	function reports()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/reports');
+		$this->load->view('main/footer');
+	}
+	function backup()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/backup');
+		$this->load->view('main/footer');
+	}
 	function payment()
 	{
 		$this->load->view('main/header');
 		$this->load->view('main/payment');
+		$this->load->view('main/footer');
+	}
+	function receipt()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/receipt');
+		$this->load->view('main/footer');
+	}
+	function pos()
+	{
+		$this->load->model('product_model');
+		$this->data['result'] = $this->product_model->get_all_product();
+		$this->load->view('main/header');
+		$this->load->view('main/pos', $this->data);
 		$this->load->view('main/footer');
 	}
 }

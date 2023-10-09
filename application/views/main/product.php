@@ -18,7 +18,7 @@
     <div class="card-header  ">
       <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-fish"></i> Add Product </a>
     </div>
-    <div class="card-body">
+    <div class="card-body">x`
       <div class="table-responsive">
         <table class="table table-bordered table-stripped table-sm" id="user-datatables">
           <thead>
