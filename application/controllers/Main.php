@@ -22,7 +22,7 @@ class Main extends CI_Controller
 
 	function add_user()
 	{
-
+		
 		$this->add_user_submit();
 		$this->load->view('main/header');
 		$this->load->view('main/add_user');
@@ -88,19 +88,43 @@ class Main extends CI_Controller
 			}
 		}
 	}
-	function delete_user($user_id)
+	function deactivate_user($user_id)
 	{
+		
 		$this->load->model('user_model');
-		$response = $this->user_model->delete_user($user_id);
 
-		if ($response) {
-			$success_message = 'User deleted successfully.';
+		$response = $this->user_model->deactivate_user($user_id);
+
+		if ($response) 
+		{
+			$success_message = 'User deactivated successfully.';
 			$this->session->set_flashdata('success', $success_message);
-		} else {
-			$error_message = 'User was not deleted successfully.';
+		}
+		else
+		{
+			$error_message = 'User was not deactivated successfully.';
 			$this->session->set_flashdata('error', $error_message);
 		}
+		redirect('main/user');
+	}
 
+	function reactivate_user($user_id)
+	{
+
+		$this->load->model('user_model');
+
+		$response = $this->user_model->reactivate_user($user_id);
+
+		if ($response) 
+		{
+			$success_message = 'User activated successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		}
+		else
+		{
+			$error_message = 'User was not activated successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
 		redirect('main/user');
 	}
 
