@@ -115,6 +115,22 @@
     <a href="" class="btn btn-warning checkout-button"> Checkout <i class="fas fa-arrow-right"></i></a>
 </div>
 
+<div id="numeric-keypadding">
+    <button class="btn btn-secondary numeric-button">1</button>
+    <button class="btn btn-secondary numeric-button">2</button>
+    <button class="btn btn-secondary numeric-button">3</button>
+    <button class="btn btn-secondary numeric-button">4</button>
+    <button class="btn btn-secondary numeric-button">5</button>
+    <button class="btn btn-secondary numeric-button">6</button>
+    <button class="btn btn-secondary numeric-button">7</button>
+    <button class="btn btn-secondary numeric-button">8</button>
+    <button class="btn btn-secondary numeric-button">9</button>
+    <button class="btn btn-secondary numeric-button">0</button>
+    <button class="btn btn-secondary numeric-button">.</button>
+    <button class="btn btn-danger clear-button">Clear</button>
+    <a href="javascript:void(0);" class="btn btn-secondary back-button" onclick="confirmBack()"> Back <i class="fas fa-arrow-left"></i></a>
+    <a href="<?php echo site_url('main/receipt'); ?>" class="btn btn-warning checkout-button"> Checkout <i class="fas fa-arrow-right"></i></a>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
