@@ -19,12 +19,20 @@
 </head>
 <style>
   body {
-    background-color: #FBF7E3;
+    background-color: #F1EFEF;
+  
+    /*
+    --text: #0b1128;
+    --background: #fbfcfe;
+    --primary: #3046a6;
+    --secondary: #d0d6f1;
+    --accent: #3750be;
+  */
   }
 </style>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:  #1a5795;">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:  #161313;">
     <div class="container-fluid">
       <a class="navbar-brand" href="<?= base_url('main') ?>">
         <i class="fas fa-envelope"> COMPANY</i>

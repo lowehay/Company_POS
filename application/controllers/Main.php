@@ -20,7 +20,7 @@ class Main extends CI_Controller
 
 	function add_user()
 	{
-		
+
 		$this->add_user_submit();
 		$this->load->view('main/header');
 		$this->load->view('main/add_user');
@@ -88,18 +88,15 @@ class Main extends CI_Controller
 	}
 	function deactivate_user($user_id)
 	{
-		
+
 		$this->load->model('user_model');
 
 		$response = $this->user_model->deactivate_user($user_id);
 
-		if ($response) 
-		{
+		if ($response) {
 			$success_message = 'User deactivated successfully.';
 			$this->session->set_flashdata('success', $success_message);
-		}
-		else
-		{
+		} else {
 			$error_message = 'User was not deactivated successfully.';
 			$this->session->set_flashdata('error', $error_message);
 		}
@@ -113,13 +110,10 @@ class Main extends CI_Controller
 
 		$response = $this->user_model->reactivate_user($user_id);
 
-		if ($response) 
-		{
+		if ($response) {
 			$success_message = 'User activated successfully.';
 			$this->session->set_flashdata('success', $success_message);
-		}
-		else
-		{
+		} else {
 			$error_message = 'User was not activated successfully.';
 			$this->session->set_flashdata('error', $error_message);
 		}
@@ -355,6 +349,15 @@ class Main extends CI_Controller
 		$this->data['result'] = $this->product_model->get_all_product();
 		$this->load->view('main/header');
 		$this->load->view('main/pos', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function newproduct()
+	{
+		$this->load->model('product_model');
+		$this->data['result'] = $this->product_model->get_all_product();
+		$this->load->view('main/header');
+		$this->load->view('main/newproduct', $this->data);
 		$this->load->view('main/footer');
 	}
 }
