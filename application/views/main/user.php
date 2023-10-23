@@ -2,18 +2,19 @@
   .card {
     width: 95%;
     /* Adjust the width as needed */
-    margin: 0 auto;
+    margin: 20px auto;
     /* Center the card on the page horizontally */
   }
 
   .row {
     margin-top: 10px;
   }
+
+  h1 {
+    margin-left: 50px;
+  }
 </style>
-<div class="row mb-2">
-  <div class="col-sm-6">
-  </div><!-- /.col -->
-</div><!-- /.row -->
+<h1>User Management</h1>
 <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
   <div class="card-header">
     <a href="<?php echo site_url('main/add_user'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-user-plus"></i>
@@ -38,7 +39,7 @@
             $count = 1;
             foreach ($result as $key => $row) {
               $user_id = $row->user_id;
-              ?>
+          ?>
               <tr class="text-center">
                 <td>
                   <?php echo $count++; ?>
@@ -56,14 +57,11 @@
                   <?php echo ucfirst($row->role); ?>
                 </td>
                 <td>
-                  <a href="<?php echo site_url('main/edit_user/' . $user_id); ?>" style="color:gold; padding-left:6px;"
-                    title="Click here to edit user details"><i class="fas fa-edit"></i></a>
-                  <a href="<?php echo site_url('main/delete_user/' . $user_id); ?>"
-                    onclick="return confirm('Are you sure you want to delete this user?')"
-                    style="color:red; padding-left:6px;" title="Click here to delete user"><i class="fas fa-trash"></i></a>
+                  <a href="<?php echo site_url('main/edit_user/' . $user_id); ?>" style="color:gold; padding-left:6px;" title="Click here to edit user details"><i class="fas fa-edit"></i></a>
+                  <a href="<?php echo site_url('main/delete_user/' . $user_id); ?>" onclick="return confirm('Are you sure you want to delete this user?')" style="color:red; padding-left:6px;" title="Click here to delete user"><i class="fas fa-trash"></i></a>
                 </td>
               </tr>
-              <?php
+          <?php
             }
           }
           ?>
@@ -73,7 +71,7 @@
   </div>
 </div>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
     <?php if ($this->session->flashdata('success')) { ?>
       toastr.success('<?php echo $this->session->flashdata('success'); ?>');
     <?php } elseif ($this->session->flashdata('error')) { ?>

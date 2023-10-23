@@ -26,12 +26,15 @@ class Product_model extends CI_Model
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
 		$product_price = (string) $this->input->post('product_price');
+		$product_quantity = (string) $this->input->post('product_quantity');
 
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
 			'product_price' => $product_price,
+			'product_quantity' => $product_quantity,
 			'product_image' => $image_file_name,  // Add the image file name to the data array
+
 		);
 
 		$response = $this->db->insert('product', $data);
@@ -67,6 +70,7 @@ class Product_model extends CI_Model
 		$product_name = (string) $this->input->post('product_name');
 		$product_price = (string) $this->input->post('product_price');
 
+
 		// Initialize the product_image variable
 		$product_image = '';
 
@@ -90,7 +94,7 @@ class Product_model extends CI_Model
 
 				// Generate a unique filename based on the product name
 				$product_name = $this->input->post('product_name');
-				$unique_filename = strtolower(str_replace(' ', '_', $product_name)) . '_' . $product_id . '_' . time() . $image_data['file_ext'];
+				$unique_filename = strtolower(str_replace(' ', '', $product_name)) . '' . $product_id . '_' . time() . $image_data['file_ext'];
 
 				// Rename the uploaded file to the unique filename
 				$new_path = './assets/images/' . $unique_filename;

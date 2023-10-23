@@ -64,8 +64,16 @@
     }
 
     #product-list {
-        overflow-y: auto;
-        max-height: 748px;
+        white-space: nowrap;
+        /* Prevent line breaks */
+        overflow-x: auto;
+        /* Add horizontal scroll if necessary */
+    }
+
+    /* Add margin to each product card in the horizontal list */
+    #product-list .d-inline-block {
+        margin-right: 8px;
+        /* Adjust the margin to your preference */
     }
 
     .total-price {
@@ -74,17 +82,22 @@
 
     .card-title {
         font-weight: bold;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 90%;
+        /* Adjust the maximum width as needed */
     }
 
-    .card product-card {
-        background: linear-gradient(49deg, #2d4de0 0, #9f71f0 30%, #fc6277 58%, #f8ef6f 95%);
-
-        width: 380px;
-        height: 350px;
-
+    .product-card {
+        width: 400px;
+        height: 380px;
         border-radius: 12px;
-
         position: relative;
+    }
+
+    .card {
+        margin: 10px auto;
     }
 </style>
 
@@ -98,8 +111,7 @@
                         <h2>Product List</h2>
                         <!-- Add the search input and button inside the card header -->
                         <div class="input-group mb-1">
-                            <input type="text" class="form-control" id="product-search"
-                                placeholder="Search for a product">
+                            <input type="text" class="form-control" id="product-search" placeholder="Search for a product">
                             <button class="btn btn-primary" id="search-button">Search</button>
                         </div>
                     </div>
@@ -107,16 +119,12 @@
                         <div class="row">
                             <?php foreach ($result as $product) { ?>
                                 <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>"
-                                        data-product-price="<?php echo $product->product_price; ?>"
-                                        data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
-                                        <div class="card-body" style="height: 200px;">
+                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-price="<?php echo $product->product_price; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
+                                        <div class="card-body" style="height: 300px;">
                                             <h5 class="card-title" style="max-width: 100%;">
                                                 <?php echo $product->product_name; ?>
                                             </h5>
-                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>"
-                                                alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3"
-                                                style="max-width: 100%; max-height: 100px;">
+                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-width: 100%; max-height: 300px;">
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +134,7 @@
                 </div>
             </div>
             <!-- Right Column - Cart -->
-            <div class="col-md-4" style="background-color: #ffffff;">
+            <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-header">
                         <h2>Cart</h2>
@@ -165,17 +173,17 @@
 
     <!-- Add this script at the end of your page, after including jQuery -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             // Store all product cards in an array
             var allProductCards = $('.product-card');
 
-            $('#search-button').on('click', function () {
+            $('#search-button').on('click', function() {
                 performSearch();
             });
 
             // Add an input event listener to the search input
-            $('#product-search').on('input', function () {
+            $('#product-search').on('input', function() {
                 performSearch();
             });
 
@@ -192,16 +200,19 @@
                     $('#product-list').html(originalProductListHTML);
                 } else {
                     // Filter and display products that match the search term
-                    allProductCards.each(function () {
+                    allProductCards.each(function() {
                         var productName = $(this).data('product-name').toLowerCase();
                         if (productName.startsWith(searchTerm)) {
-                            $('#product-list').append($(this).parent()); // Keep the original parent container
+                            // Create a horizontal list for searched products
+                            var productCard = $('<div class="d-inline-block mr-3"></div>');
+                            productCard.append($(this).clone());
+                            $('#product-list').append(productCard);
                         }
                     });
                 }
             }
 
-            $(document).on('click', '.product-card', function () {
+            $(document).on('click', '.product-card', function() {
                 var productName = $(this).data('product-name');
                 var productPrice = parseFloat($(this).data('product-price'));
 
@@ -224,7 +235,7 @@
                 var weightText = cartItem.find('.weight-text');
 
                 // Update the total price as the weight text changes
-                weightText.on('input', function () {
+                weightText.on('input', function() {
                     var weight = parseFloat($(this).text());
                     var productPrice = parseFloat(cartItem.data('product-price'));
                     var productTotal = weight * productPrice;
@@ -238,7 +249,7 @@
             // Function to check if a product is already in the cart
             function isProductInCart(productName) {
                 var inCart = false;
-                $('#cart-items li').each(function () {
+                $('#cart-items li').each(function() {
                     var cartProductName = $(this).text().split(' - ')[0].trim(); // Extract product name from the cart item
                     if (cartProductName === productName) {
                         inCart = true;
@@ -252,7 +263,7 @@
             function updateTotal() {
                 // Calculate and update the total price for all products in the cart
                 var total = 0;
-                $('#cart-items li').each(function () {
+                $('#cart-items li').each(function() {
                     var productPrice = parseFloat($(this).data('product-price'));
                     var weight = parseFloat($(this).find('.weight-text').text());
                     weight = isNaN(weight) ? 0 : weight; // Ensure weight is a valid number
@@ -276,7 +287,7 @@
             var selectedCartItem = null; // Initialize the selectedCartItem variable
 
             // Click event handler for selecting items in the cart
-            $('#cart-items').on('click', 'li', function () {
+            $('#cart-items').on('click', 'li', function() {
                 if (selectedCartItem) {
                     // Remove the 'selected-item' class from the previously selected item
                     selectedCartItem.removeClass('selected-item');
@@ -297,7 +308,7 @@
             });
 
             // Click event handler for deleting items from the cart (using event delegation)
-            $('#cart-items').on('click', '.delete-item', function () {
+            $('#cart-items').on('click', '.delete-item', function() {
                 var listItem = $(this).closest('li');
                 var itemPrice = parseFloat(listItem.data('product-price'));
 
@@ -309,7 +320,7 @@
             });
 
             // Add a keydown event listener to the entire document
-            $(document).on('keydown', function (event) {
+            $(document).on('keydown', function(event) {
                 // Check if a numeric key or decimal point was pressed
                 if (event.key.match(/[0-9.]/)) {
                     // Simulate a click on the corresponding numeric keypad button
@@ -329,7 +340,7 @@
             }
 
             // Click event handler for the "Payment" button
-            $('.payment-button').on('click', function (e) {
+            $('.payment-button').on('click', function(e) {
                 // Check if the cart is empty
                 if (isCartEmpty()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
@@ -343,7 +354,7 @@
             // Function to check if there are products in the cart without a specified weight
             function hasUnspecifiedWeights() {
                 var hasUnspecifiedWeight = false;
-                $('#cart-items li').each(function () {
+                $('#cart-items li').each(function() {
                     var weightText = $(this).find('.weight-text').text();
                     if (!weightText || parseFloat(weightText) <= 0) {
                         hasUnspecifiedWeight = true;
@@ -354,7 +365,7 @@
             }
 
             // Numeric Keypad Logic (same as before)...
-            $('#numeric-keypad .numeric-button').on('click', function () {
+            $('#numeric-keypad .numeric-button').on('click', function() {
                 var digit = $(this).text();
                 var selectedItem = $('.selected-item');
                 var weightText = selectedItem.find('.weight-text');
@@ -380,7 +391,7 @@
             });
         });
 
-        $('#numeric-keypad .clear-button').on('click', function () {
+        $('#numeric-keypad .clear-button').on('click', function() {
             var selectedItem = $('.selected-item');
             if (selectedItem.length > 0) {
                 // Clear the weight of the selected item
