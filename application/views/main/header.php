@@ -10,13 +10,13 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/toastr.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/toastr.css">
-  <title>FISH PORT</title>
+  <title>COMPANY</title>
 </head>
 <style>
-  @import url('https://fonts.googleapis.com/css?family=Palanquin Dark:700|Palanquin Dark:400');
+  @import url('https://fonts.googleapis.com/css?family=IBM Plex Sans:700|IBM Plex Sans:400');
 
   body {
-    font-family: 'Palanquin Dark';
+    font-family: 'IBM Plex Sans';
     font-weight: 400;
   }
 
@@ -25,7 +25,7 @@
   h3,
   h4,
   h5 {
-    font-family: 'Palanquin Dark';
+    font-family: 'IBM Plex Sans';
     font-weight: 700;
   }
 
@@ -116,7 +116,7 @@
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="<?= base_url('main/purchase_order') ?>">Purchase Order</a></li>
               <li><a class="dropdown-item" href="<?= base_url('main/goods_received') ?>">Goods Received</a></li>
-              <li><a class="dropdown-item" href="<?= base_url('main/back_order') ?>">Back Order</a></li>
+              <li><a class="dropdown-item" href="<?= base_url('main/goods_return') ?>">Goods Return</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">

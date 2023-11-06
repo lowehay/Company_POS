@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-secondary text-white">
                     Sales Summary
                 </div>
                 <div class="card-body">
@@ -22,7 +22,7 @@
 
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-success text-white">
+                <div class="card-header bg-secondary text-white">
                     Products
                 </div>
                 <div class="card-body">
@@ -36,7 +36,7 @@
 
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-warning text-white">
+                <div class="card-header bg-secondary text-white">
                     Orders
                 </div>
                 <div class="card-body">
@@ -50,7 +50,7 @@
 
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-secondary text-white">
                     Inventory
                 </div>
                 <div class="card-body">
@@ -67,7 +67,7 @@
     <div class="row mt-4">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-info text-white">
+                <div class="card-header bg-secondary text-white">
                     Sales Chart
                 </div>
                 <div class="card-body">
@@ -78,7 +78,7 @@
 
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header bg-warning text-white">
+                <div class="card-header bg-secondary text-white">
                     Sales Distribution
                 </div>
                 <div class="card-body">
@@ -102,8 +102,8 @@
                 datasets: [{
                     label: 'Monthly Sales',
                     data: [1200, 1500, 1100, 1800, 1400],
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(97, 93, 95, 1)',
+                    borderColor: 'rgba(97, 93, 95, 1)',
                     borderWidth: 1
                 }]
             },
@@ -126,7 +126,7 @@
                 labels: ["Product A", "Product B", "Product C", "Product D", "Product E"],
                 datasets: [{
                     data: [15, 25, 20, 10, 30],
-                    backgroundColor: ["#FF5733", "#FFC300", "#FF5733", "#FFC300", "#FF5733"]
+                    backgroundColor: ["#AD8B73", "#CEAB93", "#E3CAA5", "#BFB29E", "#D6C7AE"]
                 }]
             },
             options: {

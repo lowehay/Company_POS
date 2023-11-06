@@ -93,22 +93,20 @@
                                 <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
                                     <option value="" selected hidden>Select Product</option>
                                     <?php foreach ($product as $pro) { ?>
-                                        <option value="<?= $pro->product_name ?>"><?= $pro->product_name ?></option>
+                                        <option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
                                     <?php } ?>
                                 </select>
                                 <input type="hidden" name="selected_product" id="selected_product" value="">
                             </td>
                             <td>
-                                <input class="form-control form-control-sm" type="number" name="product_quantity[]" id="po_quantity" required min="0">
+                                <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" required min="0">
                             </td>
                             <td>
                                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
                                     <option value="" selected hidden>Select Unit</option>
                                     <option>Pcs</option>
-                                    <option>Tablet</option>
-                                    <option>Capsule</option>
+                                    <option>Bottle</option>
                                     <option>box</option>
-                                    <option>Pad</option>
                                 </select>
                             </td>
                             <td>
@@ -170,7 +168,7 @@
 
     // Function to calculate the total cost for a specific row
     function calculateTotalPrice(row) {
-        var quantity = parseFloat(row.querySelector('input[name="product_quantity[]"]').value);
+        var quantity = parseFloat(row.querySelector('input[name="po_product_quantity[]"]').value);
         var price = parseFloat(row.querySelector('input[name="product_unitprice[]"]').value);
         var total = quantity * price;
 
@@ -201,10 +199,24 @@
 
     // Attach event listeners to calculate and update totals
     document.addEventListener('input', function(event) {
-        if (event.target.matches('input[name="product_quantity[]"], input[name="product_unitprice[]"]')) {
+        if (event.target.matches('input[name="po_product_quantity[]"], input[name="product_unitprice[]"]')) {
             calculateTotalPrice(event.target.closest('tr'));
         }
     });
+
+    document.addEventListener('input', function(event) {
+        if (event.target.matches('input[name="po_product_quantity[]"], input[name="product_unitprice[]"]')) {
+            calculateTotalPrice(event.target.closest('tr'));
+        }
+
+        // Add this block to update the price field when a product is selected
+        if (event.target.matches('select[name="product_name[]"]')) {
+            var selectedOption = event.target.options[event.target.selectedIndex];
+            var priceField = event.target.closest('tr').querySelector('input[name="product_unitprice[]"]');
+            priceField.value = selectedOption.getAttribute('data-price') || '';
+        }
+    });
+
 
     // ... Your existing JavaScript code ...
 </script>

@@ -223,7 +223,7 @@
                 }
 
                 // Create a new cart item element with weight text
-                var cartItem = $('<li class="list-group-item" data-product-price="' + productPrice.toFixed(2) + '">' + productName + ' - ₱' + productPrice.toFixed(2) + ' Weight: <span class="weight-text">0</span> kg Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i></li>');
+                var cartItem = $('<li class="list-group-item" data-product-price="' + productPrice.toFixed(2) + '">' + productName + ' - ₱' + productPrice.toFixed(2) + ' - Quantity: <span class="quantity-text">0</span> - Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i></li>');
 
                 // Append the cart item to the cart
                 $('#cart-items').append(cartItem);
@@ -232,11 +232,11 @@
                 updateTotal(productPrice);
 
                 // Add a weight text field to the cart item
-                var weightText = cartItem.find('.weight-text');
+                var quantityText = cartItem.find('.quantity-text');
 
                 // Update the total price as the weight text changes
-                weightText.on('input', function() {
-                    var weight = parseFloat($(this).text());
+                quantityText.on('input', function() {
+                    var quantity = parseFloat($(this).text());
                     var productPrice = parseFloat(cartItem.data('product-price'));
                     var productTotal = weight * productPrice;
                     $(this).closest('li').find('.product-total').text(productTotal.toFixed(2));
@@ -265,9 +265,9 @@
                 var total = 0;
                 $('#cart-items li').each(function() {
                     var productPrice = parseFloat($(this).data('product-price'));
-                    var weight = parseFloat($(this).find('.weight-text').text());
-                    weight = isNaN(weight) ? 0 : weight; // Ensure weight is a valid number
-                    var totalPrice = weight * productPrice;
+                    var quantity = parseFloat($(this).find('.quantity-text').text());
+                    quantity = isNaN(quantity) ? 0 : quantity; // Ensure weight is a valid number
+                    var totalPrice = quantity * productPrice;
                     total += totalPrice;
                     // Update the individual product's total
                     $(this).find('.product-total').text(totalPrice.toFixed(2));
@@ -298,9 +298,9 @@
 
                 // Update the total price when a product is selected
                 var productPrice = parseFloat($(this).data('product-price'));
-                var weight = parseFloat($(this).find('.weight-text').text());
-                weight = isNaN(weight) ? 0 : weight; // Ensure weight is a valid number
-                var totalPrice = weight * productPrice;
+                var quantity = parseFloat($(this).find('.quantity-text').text());
+                quantity = isNaN(quantity) ? 0 : quantity; // Ensure weight is a valid number
+                var totalPrice = quantity * productPrice;
                 updateTotal();
 
                 // Set the currently selected item
@@ -345,47 +345,47 @@
                 if (isCartEmpty()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
                     alert('There are no products in the cart. Please add products before proceeding to payment.');
-                } else if (hasUnspecifiedWeights()) {
+                } else if (hasUnspecifiedQuantity()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
                     alert('Please specify the weights for all products in the cart before proceeding to payment.');
                 }
             });
 
             // Function to check if there are products in the cart without a specified weight
-            function hasUnspecifiedWeights() {
-                var hasUnspecifiedWeight = false;
+            function hasUnspecifiedQuantity() {
+                var hasUnspecifiedQuantity = false;
                 $('#cart-items li').each(function() {
-                    var weightText = $(this).find('.weight-text').text();
-                    if (!weightText || parseFloat(weightText) <= 0) {
-                        hasUnspecifiedWeight = true;
+                    var quantityText = $(this).find('.quantity-text').text();
+                    if (!quantityText || parseFloat(quantityText) <= 0) {
+                        hasUnspecifiedQuantity = true;
                         return false; // Exit the loop early since we found a product without a weight
                     }
                 });
-                return hasUnspecifiedWeight;
+                return hasUnspecifiedQuantity;
             }
 
             // Numeric Keypad Logic (same as before)...
             $('#numeric-keypad .numeric-button').on('click', function() {
                 var digit = $(this).text();
                 var selectedItem = $('.selected-item');
-                var weightText = selectedItem.find('.weight-text');
+                var quantityText = selectedItem.find('.quantity-text');
 
-                var currentWeight = weightText.text(); // Get the current weight as a string
+                var currentQuantity = quantityText.text(); // Get the current weight as a string
 
                 if (digit === '.') {
                     // If the clicked button is a decimal point (.), add it to the current weight text
-                    if (!currentWeight.includes('.')) {
-                        weightText.text(currentWeight + digit);
+                    if (!currentQuantityt.includes('.')) {
+                        quantityText.text(currentWeight + digit);
                     }
                 } else {
                     // If the clicked button is a digit (0-9), update the weight text
-                    var newWeight = currentWeight === '0' ? digit : currentWeight + digit;
-                    weightText.text(newWeight);
+                    var newQuantity = currentQuantity === '0' ? digit : currentQuantity + digit;
+                    quantityText.text(newQuantity);
                 }
 
                 // Update the total price as the weight text changes
                 var productPrice = parseFloat(selectedItem.data('product-price'));
-                var totalPrice = parseFloat(weightText.text()) * productPrice;
+                var totalPrice = parseFloat(quantityText.text()) * productPrice;
                 totalPrice = isNaN(totalPrice) ? 0 : totalPrice; // Ensure totalPrice is a valid number
                 updateTotal();
             });
@@ -395,11 +395,11 @@
             var selectedItem = $('.selected-item');
             if (selectedItem.length > 0) {
                 // Clear the weight of the selected item
-                var weightText = selectedItem.find('.weight-text');
-                weightText.text('0');
+                var quantityText = selectedItem.find('.quantity-text');
+                quantityText.text('0');
 
                 // Trigger the 'input' event to update the total price in real-time
-                weightText.trigger('input');
+                quantityText.trigger('input');
 
                 // Remove the 'selected-item' class
                 selectedItem.removeClass('selected-item');

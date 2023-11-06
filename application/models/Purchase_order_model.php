@@ -20,6 +20,24 @@ class Purchase_order_model extends CI_Model
         }
     }
 
+    public function gr_no()
+    {
+
+        $year = date('Y');
+        $text = "GR" . '-' . $year;
+        $query = "SELECT max(goods_received_no) as code_auto from goods_received_no";
+        $data = $this->db->query($query)->row_array();
+        if ($data["code_auto"] != NULL) {
+            $max_code = $data['code_auto'];
+            $max_code2 = (int) substr($max_code, 8, 5);
+            $codecount = $max_code2 + 1;
+            $code_auto = $text . '-' . sprintf('%03s', $codecount);
+            return $code_auto;
+        } else {
+            return $text . '-' . sprintf('%03s', 1);
+        }
+    }
+
     function insertpurchaseorder()
     {
         $purchase = [
@@ -34,14 +52,14 @@ class Purchase_order_model extends CI_Model
         $last_purchase_id = $this->db->insert_id();
 
         $product_name = $this->input->post('product_name');
-        $product_quantity = $this->input->post('product_quantity');
+        $po_product_quantity = $this->input->post('po_product_quantity');
         $product_unit = $this->input->post('product_unit');
         $product_unitprice = $this->input->post('product_unitprice');
         $total_cost = 0;
 
         foreach ($product_name as $index => $product_name) {
             $arr_product = $product_name;
-            $arr_quant = $product_quantity[$index];
+            $arr_quant = $po_product_quantity[$index];
             $arr_unit = $product_unit[$index];
             $arr_price = $product_unitprice[$index];
 
@@ -49,7 +67,7 @@ class Purchase_order_model extends CI_Model
             $data_purchase_order = [
                 'purchase_order_no' => $last_purchase_id,
                 'product_name' => $arr_product,
-                'product_quantity' => $arr_quant,
+                'po_product_quantity' => $arr_quant,
                 'product_unit' => $arr_unit,
                 'product_unitprice' => $arr_price,
             ];
@@ -76,5 +94,130 @@ class Purchase_order_model extends CI_Model
         $this->db->where('purchase_order_no.is_Delete', 'no');
         $query = $this->db->get()->result();
         return $query;
+    }
+    function get_all_gr()
+    {
+        $this->db->select('*');
+        $this->db->from('purchase_order_no');
+        $this->db->join('suppliers', 'purchase_order_no.supplier_id = suppliers.supplier_id');
+        $this->db->where('purchase_order_no.is_Delete', 'no');
+        $this->db->where('purchase_order_no.status', 'To be Received');
+        $query = $this->db->get()->result();
+        return $query;
+    }
+    function code($id)
+    {
+        $this->db->select('*');
+        $this->db->from('purchase_order_no');
+        $this->db->where('purchase_order_no_id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    function Select_one($id)
+    {
+        $this->db->select('*');
+        $this->db->from('suppliers AS supplier');
+        $this->db->join('purchase_order_no AS purc', 'purc.supplier_id = supplier.supplier_id');
+        $this->db->join('purchase_order AS PO', 'purc.purchase_order_no_id= PO.purchase_order_no');
+        $this->db->where('purchase_order_no_id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    function view_all_PO($id)
+    {
+        $this->db->select('PO.*, P.*, purc.*');
+        $this->db->from('purchase_order_no AS purc');
+        $this->db->join('purchase_order AS PO', 'purc.purchase_order_no_id = PO.purchase_order_no');
+        $this->db->join('product AS P', 'PO.product_name = P.product_name');
+        $this->db->where('purchase_order_no_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    public function update_po()
+    {
+        $purchase_id = (int) $this->input->post('purchase_id');
+        $supplier_name = (string) $this->input->post('supplier_name');
+        $payment_method = (string) $this->input->post('payment_method');
+        $pr_code = $this->input->post('pr_code');
+        $product_name = $this->input->post('product_name');
+        $po_product_quantity = $this->input->post('po_product_quantity');
+        $product_unit = $this->input->post('product_unit');
+        $product_unitprice = $this->input->post('product_unitprice');
+
+        // Calculate the new total cost
+        $total_cost = 0;
+        foreach ($product_unitprice as $index => $price) {
+            $total_cost += $price * $po_product_quantity[$index];
+        }
+
+        // Update the purchase order with the new total cost and supplier id
+        $purchase = [
+            'supplier_id' => $supplier_name,
+            'payment_method' => $payment_method,
+            'total_cost' => $total_cost
+        ];
+        $this->db->where('purchase_order_no_id', $purchase_id);
+        $this->db->update('purchase_order_no', $purchase);
+
+        // Loop through the array of product data and update existing records or insert new ones
+        foreach ($product_name as $index => $product_name) {
+            $arr_product = $product_name;
+            $arr_quant = $po_product_quantity[$index];
+            $arr_unit = $product_unit[$index];
+            $arr_code = $pr_code[$index];
+            $arr_price = $product_unitprice[$index];
+
+            $data = [
+                'purchase_order_no' => $purchase_id,
+                'product_name' => $arr_product,
+                'po_product_quantity' => $arr_quant,
+                'product_unit' => $arr_unit,
+                'product_unitprice' => $arr_price
+            ];
+
+            $this->db->where('purchase_order_no', $purchase_id);
+            $this->db->where('product_name', $arr_product);
+            $result = $this->db->get('purchase_order');
+
+            if ($result->num_rows() > 0) {
+                // If the product already exists, update the existing record
+                $this->db->where('purchase_order_no', $purchase_id);
+                $this->db->where('product_name', $arr_product);
+                $this->db->update('purchase_order', $data);
+            } else {
+                // If the product does not exist, insert a new record
+                $this->db->insert('purchase_order', $data);
+            }
+        }
+
+        return $purchase_id;
+    }
+
+    public function approved_po($id)
+    {
+        $data = array(
+            'status' => 'To Be Received'
+        );
+        $this->db->where('purchase_order_no_id', $id);
+        $response = $this->db->update('purchase_order_no', $data);
+        if ($response) {
+            return $id;
+        } else {
+            return false;
+        }
+    }
+
+    public function cancel_po($id)
+    {
+        $data = array(
+            'status' => 'Cancelled'
+        );
+        $this->db->where('purchase_order_no_id', $id);
+        $response = $this->db->update('purchase_order_no', $data);
+        if ($response) {
+            return $id;
+        } else {
+            return false;
+        }
     }
 }
