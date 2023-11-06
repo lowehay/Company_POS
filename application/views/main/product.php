@@ -201,7 +201,6 @@
                 <h5 class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
                 <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
                 <p class="card-text">Price: ₱<?php echo $row->product_price; ?></p>
-                <p class="card-text">Quantity: <?php echo $row->product_quantity; ?></p>
                 <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
                 <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
               </div>

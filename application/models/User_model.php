@@ -98,11 +98,9 @@ class User_model extends CI_Model
 
 		$response = $this->db->update('user', $data);
 
-		if ($response) 
-		{
+		if ($response) {
 			return $user_id;
-		}else
-		{
+		} else {
 			return FALSE;
 		}
 	}
@@ -117,11 +115,9 @@ class User_model extends CI_Model
 
 		$response = $this->db->update('user', $data);
 
-		if ($response) 
-		{
+		if ($response) {
 			return $user_id;
-		}else
-		{
+		} else {
 			return FALSE;
 		}
 	}

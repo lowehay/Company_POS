@@ -107,6 +107,7 @@ class Product_model extends CI_Model
 		$product_minimum_quantity = (string) $this->input->post('product_minimum_quantity');
 		$product_required_quantity = (string) $this->input->post('product_required_quantity');
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
+		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
 
 
@@ -172,6 +173,7 @@ class Product_model extends CI_Model
 			'product_required_quantity' => $product_required_quantity,
 			'product_maximum_quantity' => $product_maximum_quantity,
 			'product_minimum_order_quantity' => $product_minimum_order_quantity,
+			'product_dateadded' => $product_dateadded,
 			'product_image' => $product_image, // Update the product image filename
 		);
 
