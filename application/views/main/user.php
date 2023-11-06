@@ -4,6 +4,7 @@
     /* Adjust the width as needed */
     margin: 20px auto;
     /* Center the card on the page horizontally */
+
   }
 
   .row {
@@ -30,6 +31,7 @@
             <th>First Name</th>
             <th>Last Name</th>
             <th>Role</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -57,8 +59,38 @@
                   <?php echo ucfirst($row->role); ?>
                 </td>
                 <td>
+
+                  <?php if ($row->status == "deactivated") { ?>
+
+                    <span class="badge bg-danger">
+                      <?= ucfirst($row->status) ?>
+                    </span>
+
+                  <?php
+                  } else {
+                  ?>
+                    <span class="badge bg-success">
+                      <?= ucfirst($row->status) ?>
+                    </span>
+
+                  <?php
+                  } ?>
+                </td>
+                <td>
                   <a href="<?php echo site_url('main/edit_user/' . $user_id); ?>" style="color:gold; padding-left:6px;" title="Click here to edit user details"><i class="fas fa-edit"></i></a>
-                  <a href="<?php echo site_url('main/delete_user/' . $user_id); ?>" onclick="return confirm('Are you sure you want to delete this user?')" style="color:red; padding-left:6px;" title="Click here to delete user"><i class="fas fa-trash"></i></a>
+
+                  <?php {
+                  ?>
+                    <?php $status = $row->status;
+                    if ($status == 'active') { ?>
+                      <a href="<?php echo site_url('main/deactivate_user/' . $user_id); ?>" style="color:red; padding-left:6px;" title="Click here to deaactivate this user" onclick="return confirm('Are you sure you want to deactivate user?')"><i class="fas fa-ban"></i></a>
+                    <?php } else { ?>
+                      <a href="<?php echo site_url('main/reactivate_user/' . $user_id); ?>" style="color:green; padding-left:6px;" title="Click here to activate this user" onclick="return confirm('Are you sure you want to reactivate user?')"><i class="fas fa-check-circle"></i></a>
+                    <?php } ?>
+                  <?php
+                  }
+                  ?>
+
                 </td>
               </tr>
           <?php

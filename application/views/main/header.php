@@ -66,6 +66,7 @@
   }
 
   body {
+
     background-color: #FFFBE9;
   }
 
@@ -85,11 +86,14 @@
     /* Color of the thumb */
     border-radius: 6px;
     /* Rounded corners */
+
   }
 </style>
 
 <body>
+
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #AD8B73">
+
     <div class="container-fluid">
       <a class="navbar-brand" href="<?= base_url('main') ?>">
         <i class="fas fa-envelope"></i> COMPANY

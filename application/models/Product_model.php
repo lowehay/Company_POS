@@ -25,14 +25,41 @@ class Product_model extends CI_Model
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
+
+		$product_margin = (string) $this->input->post('product_margin');
+		$product_vat = (string) $this->input->post('product_vat');
+		$product_barcode = (string) $this->input->post('product_barcode');
+		$product_category = (string) $this->input->post('product_category');
+		$supplier_id = (string) $this->input->post('supplier_id');
+		$product_inbound_threshold = (string) $this->input->post('product_inbound_threshold');
+		$product_shelf_life = (string) $this->input->post('product_shelf_life');
+		$product_recall_threshold = (string) $this->input->post('product_recall_threshold');
+		$product_minimum_quantity = (string) $this->input->post('product_minimum_quantity');
+		$product_required_quantity = (string) $this->input->post('product_required_quantity');
+		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
+		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
+
 		$product_price = (string) $this->input->post('product_price');
 		$product_quantity = (string) $this->input->post('product_quantity');
+
 
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
-			'product_price' => $product_price,
-			'product_quantity' => $product_quantity,
+
+			'product_dateadded' => date('Y-m-d H:i:s'),
+			'product_margin' => $product_margin,
+			'product_vat' => $product_vat,
+			'product_barcode' => $product_barcode,
+			'product_category' => $product_category,
+			'supplier_id' => $supplier_id,
+			'product_inbound_threshold' => $product_inbound_threshold,
+			'product_shelf_life' => $product_shelf_life,
+			'product_recall_threshold' => $product_recall_threshold,
+			'product_minimum_quantity' => $product_minimum_quantity,
+			'product_required_quantity' => $product_required_quantity,
+			'product_maximum_quantity' => $product_maximum_quantity,
+			'product_minimum_order_quantity' => $product_minimum_order_quantity,
 			'product_image' => $image_file_name,  // Add the image file name to the data array
 
 		);
@@ -66,13 +93,28 @@ class Product_model extends CI_Model
 
 	function update_product($product_id, $update_image)
 	{
+
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
-		$product_price = (string) $this->input->post('product_price');
+		$supplier_id = (string) $this->input->post('supplier_id');
+		$product_barcode = (string) $this->input->post('product_barcode');
+		$product_category = (string) $this->input->post('product_category');
+		$product_margin = (string) $this->input->post('product_margin');
+		$product_vat = (string) $this->input->post('product_vat');
+		$product_inbound_threshold = (string) $this->input->post('product_inbound_threshold');
+		$product_shelf_life = (string) $this->input->post('product_shelf_life');
+		$product_recall_threshold = (string) $this->input->post('product_recall_threshold');
+		$product_minimum_quantity = (string) $this->input->post('product_minimum_quantity');
+		$product_required_quantity = (string) $this->input->post('product_required_quantity');
+		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
+		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
+
+
 
 
 		// Initialize the product_image variable
 		$product_image = '';
+
 
 		// Check if a new image file is uploaded or if we should retain the existing image
 		if ($update_image) {
@@ -118,7 +160,18 @@ class Product_model extends CI_Model
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
-			'product_price' => $product_price,
+			'supplier_id' => $supplier_id,
+			'product_barcode' => $product_barcode,
+			'product_category' => $product_category,
+			'product_margin' => $product_margin,
+			'product_vat' => $product_vat,
+			'product_inbound_threshold' => $product_inbound_threshold,
+			'product_shelf_life' => $product_shelf_life,
+			'product_recall_threshold' => $product_recall_threshold,
+			'product_minimum_quantity' => $product_minimum_quantity,
+			'product_required_quantity' => $product_required_quantity,
+			'product_maximum_quantity' => $product_maximum_quantity,
+			'product_minimum_order_quantity' => $product_minimum_order_quantity,
 			'product_image' => $product_image, // Update the product image filename
 		);
 
@@ -144,5 +197,15 @@ class Product_model extends CI_Model
 		} else {
 			return false;
 		}
+	}
+
+	function Select_one($id)
+	{
+		$this->db->select('*');
+		$this->db->from('product AS pro');
+		$this->db->join('suppliers AS supplier', 'pro.supplier_id = supplier.supplier_id', 'left');
+		$this->db->where('pro.product_id', $id);
+		$query = $this->db->get()->row();
+		return $query;
 	}
 }

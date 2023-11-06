@@ -87,19 +87,37 @@ class Main extends CI_Controller
 			}
 		}
 	}
-	function delete_user($user_id)
+	function deactivate_user($user_id)
 	{
+
 		$this->load->model('user_model');
-		$response = $this->user_model->delete_user($user_id);
+
+		$response = $this->user_model->deactivate_user($user_id);
 
 		if ($response) {
-			$success_message = 'User deleted successfully.';
+			$success_message = 'User deactivated successfully.';
 			$this->session->set_flashdata('success', $success_message);
 		} else {
-			$error_message = 'User was not deleted successfully.';
+			$error_message = 'User was not deactivated successfully.';
 			$this->session->set_flashdata('error', $error_message);
 		}
+		redirect('main/user');
+	}
 
+	function reactivate_user($user_id)
+	{
+
+		$this->load->model('user_model');
+
+		$response = $this->user_model->reactivate_user($user_id);
+
+		if ($response) {
+			$success_message = 'User activated successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'User was not activated successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
 		redirect('main/user');
 	}
 	function supplier()
@@ -220,6 +238,8 @@ class Main extends CI_Controller
 		$this->load->view('main/purchase_order', $this->data);
 		$this->load->view('main/footer');
 	}
+
+
 	function add_purchase_order()
 	{
 		$this->add_purchase_order_submit();
@@ -254,6 +274,7 @@ class Main extends CI_Controller
 			redirect('main/purchase_order');
 		}
 	}
+
 
 	function edit_purchase_order($id)
 	{
@@ -416,30 +437,13 @@ class Main extends CI_Controller
 		$this->load->view('main/post_goods_return', $this->data);
 		$this->load->view('main/footer');
 	}
-	public function post_goods_return_submit()
-	{
-		if ($this->input->post('btn_post_grt')) {
-
-			$this->load->model('goods_return_model');
-			$response = $this->goods_return_model->post_goods_return();
-			if ($response) {
-
-				$success_message = 'Goods recieved posted successfully.';
-				$this->session->set_flashdata('success', $success_message);
-			} else {
-				$error_message = 'Goods received was not posted successfully.';
-				$this->session->set_flashdata('error', $error_message);
-			}
-
-			redirect('main/goods_return');
-		}
-	}
 	function back_order()
 	{
 		$this->load->view('main/header');
 		$this->load->view('main/back_order');
 		$this->load->view('main/footer');
 	}
+
 	function product()
 	{
 		$this->load->model('product_model');
@@ -451,9 +455,12 @@ class Main extends CI_Controller
 
 	function add_product()
 	{
+
 		$this->add_product_submit();
 		$this->load->model('product_model');
 		$this->data['product_code'] = $this->product_model->product_code();
+		$this->load->model('supplier_model');
+		$this->data['suppliers'] = $this->supplier_model->get_all_suppliers();
 		$this->load->view('main/header');
 		$this->load->view('main/add_product', $this->data);
 		$this->load->view('main/footer');
@@ -463,7 +470,20 @@ class Main extends CI_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required|is_unique[product.product_code]');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required|is_unique[product.product_name]', array('is_unique' => 'The Product Name is already taken.'));
-			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
+			$this->form_validation->set_rules('supplier_id', 'Supplier', 'trim|required');
+			$this->form_validation->set_rules('product_barcode', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_category', 'Product Category', 'trim|required');
+			$this->form_validation->set_rules('product_margin', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_barcode', 'Product Margin', 'trim|required');
+			$this->form_validation->set_rules('product_vat', 'Product VAT', 'trim|required');
+			$this->form_validation->set_rules('product_inbound_threshold', 'Product Inbound Threshold', 'trim|required');
+			$this->form_validation->set_rules('product_shelf_life', 'Product Shelf Life', 'trim|required');
+			$this->form_validation->set_rules('product_recall_threshold', 'Product Recall Threshold', 'trim|required');
+			$this->form_validation->set_rules('product_minimum_quantity', 'Product Miminum Quantity', 'trim|required');
+			$this->form_validation->set_rules('product_required_quantity', 'Product Required Quantity', 'trim|required');
+			$this->form_validation->set_rules('product_maximum_quantity', 'Product Maximum Quantity', 'trim|required');
+			$this->form_validation->set_rules('product_minimum_order_quantity', 'Product Miminum Order Quantity', 'trim|required');
+
 
 			if ($this->form_validation->run() != FALSE) {
 				$config['upload_path'] = './assets/images/'; // Set the upload directory
@@ -510,9 +530,12 @@ class Main extends CI_Controller
 
 	function edit_product($product_id)
 	{
+		$this->edit_product_submit($product_id);
 		$this->load->model('product_model');
 		$this->data['product'] = $this->product_model->get_product($product_id);
-
+		$this->data['select'] = $this->product_model->select_one($product_id);
+		$this->load->model('supplier_model');
+		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
 		$this->load->view('main/header');
 		$this->load->view('main/editproduct', $this->data);
 		$this->load->view('main/footer');
@@ -523,7 +546,19 @@ class Main extends CI_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required');
-			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
+			$this->form_validation->set_rules('supplier_id', 'Supplier', 'trim|required');
+			$this->form_validation->set_rules('product_barcode', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_category', 'Product Category', 'trim|required');
+			$this->form_validation->set_rules('product_margin', 'Product Margin', 'trim|required');
+			$this->form_validation->set_rules('product_vat', 'Product VAT', 'trim|required');
+			$this->form_validation->set_rules('product_inbound_threshold', 'Product Inbound Threshold', 'trim|required');
+			$this->form_validation->set_rules('product_shelf_life', 'Product Shelf Life', 'trim|required');
+			$this->form_validation->set_rules('product_recall_threshold', 'Product Recall Threshold', 'trim|required');
+			$this->form_validation->set_rules('product_minimum_quantity', 'Product Minimum Quantity', 'trim|required');
+			$this->form_validation->set_rules('product_required_quantity', 'Product Required Quantity', 'trim|required');
+			$this->form_validation->set_rules('product_maximum_quantity', 'Product Maximum Quantityr', 'trim|required');
+			$this->form_validation->set_rules('product_minimum_order_quantity', 'Product Minimum Order Quantity', 'trim|required');
+
 
 			if ($this->form_validation->run() != FALSE) {
 				$this->load->model('product_model');
@@ -561,6 +596,7 @@ class Main extends CI_Controller
 						$this->input->post('product_image', $unique_filename);
 					} else {
 						$error_message = 'Image upload failed: ' . $this->upload->display_errors();
+						echo $error_message; // Debugging: Output the error message
 						$this->session->set_flashdata('error', $error_message);
 						redirect('main/product'); // Stop further processing if image upload fails
 					}
@@ -572,8 +608,11 @@ class Main extends CI_Controller
 				if ($response) {
 					$success_message = 'Product updated successfully.';
 					$this->session->set_flashdata('success', $success_message);
+					echo $success_message; // Debugging: Output the success message
+
 				} else {
 					$error_message = 'Product was not updated successfully.';
+					echo $error_message; // Debugging: Output the error message
 					$this->session->set_flashdata('error', $error_message);
 				}
 
