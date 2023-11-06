@@ -1,7 +1,19 @@
-<!-- views/add_product.php -->
 <style>
     .bold-label {
         font-weight: bold;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .card {
+        width: 95%;
+        margin: 20px auto;
+    }
+
+    .card-body {
+        padding: 20px;
     }
 </style>
 
@@ -108,6 +120,7 @@
                     <a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
                 </div>
                 </form>
+
             </div>
         </div>
 

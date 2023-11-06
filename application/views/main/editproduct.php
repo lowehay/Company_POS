@@ -1,18 +1,31 @@
-<!-- views/edit_product.php -->
 <style>
 	.bold-label {
 		font-weight: bold;
 	}
+
+	h1 {
+		text-align: center;
+	}
+
+	.card {
+		width: 95%;
+		margin: 20px auto;
+	}
+
+	.card-body {
+		padding: 20px;
+	}
 </style>
 
-<div class="container mt-5">
-	<h2>Edit Product</h2>
+<div class="container mt-2">
+	<h1>Edit Product</h1>
 
 	<!-- Flash Messages -->
 	<?= $this->session->flashdata('add_user_submit'); ?>
 	<?= $this->session->flashdata('add_user_error'); ?>
 
 	<div class="row justify-content-center">
+
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<?= form_open_multipart('main/edit_product_submit/' . $product->product_id, array('onsubmit' => 'return confirm(\'Are you sure you want to update this product?\')')); ?>
@@ -113,6 +126,8 @@
 					<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
 				</div>
 				<?= form_close(); ?>
+
+	
 			</div>
 		</div>
 	</div>

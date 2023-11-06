@@ -2,7 +2,7 @@
   .card {
     width: 95%;
     /* Adjust the width as needed */
-    margin: 0 auto;
+    margin: 20px auto;
     /* Center the card on the page horizontally */
 
   }
@@ -10,11 +10,12 @@
   .row {
     margin-top: 10px;
   }
+
+  h1 {
+    margin-left: 50px;
+  }
 </style>
-<div class="row mb-2">
-  <div class="col-sm-6">
-  </div><!-- /.col -->
-</div><!-- /.row -->
+<h1>User Management</h1>
 <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
   <div class="card-header">
     <a href="<?php echo site_url('main/add_user'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-user-plus"></i>
@@ -58,6 +59,7 @@
                   <?php echo ucfirst($row->role); ?>
                 </td>
                 <td>
+
                   <?php if ($row->status == "deactivated") { ?>
 
                     <span class="badge bg-danger">
@@ -88,6 +90,7 @@
                   <?php
                   }
                   ?>
+
                 </td>
               </tr>
           <?php
