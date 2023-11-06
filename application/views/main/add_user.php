@@ -14,8 +14,10 @@
 	}
 </style>
 
+
 <div class="container mt-2">
 	<h1>Add User</h1>
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<?php if ($this->session->flashdata('add_user_submit')) : ?>

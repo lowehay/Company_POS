@@ -30,7 +30,7 @@ class User_model extends CI_Model
 			'last_name' => $last_name,
 			'password' => sha1($password),
 			'role' => $role,
-			'status' => '1'
+			'status' => 'active'
 		);
 
 		$response = $this->db->insert('user', $data);
@@ -78,19 +78,7 @@ class User_model extends CI_Model
 			return FALSE;
 		}
 	}
-	public function delete_user($id)
-	{
-		$data = array(
-			'isDelete' => 'yes'
-		);
-		$this->db->where('user_id', $id);
-		$response = $this->db->update('user', $data);
-		if ($response) {
-			return $id;
-		} else {
-			return false;
-		}
-	}
+
 	function checkPassword($password, $username)
 	{
 		$query = $this->db->query("SELECT * FROM user WHERE password='$password' AND username='$username' AND status='1'");
@@ -98,6 +86,43 @@ class User_model extends CI_Model
 			return $query->row();
 		} else {
 			return false;
+		}
+	}
+	public function deactivate_user($user_id)
+	{
+		$data = array(
+			'status' => 'deactivated',
+		);
+
+		$this->db->where('user_id', $user_id);
+
+		$response = $this->db->update('user', $data);
+
+		if ($response) 
+		{
+			return $user_id;
+		}else
+		{
+			return FALSE;
+		}
+	}
+
+	public function reactivate_user($user_id)
+	{
+		$data = array(
+			'status' => 'active',
+		);
+
+		$this->db->where('user_id', $user_id);
+
+		$response = $this->db->update('user', $data);
+
+		if ($response) 
+		{
+			return $user_id;
+		}else
+		{
+			return FALSE;
 		}
 	}
 }

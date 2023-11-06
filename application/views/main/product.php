@@ -167,6 +167,7 @@
 <div class="row mb-2">
   <div class="col-sm-6">
   </div>
+
 </div>
 <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
   <div class="card-header" style="padding-top: 0;">
