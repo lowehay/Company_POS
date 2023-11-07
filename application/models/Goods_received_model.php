@@ -79,4 +79,45 @@ class Goods_received_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+    function get_all_gr()
+    {
+        $this->db->select('*');
+        $this->db->from('goods_received_no');
+        $this->db->join('suppliers', 'goods_received_no.supplier_id = suppliers.supplier_id');
+        $this->db->where('goods_received_no.isCancel', 'no');
+        $query = $this->db->get()->result();
+        return $query;
+    }
+    function code($id)
+    {
+        $this->db->select('*');
+        $this->db->from('purchase_order_no');
+        $this->db->join('goods_received_no', 'purchase_order_no.purchase_order_no_id = goods_received_no.purchase_order_no_id', 'left');
+        $this->db->where('purchase_order_no.purchase_order_no_id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+
+    function Select_one($id)
+    {
+        $this->db->select('*');
+        $this->db->from('suppliers AS supplier');
+        $this->db->join('purchase_order_no AS purc', 'purc.supplier_id = supplier.supplier_id');
+        $this->db->join('purchase_order AS PO', 'purc.purchase_order_no_id= PO.purchase_order_no');
+        $this->db->where('purchase_order_no_id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    public function view_all_GR($id)
+    {
+        $this->db->select('*');
+        $this->db->from('goods_received');
+        $this->db->join('goods_received_no', 'goods_received.goods_received_no = goods_received_no.goods_received_no_id');
+        $this->db->join('purchase_order', 'purchase_order.purchase_order_id = goods_received_no.purchase_order_no_id');
+        $this->db->join('purchase_order_no', 'purchase_order_no.purchase_order_no_id = purchase_order.purchase_order_id');
+        $this->db->join('product', 'product.product_name = goods_received.gr_product_name');
+        $this->db->where('purchase_order_id', $id);
+        $query = $this->db->get();
+        return $query->result();
+    }
 }

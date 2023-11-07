@@ -62,7 +62,7 @@
                                 } ?>
                             </td>
                             <td>
-                                <a href="<?php echo site_url('visitor_portal/view_goods_return/' . $pur->goods_return_no_id); ?>" style="color: darkcyan; padding-left:6px;" title="View goods return">
+                                <a href="<?php echo site_url('main/view_goods_return/' . $pur->goods_return_no_id); ?>" style="color: darkcyan; padding-left:6px;" title="View goods return">
                                     <i class="fas fa-eye"></i>
                                 </a>
                             </td>

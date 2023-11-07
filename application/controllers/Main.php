@@ -363,17 +363,17 @@ class Main extends CI_Controller
 	function goods_received_list()
 	{
 		$this->load->model('goods_received_model');
-		$this->data['gr'] = $this->goods_received_model->get_all_gr1();
+		$this->data['gr'] = $this->goods_received_model->get_all_gr();
 		$this->load->view('main/header');
 		$this->load->view('main/goods_received_list', $this->data);
 		$this->load->view('main/footer');
 	}
 	function view_goods_received($id)
 	{
-		$this->load->model('purchase_order_model');
-		$this->data['code'] = $this->purchase_order_model->code($id);
-		$this->data['select'] = $this->purchase_order_model->Select_one($id);
-		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+		$this->load->model('goods_received_model');
+		$this->data['code'] = $this->goods_received_model->code($id);
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->data['view'] = $this->goods_received_model->view_all_GR($id);;
 		$this->load->model('goods_received_model');
 
 		$this->load->view('main/header');
@@ -428,6 +428,7 @@ class Main extends CI_Controller
 
 	function post_goods_return($id)
 	{
+
 		$this->load->model('goods_return_model');
 		$this->data['grt_no'] = $this->goods_return_model->grt_no();
 		$this->data['select'] = $this->goods_return_model->Select_one($id);
@@ -435,6 +436,34 @@ class Main extends CI_Controller
 		$this->data['view'] = $this->goods_return_model->view_all_grt($id);
 		$this->load->view('main/header');
 		$this->load->view('main/post_goods_return', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function post_goods_return_submit()
+	{
+		if ($this->input->post('btn_post_grt')) {
+
+			$this->load->model('goods_return_model');
+			$response = $this->goods_return_model->post_goods_return();
+			if ($response) {
+
+				$success_message = 'Goods return posted successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Goods return was not posted successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/goods_return');
+		}
+	}
+	function view_goods_return($id)
+	{
+		$this->load->model('goods_return_model');
+		$this->data['code'] = $this->goods_return_model->code($id);
+		$this->data['select'] = $this->goods_return_model->Select_one($id);
+		$this->data['view'] = $this->goods_return_model->view_all_grt1($id);
+		$this->load->view('main/header');
+		$this->load->view('main/view_goods_return', $this->data);
 		$this->load->view('main/footer');
 	}
 	function back_order()
@@ -645,6 +674,39 @@ class Main extends CI_Controller
 		$this->load->view('main/header');
 		$this->load->view('main/inventory_adjustment', $this->data);
 		$this->load->view('main/footer');
+	}
+	function add_stock($product_id)
+	{
+		$this->add_stock_submit();
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_product($product_id);
+		$this->load->view('main/header');
+		$this->load->view('main/add_stock', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_stock_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_quantity', 'Quantity', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('inventory_adjustment_model');
+
+				$response = $this->inventory_adjustment_model->updateQuantity();
+
+				if ($response) {
+					$success_message = 'Quantity adjusted successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Quantity was not adjusted successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/inventory_adjustment');
+			}
+		}
 	}
 	function inventory_ledger()
 	{

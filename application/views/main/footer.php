@@ -2,6 +2,7 @@
 
 <!-- Include jQuery (required for DataTables) -->
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Include DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

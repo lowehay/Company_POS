@@ -29,9 +29,9 @@
             <table id="user-datatables" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Purchase Order No.</th>
+                        <th>Goods Received No.</th>
                         <th>Supplier</th>
-                        <th>Date Created</th>
+                        <th>Date Received</th>
                         <th>Total Cost</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -41,15 +41,15 @@
                     <?php foreach ($gr as $grs) { ?>
                         <tr class="text-center">
 
-                            <td><?= $grs->purchase_order_no ?></td>
+                            <td><?= $grs->goods_received_no ?></td>
                             <td><?= $grs->supplier_name ?></td>
-                            <td><?= $grs->date_created ?></td>
-                            <td>₱<?= $grs->total_cost ?></td>
+                            <td><?= $grs->date_received ?></td>
+                            <td>₱<?= $grs->gr_total_cost ?></td>
                             <td>
                                 <span class="badge bg-success"><?= ucfirst($grs->status) ?></span>
                             </td>
                             <td>
-                                <a href="<?php echo site_url('main/view_goods_received/' . $grs->purchase_order_no_id); ?>" style="color: darkcyan; padding-left:6px;" title="Click here to view purchase order"><i class="fas fa-eye"></i></a>
+                                <a href="<?php echo site_url('main/view_goods_received/' . $grs->purchase_order_no_id); ?>" style="color: darkcyan; padding-left:6px;" title="Click here to view Goods Received"><i class="fas fa-eye"></i></a>
                             </td>
                         <?php } ?>
                         </tr>

@@ -41,16 +41,6 @@ class Goods_return_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
-    function Select_one($id)
-    {
-        $this->db->select('*');
-        $this->db->from('suppliers AS supplier');
-        $this->db->join('goods_received_no AS grt', 'grt.supplier_id = supplier.supplier_id');
-        $this->db->join('goods_received AS gr', 'grt.goods_received_no_id= gr.goods_received_no');
-        $this->db->where('goods_received_no_id', $id);
-        $query = $this->db->get()->row();
-        return $query;
-    }
     function Select_two($id)
     {
         $this->db->select('goods_received_no.purchase_order_no_id, purchase_order_no.purchase_order_no');
@@ -152,5 +142,33 @@ class Goods_return_model extends CI_Model
         $this->db->where('goods_received_no_id', $grt_id);
         $this->db->update('goods_received_no', $ref);
         return $grt_id;
+    }
+    function code($id)
+    {
+        $this->db->select('*');
+        $this->db->from('goods_return_no');
+        $this->db->where('goods_return_no_id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    function Select_one($id)
+    {
+        $this->db->select('*');
+        $this->db->from('suppliers AS supplier');
+        $this->db->join('goods_received_no AS grt', 'grt.supplier_id = supplier.supplier_id');
+        $this->db->join('goods_received AS gr', 'grt.goods_received_no_id= gr.goods_received_no');
+        $this->db->where('goods_received_no_id', $id);
+        $query = $this->db->get()->row();
+        return $query;
+    }
+    public function view_all_grt1($id)
+    {
+        $this->db->select('GR.*, P.*, GRT.*');
+        $this->db->from('goods_return_no AS GRT');
+        $this->db->join('goods_return AS GR', 'GRT.goods_return_no_id = GR.goods_return_no');
+        $this->db->join('product AS P', 'GR.grt_product_name = P.product_name');
+        $this->db->where('goods_return_no_id', $id);
+        $query = $this->db->get();
+        return $query->result();
     }
 }

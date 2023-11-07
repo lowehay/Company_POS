@@ -29,8 +29,10 @@
                     <tr class="text-center">
                         <th>No.</th>
                         <th>Name</th>
+                        <th>Category</th>
                         <th>Qty/Unit</th>
-                        <th>Price</th>
+                        <th>Selling Price</th>
+                        <th>Date Added</th>
                         <th>Critical Level</th>
                         <th>Action</th>
                     </tr>
@@ -40,19 +42,26 @@
 
                     foreach ($product as $pro) : ?>
                         <tr class="text-center">
-
                             <td><?php echo $pro->product_code; ?></td>
-                            <td><?php echo $pro->product_name; ?>
+                            <td><?php echo $pro->product_name; ?></td>
+                            <td><?php echo $pro->product_category; ?></td>
                             <td><?php echo $pro->product_quantity; ?></td>
                             <td>₱<?php echo $pro->product_price; ?></td>
+                            <td><?php echo $pro->product_dateadded; ?></td>
                             <td>
                                 <div class="progress">
-                                    <div class="progress-bar progress-bar-striped bg-danger" style="width: <?php echo $pro->product_quantity; ?>%"></div>
+                                    <?php if ($pro->product_quantity <= 20) : ?>
+                                        <div class="progress-bar progress-bar-striped bg-danger" style="width: <?php echo $pro->product_quantity; ?>%"></div>
+                                    <?php elseif ($pro->product_quantity <= $pro->product_minimum_quantity) : ?>
+                                        <div class="progress-bar progress-bar-striped bg-warning" style="width: <?php echo $pro->product_quantity; ?>%"></div>
+                                    <?php else : ?>
+                                        <div class="progress-bar progress-bar-striped" style="width: <?php echo $pro->product_quantity; ?>%"></div>
+                                    <?php endif; ?>
                                 </div>
 
                             </td>
                             <td>
-                                <a href="<?php echo site_url('visitor_portal/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
+                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
