@@ -61,7 +61,7 @@
 
                             </td>
                             <td>
-                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
+                                <a href="<?php echo site_url('mains/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
                             </td>
                         </tr>
                     <?php endforeach ?>
