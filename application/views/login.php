@@ -31,7 +31,7 @@
     }
 
     .card-header {
-      background-color: #FF7F00;
+      background-color: #AD8B73;
       /* Remove Bootstrap's default background-color */
       color: white;
       font-weight: bold;
@@ -59,14 +59,14 @@
     }
 
     .btn-primary {
-      background-color: #FF7F00;
+      background-color: #AD8B73;
       /* Button background color */
       border: none;
       width: 100%;
     }
 
     .btn-primary:hover {
-      background-color: #C06104;
+      background-color: #836855;
       /* Hover color */
     }
 

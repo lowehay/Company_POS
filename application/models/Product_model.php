@@ -25,6 +25,7 @@ class Product_model extends CI_Model
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
+
 		$product_margin = (string) $this->input->post('product_margin');
 		$product_vat = (string) $this->input->post('product_vat');
 		$product_barcode = (string) $this->input->post('product_barcode');
@@ -38,9 +39,14 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
 
+		$product_price = (string) $this->input->post('product_price');
+		$product_quantity = (string) $this->input->post('product_quantity');
+
+
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
+
 			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_margin' => $product_margin,
 			'product_vat' => $product_vat,
@@ -55,6 +61,7 @@ class Product_model extends CI_Model
 			'product_maximum_quantity' => $product_maximum_quantity,
 			'product_minimum_order_quantity' => $product_minimum_order_quantity,
 			'product_image' => $image_file_name,  // Add the image file name to the data array
+
 		);
 
 		$response = $this->db->insert('product', $data);
@@ -104,6 +111,7 @@ class Product_model extends CI_Model
 
 
 
+
 		// Initialize the product_image variable
 		$product_image = '';
 
@@ -128,7 +136,7 @@ class Product_model extends CI_Model
 
 				// Generate a unique filename based on the product name
 				$product_name = $this->input->post('product_name');
-				$unique_filename = strtolower(str_replace(' ', '_', $product_name)) . '_' . $product_id . '_' . time() . $image_data['file_ext'];
+				$unique_filename = strtolower(str_replace(' ', '', $product_name)) . '' . $product_id . '_' . time() . $image_data['file_ext'];
 
 				// Rename the uploaded file to the unique filename
 				$new_path = './assets/images/' . $unique_filename;
