@@ -90,7 +90,7 @@
 					<?php echo form_error('product_shelf_life'); ?>
 				</div>
 				<div class="form-group col-3 d-inline-block">
-					<label class="bold-label">Recall Threshold <i class="fa fa-question-circle" title="* Minimum quantity to trigger reordering"></i></label>
+					<label class="bold-label">Recall Threshold from Expiry <i class="fa fa-question-circle" title="* No. of days from expiry to be returned to the supplier"></i></label>
 					<input type="number" placeholder="Enter Quantity" name="product_recall_threshold" min="0" value="<?php echo set_value('product_recall_threshold', $product->product_recall_threshold); ?>" class="form-control form-control-sm" id="product_recall_threshold" pattern="[1-9][0-9]*([.,][0-9]+)?" title="Please enter a valid number" required>
 					<?php echo form_error('product_recall_threshold'); ?>
 				</div>
@@ -127,7 +127,7 @@
 				</div>
 				<?= form_close(); ?>
 
-	
+
 			</div>
 		</div>
 	</div>

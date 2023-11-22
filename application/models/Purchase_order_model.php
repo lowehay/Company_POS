@@ -34,14 +34,14 @@ class Purchase_order_model extends CI_Model
         $last_purchase_id = $this->db->insert_id();
 
         $product_name = $this->input->post('product_name');
-        $product_quantity = $this->input->post('product_quantity');
+        $po_product_quantity = $this->input->post('po_product_quantity');
         $product_unit = $this->input->post('product_unit');
         $product_unitprice = $this->input->post('product_unitprice');
         $total_cost = 0;
 
         foreach ($product_name as $index => $product_name) {
             $arr_product = $product_name;
-            $arr_quant = $product_quantity[$index];
+            $arr_quant = $po_product_quantity[$index];
             $arr_unit = $product_unit[$index];
             $arr_price = $product_unitprice[$index];
 
@@ -49,7 +49,7 @@ class Purchase_order_model extends CI_Model
             $data_purchase_order = [
                 'purchase_order_no' => $last_purchase_id,
                 'product_name' => $arr_product,
-                'product_quantity' => $arr_quant,
+                'po_product_quantity' => $arr_quant,
                 'product_unit' => $arr_unit,
                 'product_unitprice' => $arr_price,
             ];

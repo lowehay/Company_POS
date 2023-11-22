@@ -10,20 +10,15 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/toastr.min.css">
   <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/toastr.css">
-  <title>FISH PORT</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <title>Company Inventory</title>
 </head>
 <style>
-  body {
-    background-color: #F1EFEF;
+  @import url('https://fonts.googleapis.com/css?family=IBM Plex Sans:700|IBM Plex Sans:400');
 
-    /*
-    --text: #0b1128;
-    --background: #fbfcfe;
-    --primary: #3046a6;
-    --secondary: #d0d6f1;
-    --accent: #3750be;
-  */
-    font-family: 'Palanquin Dark';
+  body {
+    font-family: 'IBM Plex Sans';
     font-weight: 400;
   }
 
@@ -32,7 +27,7 @@
   h3,
   h4,
   h5 {
-    font-family: 'Palanquin Dark';
+    font-family: 'IBM Plex Sans';
     font-weight: 700;
   }
 
@@ -74,14 +69,14 @@
 
   body {
 
-    background-color: #FFFBE9;
+    background-color: #FFFFFF;
   }
 
-  /* For Webkit-based browsers (Chrome, Safari) */
+  /* For Webkit-based browsers (Chrome, Safari) /
   ::-webkit-scrollbar {
     width: 12px;
-    /* Width of the scrollbar */
-  }
+    / Width of the scrollbar */
+
 
   ::-webkit-scrollbar-track {
     background: #fff;
@@ -90,17 +85,16 @@
 
   ::-webkit-scrollbar-thumb {
     background: #ccc;
-    /* Color of the thumb */
+    /* Color of the thumb /
     border-radius: 6px;
-    /* Rounded corners */
-
+    / Rounded corners */
 
   }
 </style>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #AD8B73">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #000011">
 
     <div class="container-fluid">
       <a class="navbar-brand" href="<?= base_url('main') ?>">
