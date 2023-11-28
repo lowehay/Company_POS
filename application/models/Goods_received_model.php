@@ -37,7 +37,7 @@ class Goods_received_model extends CI_Model
 
             // Calculate cost for this product
             $cost = $arr_price * $arr_rec;
-            $total_cost += $cost; // Add cost to total cost variable
+            $total_cost += $cost; // Add cost to the total cost variable
 
             // Insert data into goods_received table
             $data_goods_received = [
@@ -63,6 +63,12 @@ class Goods_received_model extends CI_Model
             ];
 
             $this->db->insert('inventory_ledger', $data_inventory_ledger);
+
+            // Update product_quantity and product_unitprice in the product table
+            $this->db->set('product_quantity', 'product_quantity+' . $arr_rec, false);
+            $this->db->set('product_price', $arr_price);
+            $this->db->where('product_name', $arr_product);
+            $this->db->update('product');
         }
 
         // Insert total cost into goods_received_no table

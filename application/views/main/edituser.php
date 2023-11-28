@@ -58,7 +58,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="branch" class="bold-label">Brranch</label>
+						<label for="branch" class="bold-label">Branch</label>
 						<select name="role" id="branch-select" class="form-control <?php echo form_error('branch') ? 'is-invalid' : ''; ?>">
 							<option class="text-info invisible" value="<?= $user->branch ?>"><?= ucfirst($user->branch) ?></option>
 							<option value="main branch">Main Branch</option>

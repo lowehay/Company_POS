@@ -60,12 +60,15 @@
 					</div>
 
 					<div class="form-group">
-						<label for="branch" class="bold-label">Brranch</label>
+						<label for="branch" class="bold-label">Branch</label>
 						<select class="form-select" id="branch" name="branch" aria-label="Default select example">
 							<option selected hidden>Select Branch</option>
 							<option value="main branch">Main Branch</option>
 							<option value="branch 1">Branch 1</option>
 							<option value="branch 2">Branch 2</option>
+							<option value="branch 2">Branch 3</option>
+							<option value="branch 2">Branch 4</option>
+							<option value="branch 2">Branch 5</option>
 						</select>
 						<span class="text-danger"><?php echo form_error('branch'); ?></span>
 					</div>

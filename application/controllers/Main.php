@@ -540,6 +540,7 @@ class Main extends CI_Controller
 		$this->data['product_code'] = $this->product_model->product_code();
 		$this->load->model('supplier_model');
 		$this->data['suppliers'] = $this->supplier_model->get_all_suppliers();
+		$this->data['procat'] = $this->product_model->get_all_product_category();
 		$this->load->view('main/header');
 		$this->load->view('main/add_product', $this->data);
 		$this->load->view('main/footer');
@@ -615,6 +616,7 @@ class Main extends CI_Controller
 		$this->data['select'] = $this->product_model->select_one($product_id);
 		$this->load->model('supplier_model');
 		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
+		$this->data['procat'] = $this->product_model->get_all_product_category();
 		$this->load->view('main/header');
 		$this->load->view('main/editproduct', $this->data);
 		$this->load->view('main/footer');
@@ -716,6 +718,92 @@ class Main extends CI_Controller
 		}
 
 		redirect('main/product');
+	}
+	function product_category()
+	{
+		$this->load->model('product_model');
+		$this->data['procat'] = $this->product_model->get_all_product_category();
+		$this->load->view('main/header');
+		$this->load->view('main/product_category', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_product_category()
+	{
+
+		$this->add_product_category_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/add_product_category');
+		$this->load->view('main/footer');
+	}
+	function add_product_category_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_category', 'Product Category Name', 'trim|required|is_unique[product_category.product_category]');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('product_model');
+				$response = $this->product_model->insert_added_product_category();
+				if ($response) {
+					$success_message = 'Product category added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product category was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/product_category');
+			}
+		}
+	}
+	function edit_product_category($procat_id)
+	{
+		$this->edit_product_category_submit();
+		$this->load->model('product_model');
+		$this->data['procat'] = $this->product_model->get_product_category($procat_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_product_category', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_product_category_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_category', 'Product Category Name', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('product_model');
+
+				$response = $this->product_model->update_added_product_category();
+
+				if ($response) {
+					$success_message = 'Product category updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product category was not updated successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/product_category');
+			}
+		}
+	}
+	public function delete_product_category($id)
+	{
+
+		$this->load->model('product_model');
+		$response = $this->product_model->delete_product_category($id);
+
+		if ($response) {
+			$success_message = 'Product category deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Product category was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/product_category/');
 	}
 	function inventory_adjustment()
 	{

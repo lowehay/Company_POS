@@ -23,7 +23,7 @@
     font-family: 'IBM Plex Sans';
     font-weight: 400;
     background-color: #282b30;
-    color: #fff;
+    color: #000;
   }
 
   h1,
@@ -132,7 +132,7 @@
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="<?= base_url('main/purchase_order') ?>">Purchase Order</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('main/goods_received') ?>">Goods Received</a></li>
-                <li><a class="dropdown-item" href="<?= base_url('main/back_order') ?>">Back Order</a></li>
+                <li><a class="dropdown-item" href="<?= base_url('main/goods_return') ?>">Goods Return</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -151,11 +151,15 @@
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/pos') ?>">POS</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="<?= base_url('main/backup') ?>">Sales</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/reports') ?>">Reports</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/backup') ?>">Backup & Restore</a>
             </li>
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-user"></i>
@@ -172,7 +176,7 @@
           </ul>
         </div>
 
-       
+
     </div>
   </nav>
 </body>

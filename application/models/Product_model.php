@@ -246,4 +246,68 @@ class Product_model extends CI_Model
 
 		return $this->db->count_all_results();
 	}
+	function get_all_product_category()
+	{
+		$this->db->where('isCancel', 'no');
+		$query = $this->db->get('product_category');
+		$procat = $query->result();
+
+		return $procat;
+	}
+	public function insert_added_product_category()
+	{
+		$product_category = (string) $this->input->post('product_category');
+
+		$data = array(
+			'product_category' => $product_category,
+		);
+
+		$response = $this->db->insert('product_category', $data);
+
+		if ($response) {
+			return $this->db->insert_id();
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function update_added_product_category()
+	{
+		$procat_id = (int) $this->input->post('procat_id');
+		$product_category = (string) $this->input->post('product_category');
+
+		$data = array(
+			'product_category' => $product_category,
+		);
+
+		$this->db->where('procat_id', $procat_id);
+		$response = $this->db->update('product_category', $data);
+
+		if ($response) {
+			return $procat_id;
+		} else {
+			return FALSE;
+		}
+	}
+	public function get_product_category($procat_id)
+	{
+		$this->db->where('procat_id', $procat_id);
+		$query = $this->db->get('product_category');
+		$row = $query->row();
+
+		return $row;
+	}
+	public function delete_product_category($id)
+	{
+		$data = array(
+			'isCancel' => 'yes'
+		);
+		$this->db->where('procat_id', $id);
+		$response = $this->db->update('product_category', $data);
+		if ($response) {
+			return $id;
+		} else {
+			return false;
+		}
+	}
 }
