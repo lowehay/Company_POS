@@ -7,6 +7,12 @@ class Port extends CI_Controller
 	{
 		$this->load->view('login');
 	}
+	public function logout()
+	{
+		$this->load->model('account_model');
+		$this->account_model->logout();
+		redirect('/');
+	}
 	function registerNow()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {

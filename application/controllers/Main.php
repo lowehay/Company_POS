@@ -3,10 +3,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 date_default_timezone_set('Asia/Manila');
 class Main extends CI_Controller
 {
+
 	function index()
 	{
+		$this->load->model('product_model');
+		$this->load->model('purchase_order_model');
+		$this->data['total_prod'] = $this->product_model->get_total_products();
+		$this->data['low_stocks'] = $this->product_model->getLowStockProductsCount();
+		$this->data['lowStockProducts'] = $this->product_model->getLowStockProducts();
+		$this->data['out_off_stock'] = $this->product_model->countOutOfStockProducts();
+		$this->data['pending_po'] = $this->purchase_order_model->getPendingPurchaseOrdersCount();
+		$this->data['completed_po'] = $this->purchase_order_model->getReceivedPurchaseOrderCount();
 		$this->load->view('main/header');
-		$this->load->view('main/dashboard');
+		$this->load->view('main/dashboard', $this->data);
 		$this->load->view('main/footer');
 	}
 
@@ -21,7 +30,6 @@ class Main extends CI_Controller
 
 	function add_user()
 	{
-
 		$this->add_user_submit();
 		$this->load->view('main/header');
 		$this->load->view('main/add_user');
@@ -352,6 +360,14 @@ class Main extends CI_Controller
 
 		redirect('main/purchase_order');
 	}
+	public function print_purchase_order($id)
+	{
+		$this->load->model('purchase_order_model');
+		$this->data['code'] = $this->purchase_order_model->code($id);
+		$this->data['select'] = $this->purchase_order_model->Select_one($id);
+		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+		$this->load->view('main/print_po_report', $this->data);
+	}
 	function goods_received()
 	{
 		$this->load->model('purchase_order_model');
@@ -373,7 +389,7 @@ class Main extends CI_Controller
 		$this->load->model('goods_received_model');
 		$this->data['code'] = $this->goods_received_model->code($id);
 		$this->data['select'] = $this->goods_received_model->Select_one($id);
-		$this->data['view'] = $this->goods_received_model->view_all_GR($id);;
+		$this->data['view'] = $this->goods_received_model->view_all_GR($id);
 		$this->load->model('goods_received_model');
 
 		$this->load->view('main/header');
@@ -408,6 +424,14 @@ class Main extends CI_Controller
 
 			redirect('main/purchase_order');
 		}
+	}
+	public function print_goods_received($id)
+	{
+		$this->load->model('goods_received_model');
+		$this->data['code'] = $this->goods_received_model->code($id);
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->data['view'] = $this->goods_received_model->view_all_GR($id);;
+		$this->load->view('main/print_gr_report', $this->data);
 	}
 	function goods_return()
 	{
@@ -466,6 +490,15 @@ class Main extends CI_Controller
 		$this->load->view('main/view_goods_return', $this->data);
 		$this->load->view('main/footer');
 	}
+	function print_goods_return($id)
+	{
+		$this->load->model('goods_return_model');
+		$this->data['code'] = $this->goods_return_model->code($id);
+		$this->data['select'] = $this->goods_return_model->Select_one($id);
+		$this->data['view'] = $this->goods_return_model->view_all_grt1($id);
+		$this->load->view('main/print_grt_report', $this->data);
+	}
+
 	function back_order()
 	{
 		$this->load->view('main/header');
@@ -645,6 +678,7 @@ class Main extends CI_Controller
 					$this->session->set_flashdata('error', $error_message);
 				}
 
+
 				// Redirect to the product listing page
 				redirect('main/product');
 			}
@@ -710,8 +744,18 @@ class Main extends CI_Controller
 	}
 	function inventory_ledger()
 	{
+		$this->load->model('inventory_ledger_model');
+
+		if (isset($_POST['search'])) {
+			$date_from = $this->input->post('date_from');
+			$date_to = $this->input->post('date_to');
+			$this->data['ledger'] = $this->inventory_ledger_model->get_ledger_by_date_range($date_from, $date_to);
+		} else {
+			$this->data['ledger'] = $this->inventory_ledger_model->get_all_ledger();
+		}
+
 		$this->load->view('main/header');
-		$this->load->view('main/inventory_ledger');
+		$this->load->view('main/inventory_ledger', $this->data);
 		$this->load->view('main/footer');
 	}
 	function stock_requisition()
@@ -722,8 +766,16 @@ class Main extends CI_Controller
 	}
 	function reports()
 	{
+		$this->load->model('purchase_order_model');
+		$this->data['po'] = $this->purchase_order_model->get_all_po();
+		$this->load->model('goods_received_model');
+		$this->data['gr'] = $this->goods_received_model->get_all_gr();
+		$this->load->model('inventory_adjustment_model');
+		$this->data['ia'] = $this->inventory_adjustment_model->get_all_adjust();
+		$this->load->model('goods_return_model');
+		$this->data['gr1'] = $this->goods_return_model->get_all_grt1();
 		$this->load->view('main/header');
-		$this->load->view('main/reports');
+		$this->load->view('main/reports', $this->data);
 		$this->load->view('main/footer');
 	}
 	function backup()

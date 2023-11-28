@@ -21,7 +21,6 @@
         <h2 class="text-dark">
             <a href="<?php echo site_url('main/goods_received'); ?>" class="btn btn-dark"><i class="fas fa-boxes"></i> To Be Received</a>
             <a href="<?php echo site_url('main/goods_received_list'); ?>" class="btn btn-dark"><i class="fas fa-list"></i> Goods Received List</a>
-            <a href="<?php echo site_url('main/back_order'); ?>" class="btn btn-dark"><i class="fas fa-reply"></i> Back Order</a>
         </h2>
     </div>
     <div class="card-body">

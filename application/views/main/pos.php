@@ -168,9 +168,6 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <!-- Add this script at the end of your page, after including jQuery -->
     <script>
         $(document).ready(function() {
@@ -218,7 +215,7 @@
 
                 // Check if the product is already in the cart
                 if (isProductInCart(productName)) {
-                    alert('This product is already in the cart.');
+                    toastr.error('This product is already on the cart.');
                     return; // Exit the function to prevent adding duplicates
                 }
 
@@ -339,15 +336,14 @@
                 return $('#cart-items li').length === 0;
             }
 
-            // Click event handler for the "Payment" button
             $('.payment-button').on('click', function(e) {
                 // Check if the cart is empty
                 if (isCartEmpty()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
-                    alert('There are no products in the cart. Please add products before proceeding to payment.');
+                    toastr.error('There are no products in the cart. Please add products before proceeding to payment.');
                 } else if (hasUnspecifiedQuantity()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
-                    alert('Please specify the weights for all products in the cart before proceeding to payment.');
+                    toastr.warning('Please specify the quantity for all products in the cart before proceeding to payment.');
                 }
             });
 

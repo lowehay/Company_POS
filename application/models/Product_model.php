@@ -210,4 +210,40 @@ class Product_model extends CI_Model
 		$query = $this->db->get()->row();
 		return $query;
 	}
+	public function get_total_products()
+	{
+		// Assuming your table is named 'product'
+		$this->db->from('product');
+		return $this->db->count_all_results();
+	}
+	public function getLowStockProductsCount()
+	{
+		// Calculate the total number of products with low stock
+		$this->db->select('COUNT(*) as low_stock_count');
+		$this->db->from('product');
+		$this->db->where('isDelete', 'no'); // Assuming 'isDelete' is the column for deletion status
+		$this->db->where('product_quantity < product_inbound_threshold');
+		$query = $this->db->get();
+
+		// Return the result
+		return $query->row()->low_stock_count;
+	}
+	public function getLowStockProducts()
+	{
+		// Select products where the quantity is less than the inbound threshold
+		$this->db->select('*');
+		$this->db->from('product');
+		$this->db->where('product_quantity < product_inbound_threshold');
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+	public function countOutOfStockProducts()
+	{
+		// Assuming your product table is named 'product'
+		$this->db->from('product');
+		$this->db->where('product_quantity', 0);
+
+		return $this->db->count_all_results();
+	}
 }

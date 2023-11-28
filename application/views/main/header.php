@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
   <title>COMPANY</title>
 </head>
@@ -19,6 +20,8 @@
   body {
     font-family: 'IBM Plex Sans';
     font-weight: 400;
+    background-color: #282b30;
+    color: #fff;
   }
 
   h1,
@@ -66,11 +69,6 @@
     /* 12px */
   }
 
-  body {
-
-    background-color: #FFFBE9;
-  }
-
   /* For Webkit-based browsers (Chrome, Safari) */
   ::-webkit-scrollbar {
     width: 12px;
@@ -93,7 +91,7 @@
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #AD8B73">
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #7289da">
 
     <div class="container-fluid">
       <a class="navbar-brand" href="<?= base_url('main') ?>">

@@ -2,7 +2,7 @@
 
 <!-- Include jQuery (required for DataTables) -->
 <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <!-- Include DataTables JavaScript -->
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
@@ -19,6 +19,47 @@
   $(document).ready(function() {
     $('#user-datatables').dataTable({
       "lengthMenu": [5, 10, 25, 50, 75, 100]
+    });
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    // Initialize DataTable for Module 1
+    $('#user-datatables-module1').DataTable({
+      "lengthMenu": [5, 10, 25, 50, 75, 100]
+    });
+
+    // Initialize DataTable for Module 2
+    $('#user-datatables-module2').DataTable({
+      "lengthMenu": [5, 10, 25, 50, 75, 100]
+    });
+
+    // Initialize DataTable for Module 3
+    $('#user-datatables-module3').DataTable({
+      "lengthMenu": [5, 10, 25, 50, 75, 100]
+    });
+    // Initialize DataTable for Module 4
+    $('#user-datatables-module4').DataTable({
+      "lengthMenu": [5, 10, 25, 50, 75, 100]
+    });
+  });
+</script>
+<script>
+  $(document).ready(function() {
+    $('#ledger-table').DataTable({
+      paging: true,
+      searching: true,
+      ordering: true,
+      order: [
+        [0, 'desc']
+      ],
+      lengthMenu: [5, 10, 25, 50],
+      language: {
+        paginate: {
+          next: '<i class="fa fa-angle-right"></i>',
+          previous: '<i class="fa fa-angle-left"></i>'
+        }
+      }
     });
   });
 </script>

@@ -32,7 +32,6 @@
                         <th>Category</th>
                         <th>Qty/Unit</th>
                         <th>Selling Price</th>
-                        <th>Date Added</th>
                         <th>Critical Level</th>
                         <th>Action</th>
                     </tr>
@@ -47,7 +46,6 @@
                             <td><?php echo $pro->product_category; ?></td>
                             <td><?php echo $pro->product_quantity; ?></td>
                             <td>₱<?php echo $pro->product_price; ?></td>
-                            <td><?php echo $pro->product_dateadded; ?></td>
                             <td>
                                 <div class="progress">
                                     <?php if ($pro->product_quantity <= 20) : ?>
@@ -61,7 +59,7 @@
 
                             </td>
                             <td>
-                                <a href="<?php echo site_url('mains/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
+                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
                             </td>
                         </tr>
                     <?php endforeach ?>

@@ -11,7 +11,7 @@
   <title>COMPANY</title>
   <style>
     body {
-      background-image: url(<?php echo base_url('assets/images/bg.jpg'); ?>);
+      background-image: url(<?php echo base_url('assets/images/pos.jpg'); ?>);
       background-position: center;
       /* Center the image */
       background-repeat: no-repeat;
@@ -29,7 +29,7 @@
     }
 
     .card-header {
-      background-color: #AD8B73;
+      background-color: #7289da;
       /* Remove Bootstrap's default background-color */
       color: white;
       font-weight: bold;
@@ -57,7 +57,7 @@
     }
 
     .btn-primary {
-      background-color: #AD8B73;
+      background-color: #7289da;
       /* Button background color */
       border: none;
       width: 100%;

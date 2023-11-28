@@ -51,7 +51,20 @@ class Goods_received_model extends CI_Model
             ];
 
             $this->db->insert('goods_received', $data_goods_received);
+
+            // Insert data into inventory_ledger table
+            $data_inventory_ledger = [
+                'product_name' => $arr_product,
+                'unit' => $arr_unit,
+                'quantity' => $arr_rec,
+                'price' => $arr_price,
+                'activity' => 'Received', // Adjust based on your activity types
+                'date_posted' => date('Y-m-d'), // Adjust based on your date format
+            ];
+
+            $this->db->insert('inventory_ledger', $data_inventory_ledger);
         }
+
         // Insert total cost into goods_received_no table
         $this->db->set('gr_total_cost', $total_cost);
         $this->db->where('goods_received_no_id', $last_id);
@@ -59,6 +72,7 @@ class Goods_received_model extends CI_Model
 
         return $last_id;
     }
+
     public function updatestatus()
     {
         $gr_id = $this->input->post('gr_id');

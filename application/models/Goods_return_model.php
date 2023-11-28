@@ -96,8 +96,8 @@ class Goods_return_model extends CI_Model
             $cost = $arr_price * $arr_ret;
             $total_cost += $cost; // Add cost to total cost variable
 
-            // Insert data into goods_received table
-            $data_goods_received = [
+            // Insert data into goods_return table
+            $data_goods_return = [
                 'goods_return_no' => $last_id,
                 'grt_product_name' => $arr_product,
                 'grt_total_quantity' => $arr_quant,
@@ -107,7 +107,19 @@ class Goods_return_model extends CI_Model
                 'grt_exp_date' => $arr_exp,
             ];
 
-            $this->db->insert('goods_return', $data_goods_received);
+            $this->db->insert('goods_return', $data_goods_return);
+
+            // Insert data into inventory_ledger table for the return activity
+            $data_inventory_ledger = [
+                'product_name' => $arr_product,
+                'unit' => $arr_unit,
+                'quantity' => -$arr_ret, // Negative quantity for return
+                'price' => $arr_price,
+                'activity' => 'Return', // Adjust based on your activity types
+                'date_posted' => date('Y-m-d'), // Adjust based on your date format
+            ];
+
+            $this->db->insert('inventory_ledger', $data_inventory_ledger);
 
             // Update product_quantity in the product table
             // First, get the current product_quantity
@@ -126,13 +138,14 @@ class Goods_return_model extends CI_Model
             $this->db->update('product');
         }
 
-        // Insert total cost into goods_received_no table
+        // Insert total cost into goods_return_no table
         $this->db->set('grt_total_cost', $total_cost);
         $this->db->where('goods_return_no_id', $last_id);
         $this->db->update('goods_return_no');
 
         return $last_id;
     }
+
     public function updatestatus()
     {
         $grt_id = $this->input->post('grt_id');

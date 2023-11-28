@@ -1,63 +1,84 @@
 <style>
-    body {
-        margin-bottom: 20px;
+    .card {
+        background-color: #424549;
+        border: none;
+        color: #ffffff;
+    }
+
+    .card-header {
+        background-color: #7289da;
+        border: none;
+        color: #ffffff;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    h5 {
+        color: #ffffff;
+    }
+
+    p {
+        color: #b9bbbe;
     }
 </style>
-</div>
+
+
 <div class="container-fluid mt-4">
     <div class="row">
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header">
                     Sales Summary
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Total Sales</h5>
-                    <p class="card-text">$10,000</p>
-                    <h5 class="card-title">Today's Sales</h5>
-                    <p class="card-text">$1,000</p>
+                    <h5>Total Sales</h5>
+                    <p>$10,000</p>
+                    <h5>Today's Sales</h5>
+                    <p>$1,000</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header">
                     Products
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Available Products</h5>
-                    <p class="card-text">200</p>
-                    <h5 class="card-title">Out of Stock</h5>
-                    <p class="card-text">10</p>
+                    <h5>Available Products</h5>
+                    <p><?= $total_prod ?></p>
+                    <h5>Out of Stock</h5>
+                    <p><?= $out_off_stock ?></p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header">
                     Orders
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Pending Orders</h5>
-                    <p class="card-text">5</p>
-                    <h5 class="card-title">Completed Orders</h5>
-                    <p class="card-text">20</p>
+                    <h5>Pending Orders</h5>
+                    <p><?= $pending_po ?></p>
+                    <h5>Completed Orders</h5>
+                    <p><?= $completed_po ?></p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-3">
             <div class="card p-4 h-100">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header">
                     Inventory
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">Total Inventory</h5>
-                    <p class="card-text">500</p>
-                    <h5 class="card-title">Low Stock Items</h5>
-                    <p class="card-text">30</p>
+                    <h5>Total Inventory</h5>
+                    <p><?= $total_prod ?></p>
+                    <h5>Low Stock Items</h5>
+                    <p><?= $low_stocks ?></p>
                 </div>
             </div>
         </div>
@@ -67,28 +88,26 @@
     <div class="row mt-4">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header">
                     Sales Chart
                 </div>
                 <div class="card-body">
-                    <canvas id="salesChart" style=" height: 250px;"></canvas>
+                    <canvas id="salesChart" class="bar-chart" style="height: 250px;"></canvas>
                 </div>
             </div>
         </div>
 
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header bg-secondary text-white">
-                    Sales Distribution
+                <div class="card-header">
+                    Critical Levels
                 </div>
                 <div class="card-body">
-                    <canvas id="salesDistributionChart" style="height: 250px;"></canvas>
+                    <canvas id="criticalLevelsChart" style="height: 250px;"></canvas>
                 </div>
             </div>
         </div>
     </div>
-
-
     <!-- Add Chart.js library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -102,7 +121,7 @@
                 datasets: [{
                     label: 'Monthly Sales',
                     data: [1200, 1500, 1100, 1800, 1400],
-                    backgroundColor: 'rgba(97, 93, 95, 1)',
+                    backgroundColor: 'rgba(114,137,218, 1)',
                     borderColor: 'rgba(97, 93, 95, 1)',
                     borderWidth: 1
                 }]
@@ -118,15 +137,36 @@
             }
         });
 
+        // Assuming $low_stock_products is the variable passed from the controller
+        var lowStockProducts = <?php echo json_encode($lowStockProducts); ?>;
+
+        // Sort low stock products by quantity in descending order
+        lowStockProducts.sort(function(a, b) {
+            return b.product_quantity - a.product_quantity;
+        });
+
+        // Take the top 5 products
+        var top5Products = lowStockProducts.slice(0, 5);
+
+        // Extract product names and quantities from top5Products
+        var productNames = top5Products.map(function(product) {
+            return product.product_name;
+        });
+        9
+
+        var productQuantities = top5Products.map(function(product) {
+            return product.product_quantity;
+        });
+
         // Pie Chart Data
-        var ctx2 = document.getElementById("salesDistributionChart").getContext('2d');
+        var ctx2 = document.getElementById("criticalLevelsChart").getContext('2d');
         var salesDistributionChart = new Chart(ctx2, {
             type: 'pie',
             data: {
-                labels: ["Product A", "Product B", "Product C", "Product D", "Product E"],
+                labels: productNames,
                 datasets: [{
-                    data: [15, 25, 20, 10, 30],
-                    backgroundColor: ["#AD8B73", "#CEAB93", "#E3CAA5", "#BFB29E", "#D6C7AE"]
+                    data: productQuantities,
+                    backgroundColor: ["#352F44", "#d9d9e9", "#b0b0cb", "#9291b3", "#73729b"]
                 }]
             },
             options: {

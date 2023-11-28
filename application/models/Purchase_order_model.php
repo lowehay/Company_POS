@@ -63,7 +63,7 @@ class Purchase_order_model extends CI_Model
             $arr_unit = $product_unit[$index];
             $arr_price = $product_unitprice[$index];
 
-            // insert data to purchase_order table
+            // Insert data into purchase_order table
             $data_purchase_order = [
                 'purchase_order_no' => $last_purchase_id,
                 'product_name' => $arr_product,
@@ -73,11 +73,21 @@ class Purchase_order_model extends CI_Model
             ];
             $this->db->insert('purchase_order', $data_purchase_order);
 
+            // Insert data into inventory_ledger table for the purchase activity
+            $data_inventory_ledger = [
+                'product_name' => $arr_product,
+                'unit' => $arr_unit,
+                'quantity' => $arr_quant,
+                'price' => $arr_price,
+                'activity' => 'Purchased', // Adjust based on your activity types
+                'date_posted' => date('Y-m-d'), // Adjust based on your date format
+            ];
 
-            // calculate total cost
+            $this->db->insert('inventory_ledger', $data_inventory_ledger);
+
+            // Calculate total cost
             $total_cost += $arr_quant * $arr_price;
         }
-
 
         $this->db->set('total_cost', $total_cost);
         $this->db->where('purchase_order_no_id', $last_purchase_id);
@@ -85,6 +95,7 @@ class Purchase_order_model extends CI_Model
 
         return $last_purchase_id;
     }
+
 
     function get_all_po()
     {
@@ -219,5 +230,19 @@ class Purchase_order_model extends CI_Model
         } else {
             return false;
         }
+    }
+    public function getPendingPurchaseOrdersCount()
+    {
+        $this->db->where('status', 'pending');
+        $this->db->from('purchase_order_no');
+        return $this->db->count_all_results();
+    }
+    public function getReceivedPurchaseOrderCount()
+    {
+        // Assuming you have a column in your database table to indicate received orders, let's call it 'status'
+        // You might want to adjust the column name accordingly
+        $this->db->where('status', 'received');
+        $this->db->from('purchase_order_no');
+        return $this->db->count_all_results();
     }
 }
