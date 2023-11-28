@@ -19,6 +19,9 @@ class Main extends CI_Controller
 		$this->load->view('main/footer');
 	}
 
+
+
+
 	function user()
 	{
 		$this->load->model('user_model');
@@ -133,6 +136,7 @@ class Main extends CI_Controller
 
 		$this->load->model('supplier_model');
 		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
+
 		$this->load->view('main/header');
 		$this->load->view('main/supplier', $this->data);
 		$this->load->view('main/footer');
@@ -181,6 +185,7 @@ class Main extends CI_Controller
 		$this->load->view('main/view_supplier', $this->data);
 		$this->load->view('main/footer');
 	}
+
 
 	function editsupplier($supplier_id)
 	{
@@ -241,6 +246,7 @@ class Main extends CI_Controller
 	{
 		$this->load->model('purchase_order_model');
 		$this->data['po'] = $this->purchase_order_model->get_all_po();
+
 
 		$this->load->view('main/header');
 		$this->load->view('main/purchase_order', $this->data);
@@ -385,6 +391,7 @@ class Main extends CI_Controller
 		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
 		$this->load->view('main/print_po_report', $this->data);
 	}
+
 	function goods_received()
 	{
 		$this->load->model('purchase_order_model');
@@ -1004,7 +1011,9 @@ class Main extends CI_Controller
 				$success_message = 'Backup was restored successfully.';
 				$this->session->set_flashdata('success', $success_message);
 			}
+
 			redirect('main/backup_and_restore');
+
 		}
 	}
 
@@ -1050,4 +1059,14 @@ class Main extends CI_Controller
 		$this->load->view('main/pos', $this->data);
 		$this->load->view('main/footer');
 	}
+
+
+	function displayrec()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/displayrec');
+		$this->load->view('main/footer');
+	}
+
+
 }

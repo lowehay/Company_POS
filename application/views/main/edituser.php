@@ -58,6 +58,7 @@
 					</div>
 
 					<div class="form-group">
+
 						<label for="branch" class="bold-label">Brranch</label>
 						<select name="role" id="branch-select" class="form-control <?php echo form_error('branch') ? 'is-invalid' : ''; ?>">
 							<option class="text-info invisible" value="<?= $user->branch ?>"><?= ucfirst($user->branch) ?></option>
@@ -72,6 +73,7 @@
 					</div>
 
 					<div class="form-group">
+
 						<label for="role" class="bold-label">Roles</label>
 						<select name="role" id="role-select" class="form-control <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
 							<option class="text-info invisible" value="<?= $user->role ?>"><?= ucfirst($user->role) ?></option>

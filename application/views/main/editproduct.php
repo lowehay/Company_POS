@@ -7,6 +7,7 @@
 		text-align: center;
 	}
 
+
 	@media (max-width: 767px) {
 		h1 {
 			margin-left: 0;
@@ -15,6 +16,7 @@
 </style>
 
 <div class="container mt-3">
+
 	<h1>Edit Product</h1>
 
 	<!-- Flash Messages -->
@@ -22,6 +24,7 @@
 	<?= $this->session->flashdata('add_user_error'); ?>
 
 	<div class="row justify-content-center">
+
 		<div class="card">
 			<div class="card-body">
 				<?= form_open_multipart('main/edit_product_submit/' . $product->product_id, array('onsubmit' => 'return confirm(\'Are you sure you want to update this product?\')')); ?>
@@ -178,8 +181,8 @@
 				<button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Submit</button>
 				<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
 
+
 			</div>
-			<?= form_close(); ?>
 		</div>
 	</div>
 </div>

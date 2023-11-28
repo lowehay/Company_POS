@@ -42,10 +42,10 @@ class Product_model extends CI_Model
 		$product_price = (string) $this->input->post('product_price');
 		$product_quantity = (string) $this->input->post('product_quantity');
 
-
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
+
 
 			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_margin' => $product_margin,
@@ -60,6 +60,7 @@ class Product_model extends CI_Model
 			'product_required_quantity' => $product_required_quantity,
 			'product_maximum_quantity' => $product_maximum_quantity,
 			'product_minimum_order_quantity' => $product_minimum_order_quantity,
+
 			'product_image' => $image_file_name,  // Add the image file name to the data array
 
 		);
@@ -109,6 +110,7 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
+
 
 
 
