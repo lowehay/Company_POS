@@ -10,6 +10,9 @@ class Main extends CI_Controller
 		$this->load->view('main/footer');
 	}
 
+
+
+
 	function user()
 	{
 		$this->load->model('user_model');
@@ -306,7 +309,7 @@ class Main extends CI_Controller
 					// Generate a unique filename based on the product name
 					$product_name = $this->input->post('product_name');
 					$product_code = $this->input->post('product_code');
-					$unique_filename = strtolower(str_replace(' ', '', $product_name)) . '' . $product_code . '_' . time() . $image_data['file_ext'];
+					$unique_filename = strtolower(str_replace(' ', '_', $product_name)) . '_' . $product_code . '_' . time() . $image_data['file_ext'];
 
 					// Rename the uploaded file to the unique filename
 					$new_path = './assets/images/' . $unique_filename;
@@ -378,7 +381,7 @@ class Main extends CI_Controller
 
 						// Generate a unique filename based on the product name
 						$product_name = $this->input->post('product_name');
-						$unique_filename = strtolower(str_replace(' ', '', $product_name)) . '' . $product_id . '_' . time() . $image_data['file_ext'];
+						$unique_filename = strtolower(str_replace(' ', '_', $product_name)) . '_' . $product_id . '_' . time() . $image_data['file_ext'];
 
 						// Rename the uploaded file to the unique filename
 						$new_path = './assets/images/' . $unique_filename;
@@ -517,7 +520,6 @@ class Main extends CI_Controller
 		}
 		fclose($handle);
 	}
-
 	function payment()
 	{
 		$this->load->view('main/header');
@@ -538,4 +540,13 @@ class Main extends CI_Controller
 		$this->load->view('main/pos', $this->data);
 		$this->load->view('main/footer');
 	}
+
+	function displayrec()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/displayrec');
+		$this->load->view('main/footer');
+	}
+
+
 }
