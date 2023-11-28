@@ -14,8 +14,12 @@
 	}
 </style>
 
+
+
 <div class="container mt-2">
 	<h1>Add User</h1>
+
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<?php if ($this->session->flashdata('add_user_submit')) : ?>
@@ -47,7 +51,9 @@
 
 					<div class="form-group">
 						<label for="last_name" class="bold-label">Last Name</label>
-						<input type="text" id="last_name" name "last_name" placeholder="Last Name" class="form-control <?php echo form_error('last_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('last_name'); ?>">
+
+						<input type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-control <?php echo form_error('last_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('last_name'); ?>">
+
 						<span class="text-danger"><?php echo form_error('last_name'); ?></span>
 					</div>
 
@@ -58,12 +64,25 @@
 					</div>
 
 					<div class="form-group">
+
+						<label for="branch" class="bold-label">Brranch</label>
+						<select class="form-select" id="branch" name="branch" aria-label="Default select example">
+							<option selected hidden>Select Branch</option>
+							<option value="main branch">Main Branch</option>
+							<option value="branch 1">Branch 1</option>
+							<option value="branch 2">Branch 2</option>
+						</select>
+						<span class="text-danger"><?php echo form_error('branch'); ?></span>
+					</div>
+
+					<div class="form-group">
 						<label for="role" class="bold-label">Roles</label>
 						<select class="form-select" id="role" name="role" aria-label="Default select example">
 							<option selected hidden>Select Role</option>
-							<option value="encoder">Encoder</option>
+							<option value="admin">Admin</option>
+							<option value="inventory clerk">Inventory Clerk</option>
 							<option value="cashier">Cashier</option>
-							<option value="auditor">Auditor</option>
+
 						</select>
 						<span class="text-danger"><?php echo form_error('role'); ?></span>
 					</div>

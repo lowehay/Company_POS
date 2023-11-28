@@ -93,7 +93,9 @@
         text-overflow: ellipsis;
         max-width: 90%;
 
+
     }
+
 
     .product-card {
         width: 400px;
@@ -110,6 +112,10 @@
         backdrop-filter: blur(10px);
         /* Add a background blur effect */
     }
+
+    .card {
+        margin: 10px auto;
+    }
 </style>
 
 <body>
@@ -123,8 +129,7 @@
                         <h2>Product List</h2>
                         <!-- Add the search input and button inside the card header -->
                         <div class="input-group mb-1">
-                            <input type="text" class="form-control" id="product-search"
-                                placeholder="Search for a product">
+                            <input type="text" class="form-control" id="product-search" placeholder="Search for a product">
                             <button class="btn btn-primary" id="search-button">Search</button>
                         </div>
                     </div>
@@ -132,16 +137,16 @@
                         <div class="row">
                             <?php foreach ($result as $product) { ?>
                                 <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>"
-                                        data-product-price="<?php echo $product->product_price; ?>"
-                                        data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
+
+                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-price="<?php echo $product->product_price; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
+
                                         <div class="card-body" style="height: 300px;">
                                             <h5 class="card-title" style="max-width: 100%;">
                                                 <?php echo $product->product_name; ?>
                                             </h5>
-                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>"
-                                                alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3"
-                                                style="max-width: 100%; max-height: 300px;">
+
+                                            <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-width: 100%; max-height: 300px;">
+
                                         </div>
                                     </div>
                                 </div>
@@ -186,22 +191,19 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <!-- Add this script at the end of your page, after including jQuery -->
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             // Store all product cards in an array
             var allProductCards = $('.product-card');
 
-            $('#search-button').on('click', function () {
+            $('#search-button').on('click', function() {
                 performSearch();
             });
 
             // Add an input event listener to the search input
-            $('#product-search').on('input', function () {
+            $('#product-search').on('input', function() {
                 performSearch();
             });
 
@@ -218,7 +220,7 @@
                     $('#product-list').html(originalProductListHTML);
                 } else {
                     // Filter and display products that match the search term
-                    allProductCards.each(function () {
+                    allProductCards.each(function() {
                         var productName = $(this).data('product-name').toLowerCase();
                         if (productName.startsWith(searchTerm)) {
                             // Create a horizontal list for searched products
@@ -230,34 +232,38 @@
                 }
             }
 
-            $(document).on('click', '.product-card', function () {
-                console.log('Product card clicked');
+
+            $(document).on('click', '.product-card', function() {
+
                 var productName = $(this).data('product-name');
                 var productPrice = parseFloat($(this).data('product-price'));
 
                 // Check if the product is already in the cart
                 if (isProductInCart(productName)) {
-                    alert('This product is already in the cart.');
+                    toastr.error('This product is already on the cart.');
                     return; // Exit the function to prevent adding duplicates
                 }
 
                 // Create a new cart item element with weight text
+
                 var totalPrice = productPrice.toFixed(2); // Calculate the total price
                 var cartItem = $('<li class="list-group-item" data-product-price="' + totalPrice + '" data-product-name="' + productName + '">' +
                     productName + ' - ₱' + totalPrice + ' Quantity: <span class="weight-text">0</span> ' +
                     'Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i>');
 
+
                 // Append the cart item to the cart
                 $('#cart-items').append(cartItem);
 
                 updateTotal();
+
             });
 
 
             // Function to check if a product is already in the cart
             function isProductInCart(productName) {
                 var inCart = false;
-                $('#cart-items li').each(function () {
+                $('#cart-items li').each(function() {
                     var cartProductName = $(this).text().split(' - ')[0].trim(); // Extract product name from the cart item
                     if (cartProductName === productName) {
                         inCart = true;
@@ -271,13 +277,15 @@
             function updateTotal() {
                 // Calculate and update the total price for all products in the cart
                 var total = 0;
+
                 var cartItems = []; // Initialize an array to store updated cart items
 
                 $('#cart-items li').each(function () {
+
                     var productPrice = parseFloat($(this).data('product-price'));
-                    var weight = parseFloat($(this).find('.weight-text').text());
-                    weight = isNaN(weight) ? 0 : weight; // Ensure weight is a valid number
-                    var totalPrice = weight * productPrice;
+                    var quantity = parseFloat($(this).find('.quantity-text').text());
+                    quantity = isNaN(quantity) ? 0 : quantity; // Ensure weight is a valid number
+                    var totalPrice = quantity * productPrice;
                     total += totalPrice;
 
                     // Update the individual product's total
@@ -305,7 +313,7 @@
             var selectedCartItem = null; // Initialize the selectedCartItem variable
 
             // Click event handler for selecting items in the cart
-            $('#cart-items').on('click', 'li', function () {
+            $('#cart-items').on('click', 'li', function() {
                 if (selectedCartItem) {
                     // Remove the 'selected-item' class from the previously selected item
                     selectedCartItem.removeClass('selected-item');
@@ -316,9 +324,9 @@
 
                 // Update the total price when a product is selected
                 var productPrice = parseFloat($(this).data('product-price'));
-                var weight = parseFloat($(this).find('.weight-text').text());
-                weight = isNaN(weight) ? 0 : weight; // Ensure weight is a valid number
-                var totalPrice = weight * productPrice;
+                var quantity = parseFloat($(this).find('.quantity-text').text());
+                quantity = isNaN(quantity) ? 0 : quantity; // Ensure weight is a valid number
+                var totalPrice = quantity * productPrice;
                 updateTotal();
 
                 // Set the currently selected item
@@ -326,7 +334,7 @@
             });
 
             // Click event handler for deleting items from the cart (using event delegation)
-            $('#cart-items').on('click', '.delete-item', function () {
+            $('#cart-items').on('click', '.delete-item', function() {
                 var listItem = $(this).closest('li');
                 var itemPrice = parseFloat(listItem.data('product-price'));
 
@@ -338,7 +346,7 @@
             });
 
             // Add a keydown event listener to the entire document
-            $(document).on('keydown', function (event) {
+            $(document).on('keydown', function(event) {
                 // Check if a numeric key or decimal point was pressed
                 if (event.key.match(/[0-9.]/)) {
                     // Simulate a click on the corresponding numeric keypad button
@@ -357,67 +365,66 @@
                 return $('#cart-items li').length === 0;
             }
 
-            // Click event handler for the "Payment" button
-            $('.payment-button').on('click', function (e) {
+            $('.payment-button').on('click', function(e) {
                 // Check if the cart is empty
                 if (isCartEmpty()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
-                    alert('There are no products in the cart. Please add products before proceeding to payment.');
-                } else if (hasUnspecifiedWeights()) {
+                    toastr.error('There are no products in the cart. Please add products before proceeding to payment.');
+                } else if (hasUnspecifiedQuantity()) {
                     e.preventDefault(); // Prevent the default behavior (proceeding to payment)
-                    alert('Please specify the weights for all products in the cart before proceeding to payment.');
+                    toastr.warning('Please specify the quantity for all products in the cart before proceeding to payment.');
                 }
             });
 
             // Function to check if there are products in the cart without a specified weight
-            function hasUnspecifiedWeights() {
-                var hasUnspecifiedWeight = false;
-                $('#cart-items li').each(function () {
-                    var weightText = $(this).find('.weight-text').text();
-                    if (!weightText || parseFloat(weightText) <= 0) {
-                        hasUnspecifiedWeight = true;
+            function hasUnspecifiedQuantity() {
+                var hasUnspecifiedQuantity = false;
+                $('#cart-items li').each(function() {
+                    var quantityText = $(this).find('.quantity-text').text();
+                    if (!quantityText || parseFloat(quantityText) <= 0) {
+                        hasUnspecifiedQuantity = true;
                         return false; // Exit the loop early since we found a product without a weight
                     }
                 });
-                return hasUnspecifiedWeight;
+                return hasUnspecifiedQuantity;
             }
 
             // Numeric Keypad Logic (same as before)...
-            $('#numeric-keypad .numeric-button').on('click', function () {
+            $('#numeric-keypad .numeric-button').on('click', function() {
                 var digit = $(this).text();
                 var selectedItem = $('.selected-item');
-                var weightText = selectedItem.find('.weight-text');
+                var quantityText = selectedItem.find('.quantity-text');
 
-                var currentWeight = weightText.text(); // Get the current weight as a string
+                var currentQuantity = quantityText.text(); // Get the current weight as a string
 
                 if (digit === '.') {
                     // If the clicked button is a decimal point (.), add it to the current weight text
-                    if (!currentWeight.includes('.')) {
-                        weightText.text(currentWeight + digit);
+                    if (!currentQuantityt.includes('.')) {
+                        quantityText.text(currentWeight + digit);
                     }
                 } else {
                     // If the clicked button is a digit (0-9), update the weight text
-                    var newWeight = currentWeight === '0' ? digit : currentWeight + digit;
-                    weightText.text(newWeight);
+                    var newQuantity = currentQuantity === '0' ? digit : currentQuantity + digit;
+                    quantityText.text(newQuantity);
                 }
 
                 // Update the total price as the weight text changes
                 var productPrice = parseFloat(selectedItem.data('product-price'));
-                var totalPrice = parseFloat(weightText.text()) * productPrice;
+                var totalPrice = parseFloat(quantityText.text()) * productPrice;
                 totalPrice = isNaN(totalPrice) ? 0 : totalPrice; // Ensure totalPrice is a valid number
                 updateTotal();
             });
         });
 
-        $('#numeric-keypad .clear-button').on('click', function () {
+        $('#numeric-keypad .clear-button').on('click', function() {
             var selectedItem = $('.selected-item');
             if (selectedItem.length > 0) {
                 // Clear the weight of the selected item
-                var weightText = selectedItem.find('.weight-text');
-                weightText.text('0');
+                var quantityText = selectedItem.find('.quantity-text');
+                quantityText.text('0');
 
                 // Trigger the 'input' event to update the total price in real-time
-                weightText.trigger('input');
+                quantityText.trigger('input');
 
                 // Remove the 'selected-item' class
                 selectedItem.removeClass('selected-item');

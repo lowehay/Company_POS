@@ -15,12 +15,12 @@
     }
 </style>
 
-<h1>To Be Received</h1>
+<h1>Goods Return List</h1>
 <div class="card card-outline card-success">
     <div class="card-header">
         <h2 class="text-dark">
-            <a href="<?php echo site_url('main/goods_received'); ?>" class="btn btn-dark"><i class="fas fa-boxes"></i> To Be Received</a>
-            <a href="<?php echo site_url('main/goods_received_list'); ?>" class="btn btn-dark"><i class="fas fa-list"></i> Goods Received List</a>
+            <a href="<?php echo site_url('main/goods_return'); ?>" class="btn btn-dark"><i class="fas fa-boxes"></i> Goods Return</a>
+            <a href="<?php echo site_url('main/goods_return_list'); ?>" class="btn btn-dark"><i class="fas fa-list"></i> Goods Return List</a>
         </h2>
     </div>
     <div class="card-body">
@@ -28,32 +28,46 @@
             <table id="user-datatables" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Purchase Order No.</th>
+                        <th>Goods Return No.</th>
                         <th>Supplier</th>
-                        <th>Date Created</th>
+                        <th>Date Returned</th>
                         <th>Total Cost</th>
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($po as $pur) { ?>
+                    <?php foreach ($gr1 as $pur) { ?>
                         <tr class="text-center">
 
-                            <td><?= $pur->purchase_order_no ?></td>
+                            <td><?= $pur->goods_return_no ?></td>
                             <td><?= $pur->supplier_name ?></td>
-                            <td><?= $pur->date_created ?></td>
-                            <td>₱<?= $pur->total_cost ?></td>
+                            <td><?= $pur->date_returned ?></td>
+                            <td>₱<?= $pur->grt_total_cost ?></td>
                             <td>
-                                <span class="badge bg-warning"><?= ucfirst($pur->status) ?></span>
+                                <?php if ($pur->status == "returned") { ?>
+
+                                    <span class="badge bg-danger">
+                                        <?= ucfirst($pur->status) ?>
+                                    </span>
+
+                                <?php
+                                } else {
+                                ?>
+                                    <span class="badge bg-warning">
+                                        <?= ucfirst($pur->status) ?>
+                                    </span>
+
+                                <?php
+                                } ?>
                             </td>
                             <td>
-                                <a href="<?php echo site_url('main/post_goods_received/' . $pur->purchase_order_no_id); ?>" style="color: darkcyan; padding-left:6px;">
-                                    <i class="fas fa-inbox" aria-hidden="true"></i>
+                                <a href="<?php echo site_url('main/view_goods_return/' . $pur->goods_return_no_id); ?>" style="color: darkcyan; padding-left:6px;" title="View goods return">
+                                    <i class="fas fa-eye"></i>
                                 </a>
                             </td>
-                        <?php } ?>
                         </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>

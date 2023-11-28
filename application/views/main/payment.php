@@ -175,6 +175,7 @@
                     <div class="card-header">
                         <h3>Payment Method</h3>
                     </div>
+
                     <!-- Modify the content within the buttong div -->
                     <div class="card-body" id="buttong"
                         style="height: 30vh; display: flex; flex-direction: column; justify-content: space-between; background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);">
@@ -184,6 +185,7 @@
                             onclick="selectPaymentMethod('Cheque')">Cheque</button>
                         <button class="bten btn-block" style="height: 100px; font-size: 20px; color: black;"
                             onclick="selectPaymentMethod('Bank Account')">Bank Account</button>
+
                     </div>
 
                 </div>
@@ -391,7 +393,9 @@
 </div>
 
 
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <script>
     function confirmBack() {
@@ -407,6 +411,7 @@
         }
         // If the user clicked "Cancel" or closed the dialog, stay on the payment page
     }
+
     function startNewTransaction() {
         // Clear the cart items array and update the cart display
         cartItems = [];
@@ -437,6 +442,11 @@
     });
 
 
+    $(document).ready(function() {
+        var totalPriceForCheckout = localStorage.getItem('totalPriceForCheckout');
+        var cashPayment = 0;
+
+
     function clearCartItems() {
         cartItems = []; // Clear the cart items
         updateCartDisplay(); // Update the table (payment-table) in the HTML 
@@ -457,6 +467,7 @@
             // Hide the text field for other payment methods
             $('#cashTextFieldContainer').hide();
         }
+
 
         // Show or hide additional fields based on the selected payment method
         switch (paymentMethod) {
@@ -514,6 +525,29 @@
         }
     });
 
+        // Add a click event for payment method buttons
+        $('.payment-method').on('click', function() {
+            var paymentMethod = $(this).data('method');
+
+            // Reset cashPayment, remainingBalance, and change when a new payment method is selected
+            cashPayment = 0;
+            $('#cashPayment').text('0.00');
+            $('#change').text('0.00');
+
+            if (paymentMethod === 'cash') {
+                // Show remaining balance only for cash payment
+                var remainingBalance = parseFloat(totalPriceForCheckout) - cashPayment;
+                $('#remainingBalance').text(remainingBalance.toFixed(2));
+            } else {
+                // For cheque and bank, set cash payment to total price and set remaining balance to 0
+                cashPayment = parseFloat(totalPriceForCheckout);
+                $('#cashPayment').text(cashPayment.toFixed(2));
+                $('#remainingBalance').text('0.00');
+            }
+        });
+
+
+
 
     $(document).ready(function () {
         // Function to update the total amount based on the entered numeric value
@@ -533,47 +567,31 @@
             // Update the total amount and change
             $('#total-amount').text('₱' + newTotal.toFixed(2));
 
-            // Only update the change amount if the user has paid more than the total
-            if (currentNumericValue >= originalTotalAmount) {
-                $('#change-amount').text('₱' + changeAmount.toFixed(2));
+
+        function updateRemainingBalance() {
+            var remainingBalance = parseFloat(totalPriceForCheckout) - cashPayment;
+            $('#remainingBalance').text(remainingBalance.toFixed(2));
+
+            // Calculate change when cash payment exceeds total price
+            if (cashPayment >= parseFloat(totalPriceForCheckout)) {
+                var change = cashPayment - parseFloat(totalPriceForCheckout);
+                $('#change').text(change.toFixed(2));
+                remainingBalance = 0;
+                $('#remainingBalance').text('0.00');
             } else {
-                $('#change-amount').text('₱0.00');
+                $('#change').text('0.00');
             }
         }
 
-        // Function to calculate the change
-        function calculateChange(newTotal) {
-            // Assuming the user has paid more than the total amount
-            // Change is calculated as the difference between the paid amount and the total amount
-            var cashAmount = parseFloat($('#cashAmount').val()) || 0;
-            var changeAmount = Math.abs(cashAmount - originalTotalAmount);
-            return Math.max(0, changeAmount); // Ensure change is not negative
-        }
-        // Event listener for numeric keypad buttons and keyboard input
-        $(document).on('click keydown', '[data-numeric-keypad] .numeric-button', function (event) {
-            var numericValue;
-
-            if (event.type === 'click') {
-                // Button click
-                numericValue = $(this).text();
-            } else if (event.type === 'keydown' && /^[0-9.]$/.test(event.key)) {
-                // Keyboard input
-                numericValue = event.key;
-            }
-
-            // Check if the clicked button is the "Confirm Payment" button
-            if ($(this).hasClass('confirm-payment-button')) {
-                // Execute your logic for the "Confirm Payment" button here
-                generateReceipt();
+        $('.checkout-button').on('click', function() {
+            if (cashPayment > 0 && cashPayment >= parseFloat(totalPriceForCheckout)) {
+                toastr.success('Payment successful! Proceeding to checkout...');
+                window.location.href = "<?php echo site_url('main/receipt'); ?>";
             } else {
-                // Append the clicked/typed value to the cashAmount input field
-                $('#cashAmount').val(function (index, currentValue) {
-                    return currentValue + numericValue;
-                });
+                toastr.error('Insufficient or invalid cash payment. Please enter the correct amount.');
 
-                // Update the total amount
-                updateTotalAmount();
             }
+            return false;
         });
 
 

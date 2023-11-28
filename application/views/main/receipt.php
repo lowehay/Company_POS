@@ -1,9 +1,47 @@
 <style>
-    .receipt {
-        max-width: 2000px;
-        margin: 0 auto;
-        height: 80vh;
-        overflow-x: auto;
+
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Source Sans Pro', sans-serif;
+    }
+
+    .container {
+        display: block;
+        width: 100%;
+        background: #fff;
+        max-width: 350px;
+        padding: 25px;
+        margin: 50px auto 0;
+        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    }
+
+    .receipt_header {
+        padding-bottom: 40px;
+        border-bottom: 1px dashed #000;
+        text-align: center;
+    }
+
+    .receipt_header h1 {
+        font-size: 20px;
+        margin-bottom: 5px;
+        color: #000;
+        text-transform: uppercase;
+    }
+
+    .receipt_header h1 span {
+        display: block;
+        font-size: 25px;
+    }
+
+    .receipt_header h2 {
+        font-size: 14px;
+        color: #727070;
+        font-weight: 300;
+
     }
 
     body {
@@ -44,17 +82,34 @@
         text-align: center;
     }
 
-    .invoice-items th {
-        background-color: #f2f2f2;
-    }
 
-    #total-amount {
+    .recepit_cont {
+        display: flex;
+        justify-content: center;
+        column-gap: 25px;
         font-weight: bold;
+        font-size: 15px;
+        color: #000;
     }
 
-    #generated-time {
-        margin-top: 10px;
-        text-align: right;
+    .items {
+        margin-top: 20px;
+        color: #000;
+    }
+
+    h3 {
+        color: #000;
+        border-top: 1px dashed #000;
+        padding-top: 10px;
+        margin-top: 25px;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 10px
+
+    }
+
+    .print-button {
+        color: #000;
     }
 </style>
 
