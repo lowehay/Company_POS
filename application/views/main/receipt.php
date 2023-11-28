@@ -27,6 +27,7 @@
     .receipt_header h1 {
         font-size: 20px;
         margin-bottom: 5px;
+        color: #000;
         text-transform: uppercase;
     }
 
@@ -116,19 +117,26 @@
         column-gap: 25px;
         font-weight: bold;
         font-size: 15px;
+        color: #000;
     }
 
     .items {
         margin-top: 20px;
+        color: #000;
     }
 
     h3 {
+        color: #000;
         border-top: 1px dashed #000;
         padding-top: 10px;
         margin-top: 25px;
         text-align: center;
         text-transform: uppercase;
         font-size: 10px
+    }
+
+    .print-button {
+        color: #000;
     }
 </style>
 

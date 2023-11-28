@@ -78,9 +78,9 @@
                         <h3>Payment Method</h3>
                     </div>
                     <div class="card-body" id="buttong" style="height: 30vh; display: flex; flex-direction: column; justify-content: space-between; color: #FFF;">
-                        <button class="btn btn-primary btn-block" style="height: 100px; font-size: 20px; background-color: #6096B4; color: #FFF;">Cash</button>
-                        <button class="btn btn-primary btn-block" style="height: 100px; font-size: 20px; background-color: #93BFCF; color: #FFF;">Cheque</button>
-                        <button class="btn btn-primary btn-block" style="height: 100px; font-size: 20px; background-color: #BDCDD6; color: #FFF;">Bank Account</button>
+                        <button class="btn btn-primary btn-block payment-method" data-method="cash" style="height: 100px; font-size: 20px; background-color: #6096B4; color: #FFF;">Cash</button>
+                        <button class="btn btn-primary btn-block payment-method" data-method="cheque" style="height: 100px; font-size: 20px; background-color: #93BFCF; color: #FFF;">Cheque</button>
+                        <button class="btn btn-primary btn-block payment-method" data-method="bank" style="height: 100px; font-size: 20px; background-color: #BDCDD6; color: #FFF;">Bank Account</button>
                     </div>
                 </div>
             </div>
@@ -131,8 +131,6 @@
     <a href="javascript:void(0);" class="btn btn-secondary back-button" onclick="confirmBack()"> Back <i class="fas fa-arrow-left"></i></a>
     <a href="<?php echo site_url('main/receipt'); ?>" class="btn btn-warning checkout-button"> Checkout <i class="fas fa-arrow-right"></i></a>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function confirmBack() {
         var confirmMessage = "Are you sure you want to go back and make new transactions?";
@@ -147,12 +145,9 @@
         }
         // If the user clicked "Cancel" or closed the dialog, stay on the payment page
     }
-
     $(document).ready(function() {
         var totalPriceForCheckout = localStorage.getItem('totalPriceForCheckout');
         var cashPayment = 0;
-        var remainingBalance = 0;
-        var change = 0;
 
         if (totalPriceForCheckout !== null && totalPriceForCheckout !== undefined) {
             $('#total').text(parseFloat(totalPriceForCheckout).toFixed(2));
@@ -160,27 +155,27 @@
             $('#total').text('N/A');
         }
 
-        // Add a confirmation message when the user tries to leave the page
-        window.addEventListener('beforeunload', function(e) {
-            var confirmMessage = "Are you sure you want to go back and make new transactions?";
-            e.returnValue = confirmMessage; // Display the confirmation message
-            return confirmMessage;
+        // Add a click event for payment method buttons
+        $('.payment-method').on('click', function() {
+            var paymentMethod = $(this).data('method');
+
+            // Reset cashPayment, remainingBalance, and change when a new payment method is selected
+            cashPayment = 0;
+            $('#cashPayment').text('0.00');
+            $('#change').text('0.00');
+
+            if (paymentMethod === 'cash') {
+                // Show remaining balance only for cash payment
+                var remainingBalance = parseFloat(totalPriceForCheckout) - cashPayment;
+                $('#remainingBalance').text(remainingBalance.toFixed(2));
+            } else {
+                // For cheque and bank, set cash payment to total price and set remaining balance to 0
+                cashPayment = parseFloat(totalPriceForCheckout);
+                $('#cashPayment').text(cashPayment.toFixed(2));
+                $('#remainingBalance').text('0.00');
+            }
         });
 
-        function updateRemainingBalance() {
-            remainingBalance = parseFloat(totalPriceForCheckout) - cashPayment;
-            $('#remainingBalance').text(remainingBalance.toFixed(2));
-
-            // Calculate change when cash payment exceeds total price
-            if (cashPayment >= parseFloat(totalPriceForCheckout)) {
-                change = cashPayment - parseFloat(totalPriceForCheckout);
-                $('#change').text(change.toFixed(2));
-                remainingBalance = 0;
-                $('#remainingBalance').text('0.00');
-            } else {
-                $('#change').text('0.00');
-            }
-        }
 
         // Numeric Keypad Logic (same as before)...
         $('#numeric-keypadding .numeric-button').on('click', function() {
@@ -196,13 +191,29 @@
             updateRemainingBalance();
         });
 
+        function updateRemainingBalance() {
+            var remainingBalance = parseFloat(totalPriceForCheckout) - cashPayment;
+            $('#remainingBalance').text(remainingBalance.toFixed(2));
+
+            // Calculate change when cash payment exceeds total price
+            if (cashPayment >= parseFloat(totalPriceForCheckout)) {
+                var change = cashPayment - parseFloat(totalPriceForCheckout);
+                $('#change').text(change.toFixed(2));
+                remainingBalance = 0;
+                $('#remainingBalance').text('0.00');
+            } else {
+                $('#change').text('0.00');
+            }
+        }
 
         $('.checkout-button').on('click', function() {
-            if (cashPayment >= parseFloat(totalPriceForCheckout)) {
-                alert('Payment successful!');
+            if (cashPayment > 0 && cashPayment >= parseFloat(totalPriceForCheckout)) {
+                toastr.success('Payment successful! Proceeding to checkout...');
+                window.location.href = "<?php echo site_url('main/receipt'); ?>";
             } else {
-                alert('Insufficient cash payment. Please enter the correct amount.');
+                toastr.error('Insufficient or invalid cash payment. Please enter the correct amount.');
             }
+            return false;
         });
     });
 </script>

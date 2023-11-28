@@ -56,24 +56,7 @@
                                     <span class="badge bg-warning"><?= ucfirst($pur->status) ?></span>
                                 <?php } ?>
                             </td>
-                            <td>
-                                <a href="<?php echo site_url('main/view_purchase_order/' . $pur->purchase_order_no_id); ?>" style="color: darkcyan; padding-left:6px;" title="Click here to view purchase order"><i class="fas fa-eye"></i></a>
-
-                                <?php if ($pur->status == "Received") { ?>
-
-                                <?php } elseif ($pur->status == "Cancelled") { ?>
-
-                                <?php } elseif ($pur->status == "To Be Received") { ?>
-
-                                <?php } elseif ($pur->status == "Back Order") { ?>
-
-                                <?php } else { ?>
-                                    <a href="<?= site_url('main/edit_purchase_order/' . $pur->purchase_order_no_id); ?>" style="color:gold; padding-left:6px;" title="Click here to edit purchase order"><i class="fas fa-edit"></i></a>
-
-                                    <a href="<?= site_url('main/delete_po/' . $pur->purchase_order_no_id); ?>" onclick="return confirm('Are you sure you want to delete this purchase order?')" style="color:red; padding-left:6px;" title="Click here to delete purchase order"><i class="fas fa-trash"></i></a>
-                            </td>
-                        <?php } ?>
-
+                            <a href="<?php echo site_url('main/print_purchase_order/' . $pur->purchase_order_no_id); ?>" style="color: darkcyan; padding-left:6px;"><i class="fas fa-print"></i></a>
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -81,13 +64,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function() {
-        <?php if ($this->session->flashdata('success')) { ?>
-            toastr.success('<?php echo $this->session->flashdata('success'); ?>');
-        <?php } elseif ($this->session->flashdata('error')) { ?>
-            toastr.error('<?php echo $this->session->flashdata('error'); ?>');
-        <?php } ?>
-    });
-</script>

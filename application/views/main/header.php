@@ -7,12 +7,14 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/toastr.min.css">
-  <link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/toastr.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <title>Company Inventory</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+  <title>COMPANY</title>
+
 </head>
 <style>
   @import url('https://fonts.googleapis.com/css?family=IBM Plex Sans:700|IBM Plex Sans:400');
@@ -20,6 +22,8 @@
   body {
     font-family: 'IBM Plex Sans';
     font-weight: 400;
+    background-color: #282b30;
+    color: #fff;
   }
 
   h1,
@@ -67,12 +71,14 @@
     /* 12px */
   }
 
+
   body {
 
     background-color: #FFFFFF;
   }
 
   /* For Webkit-based browsers (Chrome, Safari) /
+
   ::-webkit-scrollbar {
     width: 12px;
     / Width of the scrollbar */
@@ -94,13 +100,16 @@
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #000011">
+
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #7289da">
+
 
     <div class="container-fluid">
       <a class="navbar-brand" href="<?= base_url('main') ?>">
         <i class="fas fa-envelope"></i> COMPANY
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -162,6 +171,8 @@
             </li>
           </ul>
         </div>
+
+       
     </div>
   </nav>
 </body>

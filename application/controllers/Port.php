@@ -7,6 +7,12 @@ class Port extends CI_Controller
 	{
 		$this->load->view('login');
 	}
+	public function logout()
+	{
+		$this->load->model('account_model');
+		$this->account_model->logout();
+		redirect('/');
+	}
 	function registerNow()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -27,7 +33,7 @@ class Port extends CI_Controller
 					'username' => $username,
 					'password' => sha1($password),
 					'role' => $role,
-					'status' => '1'
+					'status' => 'active'
 				);
 				$this->load->model('user_model');
 				$this->user_model->insertuser($data);

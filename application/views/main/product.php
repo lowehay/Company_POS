@@ -77,7 +77,6 @@
     text-decoration: none;
     padding: 15px 40px;
     display: inline-block;
-    border-radius: 100px;
     transition: all .2s;
   }
 
@@ -173,7 +172,7 @@
   <div class="card-header" style="padding-top: 0;">
     <div class="row align-items-center">
       <div class="col-sm-6">
-        <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-fish"></i> Add Product</a>
+        <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-box"></i> Add Product</a>
       </div>
       <div class="col-sm-6">
         <form class="form-inline float-right">
@@ -202,8 +201,7 @@
                 <h5 class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
                 <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
                 <p class="card-text">Price: ₱<?php echo $row->product_price; ?></p>
-                <p class="card-text">Quantity: <?php echo $row->product_quantity; ?></p>
-                <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
+                <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
                 <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
               </div>
             </div>

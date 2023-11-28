@@ -83,7 +83,7 @@
                   ?>
                     <?php $status = $row->status;
                     if ($status == 'active') { ?>
-                      <a href="<?php echo site_url('main/deactivate_user/' . $user_id); ?>" style="color:red; padding-left:6px;" title="Click here to deaactivate this user" onclick="return confirm('Are you sure you want to deactivate user?')"><i class="fas fa-ban"></i></a>
+                      <a href="<?php echo site_url('main/deactivate_user/' . $user_id); ?>" style="color:red; padding-left:6px;" title="Click here to deactivate this user" onclick="return confirm('Are you sure you want to deactivate user?')"><i class="fas fa-ban"></i></a>
                     <?php } else { ?>
                       <a href="<?php echo site_url('main/reactivate_user/' . $user_id); ?>" style="color:green; padding-left:6px;" title="Click here to activate this user" onclick="return confirm('Are you sure you want to reactivate user?')"><i class="fas fa-check-circle"></i></a>
                     <?php } ?>

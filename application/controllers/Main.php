@@ -3,10 +3,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 date_default_timezone_set('Asia/Manila');
 class Main extends CI_Controller
 {
+
 	function index()
 	{
+		$this->load->model('product_model');
+		$this->load->model('purchase_order_model');
+		$this->data['total_prod'] = $this->product_model->get_total_products();
+		$this->data['low_stocks'] = $this->product_model->getLowStockProductsCount();
+		$this->data['lowStockProducts'] = $this->product_model->getLowStockProducts();
+		$this->data['out_off_stock'] = $this->product_model->countOutOfStockProducts();
+		$this->data['pending_po'] = $this->purchase_order_model->getPendingPurchaseOrdersCount();
+		$this->data['completed_po'] = $this->purchase_order_model->getReceivedPurchaseOrderCount();
 		$this->load->view('main/header');
-		$this->load->view('main/dashboard');
+		$this->load->view('main/dashboard', $this->data);
 		$this->load->view('main/footer');
 	}
 
@@ -21,7 +30,6 @@ class Main extends CI_Controller
 
 	function add_user()
 	{
-
 		$this->add_user_submit();
 		$this->load->view('main/header');
 		$this->load->view('main/add_user');
@@ -293,18 +301,219 @@ class Main extends CI_Controller
 	}
 
 
+	function edit_purchase_order($id)
+	{
+		$this->edit_purchase_order_submit($id);
+		$this->load->model('supplier_model');
+		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_all_product();
+		$this->load->model('purchase_order_model');
+		$this->data['code'] = $this->purchase_order_model->code($id);
+		$this->data['select'] = $this->purchase_order_model->Select_one($id);
+		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+
+		$this->load->view('main/header');
+		$this->load->view('main/edit_purchase_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function edit_purchase_order_submit($id)
+	{
+		if ($this->input->post('update_po')) {
+
+			$this->load->model('purchase_order_model');
+			$response = $this->purchase_order_model->update_po();
+
+			if ($response) {
+
+				$success_message = 'Purchase order updated successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Purchase order was not updated successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+			redirect('main/purchase_order/' . $id);
+		}
+	}
+
+	function view_purchase_order($id)
+	{
+		$this->load->model('purchase_order_model');
+		$this->data['code'] = $this->purchase_order_model->code($id);
+		$this->data['select'] = $this->purchase_order_model->Select_one($id);
+		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+
+		$this->load->view('main/header');
+		$this->load->view('main/view_purchase_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function approved_po($id)
+	{
+		$this->load->model('purchase_order_model');
+		$response = $this->purchase_order_model->approved_po($id);
+
+		if ($response) {
+			$success_message = 'Purchase order approved successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Purchase order was not approved successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/purchase_order');
+	}
+	public function cancel_po($id)
+	{
+		$this->load->model('purchase_order_model');
+		$response = $this->purchase_order_model->cancel_po($id);
+
+		if ($response) {
+			$success_message = 'Purchase order cancel successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Purchase order was not cancel successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/purchase_order');
+	}
+	public function print_purchase_order($id)
+	{
+		$this->load->model('purchase_order_model');
+		$this->data['code'] = $this->purchase_order_model->code($id);
+		$this->data['select'] = $this->purchase_order_model->Select_one($id);
+		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+		$this->load->view('main/print_po_report', $this->data);
+	}
 	function goods_received()
 	{
+		$this->load->model('purchase_order_model');
+		$this->data['po'] = $this->purchase_order_model->get_all_gr();
 		$this->load->view('main/header');
-		$this->load->view('main/goods_received');
+		$this->load->view('main/goods_received', $this->data);
+		$this->load->view('main/footer');
+	}
+	function goods_received_list()
+	{
+		$this->load->model('goods_received_model');
+		$this->data['gr'] = $this->goods_received_model->get_all_gr();
+		$this->load->view('main/header');
+		$this->load->view('main/goods_received_list', $this->data);
+		$this->load->view('main/footer');
+	}
+	function view_goods_received($id)
+	{
+		$this->load->model('goods_received_model');
+		$this->data['code'] = $this->goods_received_model->code($id);
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->data['view'] = $this->goods_received_model->view_all_GR($id);
+		$this->load->model('goods_received_model');
+
+		$this->load->view('main/header');
+		$this->load->view('main/view_goods_received', $this->data);
+		$this->load->view('main/footer');
+	}
+	function post_goods_received($id)
+	{
+		$this->load->model('purchase_order_model');
+		$this->data['code'] = $this->purchase_order_model->code($id);
+		$this->data['select'] = $this->purchase_order_model->Select_one($id);
+		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+		$this->data['gr_no'] = $this->purchase_order_model->gr_no();
+		$this->load->view('main/header');
+		$this->load->view('main/post_goods_received', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function post_goods_received_submit()
+	{
+		if ($this->input->post('btn_post_gr')) {
+
+			$this->load->model('goods_received_model');
+			$response = $this->goods_received_model->post_goods_received();
+			if ($response) {
+
+				$success_message = 'Goods recieved posted successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Goods received was not posted successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/purchase_order');
+		}
+	}
+	public function print_goods_received($id)
+	{
+		$this->load->model('goods_received_model');
+		$this->data['code'] = $this->goods_received_model->code($id);
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->data['view'] = $this->goods_received_model->view_all_GR($id);;
+		$this->load->view('main/print_gr_report', $this->data);
+	}
+	function goods_return()
+	{
+		$this->load->model('goods_return_model');
+		$this->data['grt'] = $this->goods_return_model->get_all_grt();
+		$this->load->view('main/header');
+		$this->load->view('main/goods_return', $this->data);
+		$this->load->view('main/footer');
+	}
+	function goods_return_list()
+	{
+		$this->load->model('goods_return_model');
+		$this->data['gr1'] = $this->goods_return_model->get_all_grt1();
+		$this->load->view('main/header');
+		$this->load->view('main/goods_return_list', $this->data);
 		$this->load->view('main/footer');
 	}
 
-	function goods_return()
+	function post_goods_return($id)
 	{
+
+		$this->load->model('goods_return_model');
+		$this->data['grt_no'] = $this->goods_return_model->grt_no();
+		$this->data['select'] = $this->goods_return_model->Select_one($id);
+		$this->data['select1'] = $this->goods_return_model->Select_two($id);
+		$this->data['view'] = $this->goods_return_model->view_all_grt($id);
 		$this->load->view('main/header');
-		$this->load->view('main/goods_return');
+		$this->load->view('main/post_goods_return', $this->data);
 		$this->load->view('main/footer');
+	}
+	public function post_goods_return_submit()
+	{
+		if ($this->input->post('btn_post_grt')) {
+
+			$this->load->model('goods_return_model');
+			$response = $this->goods_return_model->post_goods_return();
+			if ($response) {
+
+				$success_message = 'Goods return posted successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Goods return was not posted successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/goods_return');
+		}
+	}
+	function view_goods_return($id)
+	{
+		$this->load->model('goods_return_model');
+		$this->data['code'] = $this->goods_return_model->code($id);
+		$this->data['select'] = $this->goods_return_model->Select_one($id);
+		$this->data['view'] = $this->goods_return_model->view_all_grt1($id);
+		$this->load->view('main/header');
+		$this->load->view('main/view_goods_return', $this->data);
+		$this->load->view('main/footer');
+	}
+	function print_goods_return($id)
+	{
+		$this->load->model('goods_return_model');
+		$this->data['code'] = $this->goods_return_model->code($id);
+		$this->data['select'] = $this->goods_return_model->Select_one($id);
+		$this->data['view'] = $this->goods_return_model->view_all_grt1($id);
+		$this->load->view('main/print_grt_report', $this->data);
 	}
 
 	function back_order()
@@ -486,6 +695,7 @@ class Main extends CI_Controller
 					$this->session->set_flashdata('error', $error_message);
 				}
 
+
 				// Redirect to the product listing page
 				redirect('main/product');
 			}
@@ -509,14 +719,60 @@ class Main extends CI_Controller
 	}
 	function inventory_adjustment()
 	{
+		$this->load->model('product_model');
+
+		$this->data['product'] = $this->product_model->get_all_product();
 		$this->load->view('main/header');
-		$this->load->view('main/inventory_adjustment');
+		$this->load->view('main/inventory_adjustment', $this->data);
 		$this->load->view('main/footer');
+	}
+	function add_stock($product_id)
+	{
+		$this->add_stock_submit();
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_product($product_id);
+		$this->load->view('main/header');
+		$this->load->view('main/add_stock', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_stock_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_quantity', 'Quantity', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('inventory_adjustment_model');
+
+				$response = $this->inventory_adjustment_model->updateQuantity();
+
+				if ($response) {
+					$success_message = 'Quantity adjusted successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Quantity was not adjusted successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/inventory_adjustment');
+			}
+		}
 	}
 	function inventory_ledger()
 	{
+		$this->load->model('inventory_ledger_model');
+
+		if (isset($_POST['search'])) {
+			$date_from = $this->input->post('date_from');
+			$date_to = $this->input->post('date_to');
+			$this->data['ledger'] = $this->inventory_ledger_model->get_ledger_by_date_range($date_from, $date_to);
+		} else {
+			$this->data['ledger'] = $this->inventory_ledger_model->get_all_ledger();
+		}
+
 		$this->load->view('main/header');
-		$this->load->view('main/inventory_ledger');
+		$this->load->view('main/inventory_ledger', $this->data);
 		$this->load->view('main/footer');
 	}
 	function stock_requisition()
@@ -693,8 +949,16 @@ class Main extends CI_Controller
 	}
 	function reports()
 	{
+		$this->load->model('purchase_order_model');
+		$this->data['po'] = $this->purchase_order_model->get_all_po();
+		$this->load->model('goods_received_model');
+		$this->data['gr'] = $this->goods_received_model->get_all_gr();
+		$this->load->model('inventory_adjustment_model');
+		$this->data['ia'] = $this->inventory_adjustment_model->get_all_adjust();
+		$this->load->model('goods_return_model');
+		$this->data['gr1'] = $this->goods_return_model->get_all_grt1();
 		$this->load->view('main/header');
-		$this->load->view('main/reports');
+		$this->load->view('main/reports', $this->data);
 		$this->load->view('main/footer');
 	}
 	function backup()

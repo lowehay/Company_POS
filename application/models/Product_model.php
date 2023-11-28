@@ -107,6 +107,7 @@ class Product_model extends CI_Model
 		$product_minimum_quantity = (string) $this->input->post('product_minimum_quantity');
 		$product_required_quantity = (string) $this->input->post('product_required_quantity');
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
+		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
 
 
@@ -172,6 +173,7 @@ class Product_model extends CI_Model
 			'product_required_quantity' => $product_required_quantity,
 			'product_maximum_quantity' => $product_maximum_quantity,
 			'product_minimum_order_quantity' => $product_minimum_order_quantity,
+			'product_dateadded' => $product_dateadded,
 			'product_image' => $product_image, // Update the product image filename
 		);
 
@@ -207,5 +209,41 @@ class Product_model extends CI_Model
 		$this->db->where('pro.product_id', $id);
 		$query = $this->db->get()->row();
 		return $query;
+	}
+	public function get_total_products()
+	{
+		// Assuming your table is named 'product'
+		$this->db->from('product');
+		return $this->db->count_all_results();
+	}
+	public function getLowStockProductsCount()
+	{
+		// Calculate the total number of products with low stock
+		$this->db->select('COUNT(*) as low_stock_count');
+		$this->db->from('product');
+		$this->db->where('isDelete', 'no'); // Assuming 'isDelete' is the column for deletion status
+		$this->db->where('product_quantity < product_inbound_threshold');
+		$query = $this->db->get();
+
+		// Return the result
+		return $query->row()->low_stock_count;
+	}
+	public function getLowStockProducts()
+	{
+		// Select products where the quantity is less than the inbound threshold
+		$this->db->select('*');
+		$this->db->from('product');
+		$this->db->where('product_quantity < product_inbound_threshold');
+		$query = $this->db->get();
+
+		return $query->result();
+	}
+	public function countOutOfStockProducts()
+	{
+		// Assuming your product table is named 'product'
+		$this->db->from('product');
+		$this->db->where('product_quantity', 0);
+
+		return $this->db->count_all_results();
 	}
 }
