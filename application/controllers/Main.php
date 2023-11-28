@@ -283,6 +283,23 @@ class Main extends CI_Controller
 		}
 	}
 
+	public function delete_po($id)
+	{
+
+		$this->load->model('purchase_order_model');
+		$response = $this->purchase_order_model->delete_po($id);
+
+		if ($response) {
+			$success_message = 'Purchase order deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Purchase order was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/purchase_order');
+	}
+
 
 	function edit_purchase_order($id)
 	{
@@ -760,9 +777,175 @@ class Main extends CI_Controller
 	}
 	function stock_requisition()
 	{
+		$this->add_purchase_order_submit();
+		$this->load->model('stock_requisition_model');
+		$this->data['sr'] = $this->stock_requisition_model->get_all_sr();
 		$this->load->view('main/header');
-		$this->load->view('main/stock_requisition');
+		$this->load->view('main/stock_requisition', $this->data);
 		$this->load->view('main/footer');
+	}
+	function add_stock_requisition()
+	{
+		$this->add_stock_requisition_submit();
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_all_product();
+		$this->load->model('stock_requisition_model');
+		$this->data['sr_no'] = $this->stock_requisition_model->sr_no();
+		$this->load->view('main/header');
+		$this->load->view('main/add_stock_requisition', $this->data);
+		$this->load->view('main/footer');
+	}
+	function add_stock_requisition_submit()
+	{
+
+		if ($this->input->post('btn_create_sr')) {
+
+			$this->load->model('stock_requisition_model');
+			$response = $this->stock_requisition_model->insertstockrequisition();
+			if ($response) {
+
+				$success_message = 'Stock Requisition created successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Stock Requisition was not created successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/stock_requisition');
+		}
+	}
+	function view_stock_requisition($id)
+	{
+		$this->view_stock_requisition_submit();
+		$this->load->model('stock_requisition_model');
+		$this->data['code'] = $this->stock_requisition_model->code($id);
+		$this->data['select'] = $this->stock_requisition_model->Select_one($id);
+		$this->data['view'] = $this->stock_requisition_model->view_all_sr($id);
+		$this->load->view('main/header');
+		$this->load->view('main/view_stock_requisition', $this->data);
+		$this->load->view('main/footer');
+	}
+	function view_stock_requisition_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+			$this->load->model('stock_requisition_model');
+
+			// Validate the form data
+			$product = $this->input->post('product');
+			$quantity = $this->input->post('quantity');
+
+			foreach ($product as $index => $product_name) {
+				$product_quantity = $this->stock_requisition_model->get_product_quantity($product_name);
+				if ($quantity[$index] > $product_quantity) {
+					$this->session->set_flashdata('exceeds', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>Error!</strong> The quantity of "' . $product_name . '" in the form exceeds the available quantity in your stocks.
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+						</div>');
+					redirect('main/stock_requisition');
+				}
+			}
+
+			// Call the poststockrequisition() method if the form data is valid
+			$response = $this->stock_requisition_model->poststockrequisition();
+			if ($response) {
+				$success_message = 'Stock Requisition posted successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Stock Requisition was not posted successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/stock_requisition');
+		}
+	}
+	function edit_stock_requisition($id)
+	{
+
+		$this->edit_stock_requisition_submit();
+		$this->load->model('stock_requisition_model');
+		$this->data['code'] = $this->stock_requisition_model->code($id);
+		$this->data['select'] = $this->stock_requisition_model->Select_one($id);
+		$this->data['view'] = $this->stock_requisition_model->view_all_sr($id);
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_all_product();
+		$this->load->view('main/header');
+
+		$this->load->view('main/editstockrequisition', $this->data);
+		$this->load->view('main/footer');
+	}
+	function edit_stock_requisition_submit()
+	{
+
+		if ($this->input->post('btn_update_sr')) {
+
+			$this->load->model('stock_requisition_model');
+			$response = $this->stock_requisition_model->update_sr();
+			if ($response) {
+
+				$success_message = 'Stock Requisition updated successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+
+				$error_message = 'Stock Requisition was not updated successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/stock_requisition');
+		}
+	}
+	public function delete_sr($id)
+	{
+
+
+		$this->load->model('stock_requisition_model');
+		$response = $this->stock_requisition_model->delete_sr($id);
+
+		if ($response) {
+			$success_message = 'Stock Requisition deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Stock Requisition was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/stock_requisition/');
+	}
+	public function cancel_sr($id)
+	{
+
+
+		$this->load->model('stock_requisition_model');
+		$response = $this->stock_requisition_model->cancel_sr($id);
+
+		if ($response) {
+			$success_message = 'Stock Requisition cancelled successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Stock Requisition was not cancelled successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/stock_requisition/');
+	}
+	public function received_sr($id)
+	{
+
+		$this->load->model('stock_requisition_model');
+		$response = $this->stock_requisition_model->received_sr($id);
+
+		if ($response) {
+			$success_message = 'Stock Requisition received successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Stock Requisition was not received successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/stock_requisition/');
 	}
 	function reports()
 	{
@@ -821,7 +1004,7 @@ class Main extends CI_Controller
 				$success_message = 'Backup was restored successfully.';
 				$this->session->set_flashdata('success', $success_message);
 			}
-			redirect('visitor_portal/backup_and_restore');
+			redirect('main/backup_and_restore');
 		}
 	}
 
