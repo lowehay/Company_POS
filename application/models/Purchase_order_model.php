@@ -20,6 +20,7 @@ class Purchase_order_model extends CI_Model
         }
     }
 
+
     public function gr_no()
     {
 
@@ -38,6 +39,7 @@ class Purchase_order_model extends CI_Model
         }
     }
 
+
     function insertpurchaseorder()
     {
         $purchase = [
@@ -52,13 +54,16 @@ class Purchase_order_model extends CI_Model
         $last_purchase_id = $this->db->insert_id();
 
         $product_name = $this->input->post('product_name');
+
         $po_product_quantity = $this->input->post('po_product_quantity');
+
         $product_unit = $this->input->post('product_unit');
         $product_unitprice = $this->input->post('product_unitprice');
         $total_cost = 0;
 
         foreach ($product_name as $index => $product_name) {
             $arr_product = $product_name;
+
             $arr_quant = $po_product_quantity[$index];
             $arr_unit = $product_unit[$index];
             $arr_price = $product_unitprice[$index];
@@ -68,10 +73,12 @@ class Purchase_order_model extends CI_Model
                 'purchase_order_no' => $last_purchase_id,
                 'product_name' => $arr_product,
                 'po_product_quantity' => $arr_quant,
+
                 'product_unit' => $arr_unit,
                 'product_unitprice' => $arr_price,
             ];
             $this->db->insert('purchase_order', $data_purchase_order);
+
 
             // Insert data into inventory_ledger table for the purchase activity
             $data_inventory_ledger = [
@@ -88,6 +95,7 @@ class Purchase_order_model extends CI_Model
             // Calculate total cost
             $total_cost += $arr_quant * $arr_price;
         }
+
 
         $this->db->set('total_cost', $total_cost);
         $this->db->where('purchase_order_no_id', $last_purchase_id);
@@ -106,6 +114,7 @@ class Purchase_order_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+
     function get_all_gr()
     {
         $this->db->select('*');
@@ -245,4 +254,5 @@ class Purchase_order_model extends CI_Model
         $this->db->from('purchase_order_no');
         return $this->db->count_all_results();
     }
+
 }

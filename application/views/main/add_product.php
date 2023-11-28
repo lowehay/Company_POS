@@ -7,6 +7,7 @@
         text-align: center;
     }
 
+
     @media (max-width: 767px) {
         h1 {
             margin-left: 0;
@@ -146,6 +147,7 @@
             </div>
 
             </form>
+
         </div>
     </div>
 </div>

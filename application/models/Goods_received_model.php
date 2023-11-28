@@ -69,16 +69,33 @@ class Goods_received_model extends CI_Model
             $this->db->set('product_price', $arr_price);
             $this->db->where('product_name', $arr_product);
             $this->db->update('product');
+
+            $this->db->select('product_margin');
+            $this->db->where('product_name', $arr_product);
+            $query = $this->db->get('product');
+            $result = $query->row_array();
+
+            // Calculate the selling price based on the retrieved product margin
+            if ($result && isset($result['product_margin'])) {
+                $productMargin = $result['product_margin'];
+
+                // Calculate new selling price based on the product margin percentage
+                $newSellingPrice = $arr_price + ($arr_price * ($productMargin / 100));
+
+                // Update product_sellingprice in the product table
+                $this->db->set('product_sellingprice', $newSellingPrice);
+                $this->db->where('product_name', $arr_product);
+                $this->db->update('product');
+            }
+
+            // Insert total cost into goods_received_no table
+            $this->db->set('gr_total_cost', $total_cost);
+            $this->db->where('goods_received_no_id', $last_id);
+            $this->db->update('goods_received_no');
+
+            return $last_id;
         }
-
-        // Insert total cost into goods_received_no table
-        $this->db->set('gr_total_cost', $total_cost);
-        $this->db->where('goods_received_no_id', $last_id);
-        $this->db->update('goods_received_no');
-
-        return $last_id;
     }
-
     public function updatestatus()
     {
         $gr_id = $this->input->post('gr_id');

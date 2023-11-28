@@ -20,7 +20,9 @@
 <h1>Stock Requisition</h1>
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
+
         <a href="<?php echo site_url('main/add_stock_requisition'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-plus"></i> Create Stock Request</a>
+
         <div class="float-right">
         </div>
     </div>
@@ -30,13 +32,16 @@
                 <thead>
                     <tr class="text-center">
                         <th>Stock Requisition No.</th>
+
                         <th>Date Created</th>
                         <th>Total Cost</th>
+
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
+
                     <?php foreach ($sr as $s) {    ?>
                         <tr class="text-center">
                             <td><?= $s->stock_requisition_no ?></td>
@@ -69,6 +74,7 @@
                             </td>
                         <?php } ?>
                         </tbodyo>
+
             </table>
         </div>
     </div>

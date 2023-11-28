@@ -7,6 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
 
@@ -31,7 +32,9 @@
   h3,
   h4,
   h5 {
+
     font-family: 'IBM Plex Sans';
+
     font-weight: 700;
   }
 
@@ -84,6 +87,7 @@
     / Width of the scrollbar */
 
 
+
   ::-webkit-scrollbar-track {
     background: #fff;
     /* Color of the track */
@@ -91,9 +95,11 @@
 
   ::-webkit-scrollbar-thumb {
     background: #ccc;
+
     /* Color of the thumb /
     border-radius: 6px;
     / Rounded corners */
+
 
   }
 </style>
@@ -101,7 +107,9 @@
 <body>
 
 
+
   <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #7289da">
+
 
 
     <div class="container-fluid">
@@ -109,6 +117,7 @@
         <i class="fas fa-envelope"></i> COMPANY
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

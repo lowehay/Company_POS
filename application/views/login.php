@@ -29,7 +29,9 @@
     }
 
     .card-header {
+
       background-color: #7289da;
+
       /* Remove Bootstrap's default background-color */
       color: white;
       font-weight: bold;
@@ -57,7 +59,9 @@
     }
 
     .btn-primary {
+
       background-color: #7289da;
+
       /* Button background color */
       border: none;
       width: 100%;

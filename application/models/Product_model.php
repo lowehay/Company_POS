@@ -25,8 +25,7 @@ class Product_model extends CI_Model
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
-
-		$product_margin = (string) $this->input->post('product_margin');
+		$product_margin = (float) $this->input->post('product_margin'); // Convert to float for calculations
 		$product_vat = (string) $this->input->post('product_vat');
 		$product_barcode = (string) $this->input->post('product_barcode');
 		$product_category = (string) $this->input->post('product_category');
@@ -38,15 +37,15 @@ class Product_model extends CI_Model
 		$product_required_quantity = (string) $this->input->post('product_required_quantity');
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
-
-		$product_price = (string) $this->input->post('product_price');
+		$product_price = (float) $this->input->post('product_price'); // Convert to float for calculations
 		$product_quantity = (string) $this->input->post('product_quantity');
 
+		// Calculate selling price based on product margin and product price
+		$product_sellingprice = $product_price + ($product_price * $product_margin);
 
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
-
 			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_margin' => $product_margin,
 			'product_vat' => $product_vat,
@@ -60,8 +59,8 @@ class Product_model extends CI_Model
 			'product_required_quantity' => $product_required_quantity,
 			'product_maximum_quantity' => $product_maximum_quantity,
 			'product_minimum_order_quantity' => $product_minimum_order_quantity,
-			'product_image' => $image_file_name,  // Add the image file name to the data array
-
+			'product_image' => $image_file_name,
+			'product_sellingprice' => $product_sellingprice, // Add the calculated selling price to the data array
 		);
 
 		$response = $this->db->insert('product', $data);
@@ -72,6 +71,7 @@ class Product_model extends CI_Model
 			return FALSE;
 		}
 	}
+
 
 
 	function get_all_product()
@@ -109,6 +109,7 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
+
 
 
 
