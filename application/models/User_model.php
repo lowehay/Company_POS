@@ -59,6 +59,7 @@ class User_model extends CI_Model
 		$first_name = (string) $this->input->post('first_name');
 		$last_name = (string) $this->input->post('last_name');
 		$password = (string) $this->input->post('password');
+		$branch = (string) $this->input->post('branch');
 		$role = (string) $this->input->post('role');
 
 
@@ -67,6 +68,7 @@ class User_model extends CI_Model
 			'first_name' => $first_name,
 			'last_name' => $last_name,
 			'password' => sha1($password),
+			'branch' => $branch,
 			'role' => $role,
 		);
 
@@ -128,5 +130,15 @@ class User_model extends CI_Model
 		} else {
 			return FALSE;
 		}
+	}
+
+	function Select_one($id)
+	{
+		$this->db->select('*');
+		$this->db->from('user AS use');
+		$this->db->join('branch AS br', 'use.branch= br.branch_id', 'left');
+		$this->db->where('use.user_id', $id);
+		$query = $this->db->get()->row();
+		return $query;
 	}
 }

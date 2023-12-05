@@ -65,14 +65,11 @@
 
 					<div class="form-group">
 						<label for="branch" class="bold-label">Branch</label>
-						<select class="form-select" id="branch" name="branch" aria-label="Default select example">
-							<option selected hidden>Select Branch</option>
-							<option value="main branch">Main Branch</option>
-							<option value="branch 1">Branch 1</option>
-							<option value="branch 2">Branch 2</option>
-							<option value="branch 2">Branch 3</option>
-							<option value="branch 2">Branch 4</option>
-							<option value="branch 2">Branch 5</option>
+						<select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Branch" name="branch" required>
+							<option value="" selected hidden>Select Branch</option>
+							<?php foreach ($branch as $br) { ?>
+								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
+							<?php } ?>
 						</select>
 						<span class="text-danger"><?php echo form_error('branch'); ?></span>
 					</div>
@@ -82,8 +79,15 @@
 						<select class="form-select" id="role" name="role" aria-label="Default select example">
 							<option selected hidden>Select Role</option>
 							<option value="admin">Admin</option>
-							<option value="inventory clerk">Inventory Clerk</option>
+							<option value="cashier">Accounting</option>
+							<option value="cashier">Branch Admin</option>
+							<option value="cashier">Branch Clerk</option>
+							<option value="cashier">Branch Supervisor</option>
 							<option value="cashier">Cashier</option>
+							<option value="cashier">Finance</option>
+							<option value="inventory clerk">Inventory Clerk</option>
+							<option value="cashier">Warehouse Clerk</option>
+							<option value="cashier">Warehouse Supervisor</option>
 
 						</select>
 						<span class="text-danger"><?php echo form_error('role'); ?></span>

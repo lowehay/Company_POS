@@ -125,6 +125,16 @@ class Purchase_order_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+    function get_all_gr1()
+    {
+        $this->db->select('*');
+        $this->db->from('purchase_order_no');
+        $this->db->join('suppliers', 'purchase_order_no.supplier_id = suppliers.supplier_id');
+        $this->db->where('purchase_order_no.is_delete', 'no');
+        $this->db->where('purchase_order_no.status', 'Back Order');
+        $query = $this->db->get()->result();
+        return $query;
+    }
     function code($id)
     {
         $this->db->select('*');
@@ -254,5 +264,4 @@ class Purchase_order_model extends CI_Model
         $this->db->from('purchase_order_no');
         return $this->db->count_all_results();
     }
-
 }

@@ -92,19 +92,19 @@
 				<div class="section">
 					<h4>Inventory Information</h4>
 					<div class="form-group col-md-3 d-inline-block">
-						<label class="bold-label">Inbound Threshold</label>
+						<label class="bold-label">Inbound Threshold <i class="fa fa-question-circle" title="* Minimum quantity to trigger reordering"></i></label>
 						<input type="number" placeholder="Enter Quantity" name="product_inbound_threshold" min="0" value="<?= set_value('product_inbound_threshold', $product->product_inbound_threshold); ?>" class="form-control" id="product_inbound_threshold" pattern="[1-9][0-9]*([.,][0-9]+)?" title="Please enter a valid number" required>
 						<?= form_error('product_inbound_threshold'); ?>
 					</div>
 
 					<div class="form-group col-md-2 d-inline-block">
-						<label class="bold-label">Shelf life</label>
+						<label class="bold-label">Shelf life <i class="fa fa-question-circle" title="* Maximum no. of days this product can be stored"></i></label>
 						<input type="number" placeholder="Enter No. of Days" name="product_shelf_life" min="0" value="<?= set_value('product_shelf_life', $product->product_shelf_life); ?>" class="form-control" id="product_shelf_life" pattern="[1-9][0-9]*([.,][0-9]+)?" title="Please enter a valid number" required>
 						<?= form_error('product_shelf_life'); ?>
 					</div>
 
 					<div class="form-group col-md-3 d-inline-block">
-						<label class="bold-label">Recall Threshold</label>
+						<label class="bold-label">Recall Threshold <i class="fa fa-question-circle" title="* No. of days from expiry to be returned to the supplier"></i></label>
 						<input type="number" placeholder="Enter Quantity" name="product_recall_threshold" min="0" value="<?= set_value('product_recall_threshold', $product->product_recall_threshold); ?>" class="form-control" id="product_recall_threshold" pattern="[1-9][0-9]*([.,][0-9]+)?" title="Please enter a valid number" required>
 						<?= form_error('product_recall_threshold'); ?>
 					</div>

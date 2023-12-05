@@ -20,8 +20,6 @@ class Main extends CI_Controller
 	}
 
 
-
-
 	function user()
 	{
 		$this->load->model('user_model');
@@ -34,8 +32,10 @@ class Main extends CI_Controller
 	function add_user()
 	{
 		$this->add_user_submit();
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_all_branch();
 		$this->load->view('main/header');
-		$this->load->view('main/add_user');
+		$this->load->view('main/add_user', $this->data);
 		$this->load->view('main/footer');
 	}
 	function add_user_submit()
@@ -45,6 +45,7 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('first_name', 'first_name', 'trim|required|is_unique[user.first_name]', array('is_unique' => 'The username is already taken.'));
 			$this->form_validation->set_rules('last_name', 'last_name', 'trim|required|is_unique[user.last_name]');
 			$this->form_validation->set_rules('password', 'password', 'trim|required');
+			$this->form_validation->set_rules('branch', 'branch', 'trim|required');
 			$this->form_validation->set_rules('role', 'role', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
@@ -67,7 +68,9 @@ class Main extends CI_Controller
 		$this->edit_user_submit();
 		$this->load->model('user_model');
 		$this->data['user'] = $this->user_model->get_users($user_id);
-
+		$this->data['select'] = $this->user_model->select_one($user_id);
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_all_branch();
 		$this->load->view('main/header');
 		$this->load->view('main/edituser', $this->data);
 		$this->load->view('main/footer');
@@ -80,6 +83,7 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 			$this->form_validation->set_rules('password1', 'Confirm New Password', 'required|matches[password]');
+			$this->form_validation->set_rules('branch', 'branch', 'trim|required');
 			$this->form_validation->set_rules('role', 'role', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
@@ -446,7 +450,7 @@ class Main extends CI_Controller
 				$this->session->set_flashdata('error', $error_message);
 			}
 
-			redirect('main/purchase_order');
+			redirect('main/goods_received_list');
 		}
 	}
 	public function print_goods_received($id)
@@ -523,12 +527,6 @@ class Main extends CI_Controller
 		$this->load->view('main/print_grt_report', $this->data);
 	}
 
-	function back_order()
-	{
-		$this->load->view('main/header');
-		$this->load->view('main/back_order');
-		$this->load->view('main/footer');
-	}
 
 	function product()
 	{
@@ -1159,8 +1157,179 @@ class Main extends CI_Controller
 	{
 
 		$this->load->model('sales_model');
+		$this->data['sales'] = $this->sales_model->get_all_sales();
 		$this->load->view('main/header');
 		$this->load->view('main/recordsales', $this->data);
 		$this->load->view('main/footer');
+	}
+	function sales_return()
+	{
+
+		$this->load->model('sales_model');
+		$this->data['sales'] = $this->sales_model->get_all_sales1();
+		$this->load->view('main/header');
+		$this->load->view('main/sales_return', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function branch()
+	{
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_all_branch();
+		$this->load->view('main/header');
+		$this->load->view('main/branch', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_branch()
+	{
+
+		$this->add_branch_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/add_branch');
+		$this->load->view('main/footer');
+	}
+	function add_branch_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('branch', 'Branch Name', 'trim|required|is_unique[branch.branch]');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('branch_model');
+				$response = $this->branch_model->insert_added_branch();
+				if ($response) {
+					$success_message = 'New Branch added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'New Branch was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/branch');
+			}
+		}
+	}
+	function edit_branch($branch_id)
+	{
+		$this->edit_branch_submit();
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_branch($branch_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_branch', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_branch_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('branch', 'Branch Name', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('branch_model');
+
+				$response = $this->branch_model->update_added_branch();
+
+				if ($response) {
+					$success_message = 'Branch updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Branch was not updated successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/branch');
+			}
+		}
+	}
+	public function delete_branch($id)
+	{
+
+		$this->load->model('branch_model');
+		$response = $this->branch_model->delete_branch($id);
+
+		if ($response) {
+			$success_message = 'Branch deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Branch was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/branch/');
+	}
+	function back_order()
+	{
+
+		$this->load->model('purchase_order_model');
+		$this->data['gr'] = $this->purchase_order_model->get_all_gr1();
+		$this->load->view('main/header');
+		$this->load->view('main/back_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	function post_back_order($id)
+	{
+
+		$this->load->model('goods_received_model');
+		$this->data['code'] = $this->goods_received_model->code($id);
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->data['view'] = $this->goods_received_model->view_all_GR1($id);;
+		$this->load->model('purchase_order_model');
+		$this->data['gr_no'] = $this->purchase_order_model->gr_no();
+		$this->load->model('back_order_model');
+		$this->data['bo_no'] = $this->back_order_model->bo_no();
+		$this->load->view('main/header');
+		$this->load->view('main/post_back_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function post_back_order_submit()
+	{
+
+		if ($this->input->post('btn_post_bo')) {
+
+			$this->load->model('back_order_model');
+			$response = $this->back_order_model->post_back_order();
+			if ($response) {
+
+				$success_message = 'Back order posted successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Back order was not posted successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/back_order_list');
+		}
+	}
+	function back_order_list()
+	{
+
+		$this->load->model('back_order_model');
+		$this->data['bo'] = $this->back_order_model->get_all_bo();
+		$this->load->view('main/header');
+		$this->load->view('main/back_order_list', $this->data);
+		$this->load->view('main/footer');
+	}
+	function view_back_order($id)
+	{
+
+		$this->load->model('goods_received_model');
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->load->model('back_order_model');
+		$this->data['code'] = $this->back_order_model->code($id);
+		$this->data['view'] = $this->back_order_model->view_all_bo($id);;
+		$this->load->view('main/header');
+		$this->load->view('main/view_back_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function print_back_order($id)
+	{
+
+		$this->load->model('goods_received_model');
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->load->model('back_order_model');
+		$this->data['code'] = $this->back_order_model->code($id);
+		$this->data['view'] = $this->back_order_model->view_all_bo($id);;
+		$this->load->view('main/print_back_order', $this->data);
 	}
 }

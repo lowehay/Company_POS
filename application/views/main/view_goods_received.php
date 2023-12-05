@@ -71,6 +71,7 @@
                         <tr>
                             <th id="table_style">Product Name</th>
                             <th id="table_style">Quantity</th>
+                            <th id="table_style">Received Quantity</th>
                             <th id="table_style">Unit</th>
                             <th id="table_style">Price</th>
                         </tr>
@@ -80,8 +81,8 @@
                         ?>
                             <tr>
                                 <td><?= $row->product_name; ?></td>
-                                <td><?= $row->po_product_quantity; ?></td>
-                                <td><?= $row->po_product_quantity; ?></td>
+                                <td><?= $row->gr_total_quantity; ?></td>
+                                <td><?= $row->gr_received_quantity; ?></td>
                                 <td><?= $row->product_unit; ?></td>
                                 <td>₱<?= $row->product_unitprice; ?></td>
                             </tr>
@@ -91,7 +92,7 @@
                     <tfoot>
                         <tr>
                             <td colspan="3" style="text-align: right;"><strong>Total Cost:</strong></td>
-                            <td id="total_cost" class="total_cost">₱<?= $row->total_cost; ?></td>
+                            <td id="total_cost" class="total_cost">₱<?= $row->gr_total_cost; ?></td>
                         </tr>
                     </tfoot>
                 </table>

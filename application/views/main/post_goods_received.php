@@ -74,7 +74,7 @@
                             <th style="width: 200px;" id="table_style">Product Name</th>
                             <th id="table_style">Unit</th>
                             <th id="table_style">Ordered Quantity</th>
-                            <th id="table_style">Received Quantity</th>
+                            <th id="table_style">Unserved Quantity</th>
                             <th id="table_style">Price</th>
                             <th id="table_style">Total Cost</th>
                             <th id="table_style">Expiry Date</th>
@@ -87,6 +87,7 @@
                                 <input type="hidden" name="gr_code" value="<?= $row->purchase_order_id ?> ">
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_name ?>" name="product_name[]" readonly>
+                                    <input type="hidden" name="product_barcode" value="<?php echo $row->product_barcode; ?>">
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unit ?>" name="product_unit[]" readonly>
@@ -95,10 +96,10 @@
                                     <input class="form-control form-control-sm" value="<?= $row->po_product_quantity ?>" name="po_product_quantity[]" min="0" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" type="number" name="received_quantity[]" id="received_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" required>
+                                    <input class="form-control form-control-sm" type="number" name="unserved_quantity[]" id="unserved_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="product_unitprice" name="product_unitprice[]">
+                                    <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="product_unitprice" name="product_unitprice[]" readonly>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price_display" readonly>
@@ -133,12 +134,14 @@
 <script>
     // Function to calculate and update the total price for a specific row
     function calculateTotalPrice(row) {
-        const receivedQuantity = parseFloat(row.querySelector('input[name="received_quantity[]"]').value);
+        const unservedQuantity = parseFloat(row.querySelector('input[name="unserved_quantity[]"]').value);
+        const orderedQuantity = parseFloat(row.querySelector('input[name="po_product_quantity[]"]').value);
         const unitPrice = parseFloat(row.querySelector('input[name="product_unitprice[]"]').value);
         const totalPriceField = row.querySelector('input[name="total_price[]"]');
 
-        if (!isNaN(receivedQuantity) && !isNaN(unitPrice)) {
-            const total = receivedQuantity * unitPrice;
+        if (!isNaN(unservedQuantity) && !isNaN(unitPrice) && !isNaN(orderedQuantity)) {
+            const difference = orderedQuantity - unservedQuantity;
+            const total = difference * unitPrice;
             totalPriceField.value = total.toFixed(2);
         } else {
             totalPriceField.value = '';
@@ -160,7 +163,7 @@
     }
 
     // Attach event listeners to input fields for real-time calculations
-    const receivedQuantityFields = document.querySelectorAll('input[name="received_quantity[]"]');
+    const receivedQuantityFields = document.querySelectorAll('input[name="unserved_quantity[]"]');
     const unitPriceFields = document.querySelectorAll('input[name="product_unitprice[]"]');
 
     receivedQuantityFields.forEach(function(element) {
@@ -187,4 +190,40 @@
 
     // Update grand total on page load
     updateGrandTotal();
+
+    let scannedBarcode = ''; // Initialize scanned barcode variable
+
+    // Function to display the scanned barcode
+    function displayBarcode() {
+        const barcodeDisplay = document.getElementById('barcodeDisplay');
+
+
+        // Loop through the product barcodes
+        const productBarcodes = document.getElementsByName('product_barcode');
+        const receivedQuantities = document.getElementsByName('unserved_quantity[]');
+
+        for (let i = 0; i < productBarcodes.length; i++) {
+            // Check if the scanned barcode matches any of the product barcodes
+            if (scannedBarcode === productBarcodes[i].value) {
+                // If match found, deduct unserved quantity by 1 for the corresponding product
+                const currentQuantity = parseFloat(receivedQuantities[i].value);
+                if (!isNaN(currentQuantity) && currentQuantity > 0) {
+                    receivedQuantities[i].value = (currentQuantity - 1).toFixed();
+                    calculateTotalPrice(receivedQuantities[i].parentNode.parentNode);
+                    updateGrandTotal();
+                }
+                // Clear the scanned barcode after deduction
+                scannedBarcode = '';
+                displayBarcode(); // Update display to clear the scanned barcode message
+                break; // Exit loop after deduction
+            }
+        }
+    }
+
+    // Listen for keydown events on the document
+    document.addEventListener('keypress', function(event) {
+        const char = String.fromCharCode(event.keyCode);
+        scannedBarcode += char;
+        displayBarcode();
+    });
 </script>
