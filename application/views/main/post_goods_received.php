@@ -87,10 +87,15 @@
                                 <input type="hidden" name="gr_code" value="<?= $row->purchase_order_id ?> ">
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_name ?>" name="product_name[]" readonly>
-                                    <input type="hidden" name="product_barcode" value="<?php echo $row->product_barcode; ?>">
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unit ?>" name="product_unit[]" readonly>
+                                    <?php foreach ($barcode as $bar) {
+                                        if ($row->product_name === $bar->product_name && $row->product_unit === $bar->unit) { ?>
+                                            <input type="hidden" name="product_barcode" value="<?= $bar->barcode; ?>">
+                                    <?php }
+                                    } ?>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->po_product_quantity ?>" name="po_product_quantity[]" min="0" readonly>

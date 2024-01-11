@@ -27,7 +27,6 @@ class Product_model extends CI_Model
 		$product_name = (string) $this->input->post('product_name');
 		$product_margin = (float) $this->input->post('product_margin'); // Convert to float for calculations
 		$product_vat = (string) $this->input->post('product_vat');
-		$product_barcode = (string) $this->input->post('product_barcode');
 		$product_category = (string) $this->input->post('product_category');
 		$supplier_id = (string) $this->input->post('supplier_id');
 		$product_inbound_threshold = (string) $this->input->post('product_inbound_threshold');
@@ -40,8 +39,13 @@ class Product_model extends CI_Model
 		$product_price = (float) $this->input->post('product_price'); // Convert to float for calculations
 		$product_quantity = (string) $this->input->post('product_quantity');
 
+
 		// Calculate selling price based on product margin and product price
 		$product_sellingprice = $product_price + ($product_price * $product_margin);
+
+		$product_unit =  $this->input->post('product_unit[]');
+		$product_barcode =  $this->input->post('product_barcode[]');
+		$product_price = $this->input->post('product_price[]');
 
 		$data = array(
 			'product_code' => $product_code,
@@ -49,7 +53,6 @@ class Product_model extends CI_Model
 			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_margin' => $product_margin,
 			'product_vat' => $product_vat,
-			'product_barcode' => $product_barcode,
 			'product_category' => $product_category,
 			'supplier_id' => $supplier_id,
 			'product_inbound_threshold' => $product_inbound_threshold,
@@ -61,11 +64,29 @@ class Product_model extends CI_Model
 			'product_minimum_order_quantity' => $product_minimum_order_quantity,
 			'product_image' => $image_file_name,
 			'product_sellingprice' => $product_sellingprice, // Add the calculated selling price to the data array
+
 		);
 
 		$response = $this->db->insert('product', $data);
-
 		if ($response) {
+			$last_product_id = $this->db->insert_id();
+
+			foreach ($product_unit as $index => $product_unit) {
+				$arr_unit = $product_unit;
+				$arr_barcode = $product_barcode[$index];
+				$arr_price = $product_price[$index];
+
+				// Insert data into barcode table
+				$data_barcode = [
+
+					'unit' => $arr_unit,
+					'product_id' => $last_product_id,
+					'product_name' => $product_name,
+					'barcode' => $arr_barcode,
+					'price' => $arr_price,
+				];
+				$this->db->insert('barcode', $data_barcode);
+			}
 			return $this->db->insert_id();
 		} else {
 			return FALSE;
@@ -211,6 +232,17 @@ class Product_model extends CI_Model
 		$query = $this->db->get()->row();
 		return $query;
 	}
+
+	function get_barcode($id)
+	{
+		$this->db->select('*');
+		$this->db->from('product AS pro');
+		$this->db->join('barcode AS bar', 'pro.product_id = bar.product_id', 'left');
+		$this->db->where('bar.product_id',  $id);
+		$query = $this->db->get()->row();
+		return $query;
+	}
+
 	public function get_total_products()
 	{
 		// Assuming your table is named 'product'

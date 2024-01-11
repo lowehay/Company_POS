@@ -44,8 +44,8 @@
                         <tr>
                             <th style="width: 215px;" id="table_style">Product Name</th>
                             <th id="table_style">Unit</th>
-                            <th id="table_style">Total Quantity</th>
-                            <th id="table_style">Received Quantity</th>
+                            <th id="table_style">Back Order Quantity</th>
+                            <th id="table_style">Unserved Quantity</th>
                             <th id="table_style">Price</th>
                             <th id="table_style">Total Cost</th>
                             <th id="table_style">Expiry Date</th>
@@ -58,15 +58,21 @@
                                 <input type="hidden" name="gr_code[]" value="<?= $row->purchase_order_id ?> ">
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->gr_product_name ?>" name="product[]" readonly>
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->gr_unit ?>" name="unit[]" readonly>
+                                    <?php foreach ($barcode as $bar) {
+                                        if ($row->gr_product_name === $bar->product_name && $row->gr_unit === $bar->unit) { ?>
+                                            <input type="hidden" name="product_barcode" value="<?= $bar->barcode; ?>">
+                                    <?php }
+                                    } ?>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->gr_unserved_quantity ?>" name="quantity[]" min="0" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" type="number" name="received_quantity[]" id="receive_quantity" min="0" max="<?= $row->gr_total_quantity - $row->gr_received_quantity ?>" required>
+                                    <input class="form-control form-control-sm" value="<?= $row->gr_unserved_quantity ?>" type="number" name="unserved_quantity[]" id="receive_quantity" min="0" max="<?= $row->gr_total_quantity - $row->gr_received_quantity ?>" readonly>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="price" name="product_unitprice[]">
@@ -120,24 +126,82 @@
     });
 </script>
 <script>
-    $(document).ready(function() {
-        // Listen for changes in any relevant fields
-        $('input[name="received_quantity[]"], input[name="product_unitprice[]"]').on('input', function() {
-            var total_cost = 0;
-            // Loop through all received_quantity and price fields
-            $('input[name="received_quantity[]"]').each(function(index) {
-                var received_quantity = parseInt($(this).val()) || 0;
-                var product_unitprice = parseFloat($('input[name="product_unitprice[]"]').eq(index).val()) || 0;
-                var cost = received_quantity * product_unitprice;
-                total_cost += cost;
-                // Update the cost for this row in the table
-                $(this).parent().siblings('.cost').text(cost.toFixed(2));
-            });
-            // Update the total cost in the table footer
-            $('#total_cost').text(total_cost.toFixed(2));
+    // Function to update the grand total cost for all products
+    function updateGrandTotal() {
+        let grandTotal = 0;
+        const totalCostElements = document.querySelectorAll('input[name="total_price[]"]');
+
+        totalCostElements.forEach(function(element) {
+            if (!isNaN(parseFloat(element.value))) {
+                grandTotal += parseFloat(element.value);
+            }
         });
 
-        // Trigger the input event on page load
-        $('input[name="received_quantity[]"], input[name="product_unitprice[]"]').trigger('input');
+        document.getElementById('total_cost').textContent = grandTotal.toFixed(2);
+    }
+
+    // Attach event listeners to input fields for real-time calculations
+    const receivedQuantityFields = document.querySelectorAll('input[name="unserved_quantity[]"]');
+    const unitPriceFields = document.querySelectorAll('input[name="product_unitprice[]"]');
+
+    receivedQuantityFields.forEach(function(element) {
+        element.addEventListener('input', function() {
+            const row = element.closest('tr');
+            calculateTotalPrice(row);
+            updateGrandTotal();
+        });
+    });
+
+    unitPriceFields.forEach(function(element) {
+        element.addEventListener('input', function() {
+            const row = element.closest('tr');
+            calculateTotalPrice(row);
+            updateGrandTotal();
+        });
+    });
+
+    // Calculate totals for existing data when the page loads
+    const tableRows = document.querySelectorAll('tbody.row_content tr');
+    tableRows.forEach(function(row) {
+        calculateTotalPrice(row);
+    });
+
+    // Update grand total on page load
+    updateGrandTotal();
+
+    let scannedBarcode = ''; // Initialize scanned barcode variable
+
+    // Function to display the scanned barcode
+    function displayBarcode() {
+        const barcodeDisplay = document.getElementById('barcodeDisplay');
+
+
+        // Loop through the product barcodes
+        const productBarcodes = document.getElementsByName('product_barcode');
+        const receivedQuantities = document.getElementsByName('unserved_quantity[]');
+
+        for (let i = 0; i < productBarcodes.length; i++) {
+            // Check if the scanned barcode matches any of the product barcodes
+            if (scannedBarcode === productBarcodes[i].value) {
+                // If match found, deduct unserved quantity by 1 for the corresponding product
+                const currentQuantity = parseFloat(receivedQuantities[i].value);
+                if (!isNaN(currentQuantity) && currentQuantity > 0) {
+                    receivedQuantities[i].value = (currentQuantity - 1).toFixed();
+                    calculateTotalPrice(receivedQuantities[i].parentNode.parentNode);
+                    updateGrandTotal();
+                }
+                // Clear the scanned barcode after deduction
+                scannedBarcode = '';
+                displayBarcode(); // Update display to clear the scanned barcode message
+                break; // Exit loop after deduction
+            }
+        }
+    }
+
+    // Listen for keydown events on the document
+    document.addEventListener('keypress', function(event) {
+        const char = String.fromCharCode(event.keyCode);
+        scannedBarcode += char;
+        displayBarcode();
     });
 </script>

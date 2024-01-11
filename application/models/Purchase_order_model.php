@@ -114,6 +114,14 @@ class Purchase_order_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+    function get_product_unit()
+    {
+        $this->db->select('*');
+        $this->db->from('barcode');
+        $this->db->join('product', 'barcode.product_name = product.product_name');
+        $query = $this->db->get()->result();
+        return $query;
+    }
 
     function get_all_gr()
     {

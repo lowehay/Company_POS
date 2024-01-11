@@ -33,6 +33,7 @@
 					<div class="form-group col-md-3 d-inline-block">
 						<label for="product_code" class="bold-label">Product Code</label>
 						<input type="text" id="product_code" name="product_code" value="<?= set_value('product_code', $product->product_code); ?>" class="form-control" readonly>
+
 					</div>
 
 					<div class="form-group col-md-3 d-inline-block">
@@ -44,6 +45,8 @@
 						<label class="bold-label">Product Name</label>
 						<input type="text" placeholder="Product Name" name="product_name" value="<?= set_value('product_name', $product->product_name); ?>" class="form-control" required>
 						<?= form_error('product_name'); ?>
+						<?php $productname = $product->product_name; ?>
+
 					</div>
 
 					<div class="form-group col-md-3 d-inline-block">
@@ -57,19 +60,21 @@
 					</div>
 
 					<div class="form-group col-md-3 d-inline-block">
-						<label class="bold-label">Barcode</label>
-						<input type="text" placeholder="Barcode" name="product_barcode" min="0" value="<?= set_value('product_barcode', $product->product_barcode); ?>" class="form-control" id="product_barcode" required>
-						<?= form_error('product_barcode'); ?>
-					</div>
-
-					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Product Category</label>
-						<select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_category" required>
+						<select class="form-control " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_category" required>
 							<option class="text-info invisible" value="<?= $product->product_category ?>"><?= $product->product_category ?></option>
 							<?php foreach ($procat as $pc) {
 								echo '<option value="' . $pc->product_category . '">' . $pc->product_category . '</option>';
 							}
 							?>
+						</select>
+					</div>
+					<div class="form-group col-md-3 d-inline-block">
+						<label class="bold-label">VAT</label>
+						<select class="form-control" name="product_vat" required>
+							<option class="text-info invisible" value="<?= $product->product_vat ?>"><?= $product->product_vat ?></option>
+							<option>12%</option>
+							<option>Non-VAT</option>
 						</select>
 					</div>
 
@@ -79,14 +84,7 @@
 						<?= form_error('product_margin'); ?>
 					</div>
 
-					<div class="form-group col-md-3 d-inline-block">
-						<label class="bold-label">VAT</label>
-						<select class="form-control" name="product_vat" required>
-							<option class="text-info invisible" value="<?= $product->product_category ?>"><?= $product->product_category ?></option>
-							<option>12%</option>
-							<option>Non-VAT</option>
-						</select>
-					</div>
+
 				</div>
 
 				<div class="section">
@@ -144,11 +142,95 @@
 				</div>
 			</div>
 			<input type="hidden" name="product_id" value="<?= $product->product_id; ?>">
-			<div class="card-footer bg-transparent text-end">
-				<button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Submit</button>
-				<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
+			<div class="section">
+				<h4>Barcode</h4>
+				<div class="card mb-4">
 
+					<div class="card-body">
+						<table class="table table-bordered text-center" id="table_field">
+							<thead>
+								<tr>
+									<th style="width: 20%;">Unit</th>
+									<th style="width: 15%;">Barcode</th>
+									<th style="width: 20%;">Price</th>
+									<th style="width: 10%;">
+										<button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
+									</th>
+								</tr>
+							</thead>
+							<tbody class="row_content" id="row_product">
+								<?php foreach ($barcode as $bar) :
+									if ($productname === $bar->product_name) :
+										echo $productname; ?>
+										<tr>
+											<td>
+												<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>
+													<option select hidden><?= $barcode->unit ?></option>
+													<?php foreach ($unit as $pro) { ?>
+														<option value="<?= $pro->unit ?>"><?= $pro->unit ?></option>
+													<?php } ?>
+												</select>
+												<input type="hidden" name="selected_product" id="selected_product" value="">
+											</td>
+											<td>
+												<input class="form-control form-control-sm " value="<?= set_value('barcode', $bar->barcode); ?>" type="text" name="product_barcode[]" id="product_barcode" title="Please enter barcode" placeholder="Enter Barcode">
+											</td>
+											<td>
+												<input class="form-control form-control-sm product-cost-price" value="<?= set_value('barcode', $bar->price); ?>" type="text" name="product_price[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" placeholder="Enter Price">
+											</td>
+											<td>
+												<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
+											</td>
+										</tr>
+
+									<?php endif; ?>
+
+								<?php endforeach; ?>
+
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+				<div class="card-footer bg-transparent text-end">
+					<button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Submit</button>
+					<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
+
+				</div>
 			</div>
+
 		</div>
+
 	</div>
+
 </div>
+<script>
+	function addProductRow() {
+		// Clone the first row (assuming it's your template row)
+		var newRow = document.querySelector('.row_content tr:first-child').cloneNode(true);
+
+		// Clear the input values in the new row
+		newRow.querySelectorAll('input').forEach(function(input) {
+			input.value = '';
+		});
+
+		// Append the new row to the table
+		document.querySelector('#row_product').appendChild(newRow);
+	}
+
+	function removeProductRow(button) {
+		// Get the parent row (the <tr> element) of the clicked button
+		var row = button.closest('tr');
+
+		// Check if there's only one row left, don't remove it
+		var rowCount = document.querySelectorAll('.row_content tr').length;
+		if (rowCount > 1) {
+			// Remove the row from the table
+			if (row) {
+				row.remove();
+			}
+		} else {
+			alert("You can't delete the last row.");
+		}
+	}
+</script>

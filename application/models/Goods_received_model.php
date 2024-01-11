@@ -223,6 +223,15 @@ class Goods_received_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+
+    function get_barcode()
+    {
+        $this->db->select('*');
+        $this->db->from('barcode');
+        $query = $this->db->get()->result();
+        return $query;
+    }
+
     function code($id)
     {
         $this->db->select('*');
@@ -232,6 +241,7 @@ class Goods_received_model extends CI_Model
         $query = $this->db->get()->row();
         return $query;
     }
+
 
     function Select_one($id)
     {
@@ -243,6 +253,7 @@ class Goods_received_model extends CI_Model
         $query = $this->db->get()->row();
         return $query;
     }
+
     public function view_all_GR($id)
     {
         $this->db->select('*');

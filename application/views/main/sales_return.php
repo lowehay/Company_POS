@@ -1,7 +1,6 @@
-<?= $this->session->flashdata('exceeds'); ?>
 <div class="row mb-2">
     <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Sales List</h1></br>
+        <h1 class="m-0 text-dark">Sales Return</h1></br>
         <h1 class="text-dark">
             <a href="<?php echo site_url('main/record_sales'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-boxes"></i> Record Sales</a>
             <a href="<?php echo site_url('main/sales_return'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-shopping-basket"></i> Sales Return</a>
@@ -10,17 +9,13 @@
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="<?= base_url('main/index') ?>">Home</a></li>
-            <li class="breadcrumb-item active">Sales List</li>
+            <li class="breadcrumb-item active">Sales Return</li>
         </ol>
     </div><!-- /.col -->
 </div><!-- /.row -->
 
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
-
-        <div class="float-right">
-            <a href="<?php echo site_url('main/sales_report_summary'); ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> Print</a>
-        </div>
         <div class="float-right">
         </div>
     </div>
@@ -32,7 +27,6 @@
                         <th>Reference No.</th>
                         <th>Date Posted</th>
                         <th>Prepared By</th>
-                        <th>Total Sales</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -43,11 +37,17 @@
                             <td><?= $s->reference_no ?></td>
                             <td><?= $s->date_created ?></td>
                             <td><?= $s->prepared_by ?></td>
-                            <td>₱<?= $s->total_cost ?></td>
                             <td>
-                                <a href="<?php echo site_url('main/view_sales/' . $s->sales_id); ?>" style="color: darkcyan; padding-left:6px;" title="Click here to view sales"><i class="fas fa-eye"></i></a>
-                        </tr>
-                    <?php } ?>
+                                <?php if ($s->status == "sold") { ?>
+                                    <a href="<?php echo site_url('main/post_sales_return/' . $s->sales_id); ?>" style="color: darkcyan; padding-left:6px;" title="Click here to post sales return">
+                                        <i class="fas fa-inbox"></i>
+                                    </a>
+                                <?php } else { ?>
+                                    <span class="badge bg-warning"><?= ucfirst($s->status) ?></span>
+                                <?php } ?>
+                            </td>
+
+                        <?php } ?>
                 </tbody>
             </table>
         </div>

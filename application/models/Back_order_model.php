@@ -94,7 +94,7 @@ class Back_order_model extends CI_Model
         $ref = array(
             'status' => 'Received'
         );
-        $this->db->where('purchase_order_id', $po_id);
+        $this->db->where('purchase_order_no_id', $po_id);
         $this->db->update('purchase_order_no', $ref);
         return $po_id;
     }
@@ -103,7 +103,7 @@ class Back_order_model extends CI_Model
         $this->db->select('*');
         $this->db->from('back_order_no');
         $this->db->join('suppliers', 'back_order_no.supplier_id = suppliers.supplier_id');
-        $this->db->join('purchase_order_no', 'back_order_no.purchase_order_id = purchase_order_no.purchase_order_id');
+        $this->db->join('purchase_order_no', 'back_order_no.purchase_order_id = purchase_order_no.purchase_order_no_id');
         $this->db->where('back_order_no.isCancel', 'no');
         $this->db->where('back_order_no.status', 'received');
         $query = $this->db->get()->result();

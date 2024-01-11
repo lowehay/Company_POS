@@ -171,6 +171,7 @@
   <h1 class="m-0 text-dark">
     <a href="<?php echo site_url('main/product'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-boxes"></i> Products</a>
     <a href="<?php echo site_url('main/product_category'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-list"></i> Product Category</a>
+    <a href="<?php echo site_url('main/unit'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-barcode"></i> Unit Management</a>
   </h1>
 
 </div>
@@ -208,8 +209,7 @@
               <div class="card-body">
                 <h5 class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
                 <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
-                <p class="card-text">Unit Price: ₱<?php echo $row->product_price; ?></p>
-                <p class="card-text">Selling Price: ₱<?php echo $row->product_sellingprice; ?></p>
+
 
                 <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
 

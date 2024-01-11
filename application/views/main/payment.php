@@ -655,7 +655,7 @@
         receiptContent += '<div style="margin-top: 20px;">';
         receiptContent += '<p style="text-align: right;"><strong>Original Total Amount:</strong> ₱' + originalTotalAmount.toFixed(2) + '</p>';
         receiptContent += '<p style="text-align: right;"><strong>Entered Cash Amount:</strong> ₱' + cashAmount.toFixed(2) + '</p>';
-        receiptContent += '<p style="text-align: right;"><strong>Change Amount:</strong> ' + changeAmount + '</p>';
+        receiptContent += '<p style="text-align: right;"><strong>Change:</strong> ' + changeAmount + '</p>';
         receiptContent += '</div>';
         receiptContent += '</div>';
         receiptContent += '</div>'; // Close the receipt content div
