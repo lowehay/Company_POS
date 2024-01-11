@@ -80,7 +80,7 @@
                         <tr>
                             <th style="width: 250;" id="table_style">Product Name</th>
                             <th style="width: 160px;" id="table_style">Quantity</th>
-                            <th id="table_style">Unit</th>
+                            <th style="width: 160px;" id="table_style">Unit of Measure</th>
                             <th style="width: 160px;" id="table_style">Price</th>
                             <th style="width: 160px;" id="table_style">Total Cost</th>
                             <th style="width: 50px;" id="table_style">

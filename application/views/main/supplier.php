@@ -4,10 +4,6 @@
         margin: 20px auto;
     }
 
-    thead {
-        background-color: #C0C0C0;
-    }
-
     h1 {
         margin-left: 50px;
     }

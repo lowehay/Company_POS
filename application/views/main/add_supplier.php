@@ -17,7 +17,7 @@
 <div class="container">
   <div class="row mb-4">
     <div class="col-sm-6">
-      <h1 class="m-0 text-dark">Add Supplier</h1>
+      <h1 class="m-0">Add Supplier</h1>
     </div>
   </div>
 
@@ -28,7 +28,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="supplier_name">Name</label>
+            <label for="supplier_name">Contact Persons Name</label>
             <input type="text" id="supplier_name" name="supplier_name" placeholder="Supplier Name" class="form-control <?php echo form_error('supplier_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('supplier_name'); ?>">
             <span class="text-danger"><?php echo form_error('supplier_name'); ?></span>
           </div>
@@ -46,7 +46,7 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="supplier_contact">Contact</label>
+            <label for="supplier_contact">Contact Number</label>
             <input type="tel" id="supplier_contact" name="supplier_contact" placeholder="Contact" maxlength="11" class="form-control <?php echo form_error('supplier_contact') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('supplier_contact'); ?>" pattern="[0-9]+">
             <span class="text-danger"><?php echo form_error('supplier_contact'); ?></span>
           </div>

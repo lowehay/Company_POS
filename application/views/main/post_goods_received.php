@@ -87,6 +87,7 @@
                                 <input type="hidden" name="gr_code" value="<?= $row->purchase_order_id ?> ">
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_name ?>" name="product_name[]" readonly>
+                                    <input type="hidden" name="product_barcode" value="<?php echo $row->product_barcode; ?>">
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unit ?>" name="product_unit[]" readonly>
@@ -95,7 +96,7 @@
                                     <input class="form-control form-control-sm" value="<?= $row->po_product_quantity ?>" name="po_product_quantity[]" min="0" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" type="number" name="received_quantity[]" id="received_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" required>
+                                    <input class="form-control form-control-sm" type="number" name="received_quantity[]" id="received_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" readonly>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="product_unitprice" name="product_unitprice[]">
@@ -187,4 +188,40 @@
 
     // Update grand total on page load
     updateGrandTotal();
+
+    let scannedBarcode = ''; // Initialize scanned barcode variable
+
+    // Function to display the scanned barcode
+    function displayBarcode() {
+        const barcodeDisplay = document.getElementById('barcodeDisplay');
+
+
+        // Loop through the product barcodes
+        const productBarcodes = document.getElementsByName('product_barcode');
+        const receivedQuantities = document.getElementsByName('received_quantity[]');
+
+        for (let i = 0; i < productBarcodes.length; i++) {
+            // Check if the scanned barcode matches any of the product barcodes
+            if (scannedBarcode === productBarcodes[i].value) {
+                // If match found, deduct unserved quantity by 1 for the corresponding product
+                const currentQuantity = parseFloat(receivedQuantities[i].value);
+                if (!isNaN(currentQuantity) && currentQuantity > 0) {
+                    receivedQuantities[i].value = (currentQuantity - 1).toFixed();
+                    calculateTotalPrice(receivedQuantities[i].parentNode.parentNode);
+                    updateGrandTotal();
+                }
+                // Clear the scanned barcode after deduction
+                scannedBarcode = '';
+                displayBarcode(); // Update display to clear the scanned barcode message
+                break; // Exit loop after deduction
+            }
+        }
+    }
+
+    // Listen for keydown events on the document
+    document.addEventListener('keypress', function(event) {
+        const char = String.fromCharCode(event.keyCode);
+        scannedBarcode += char;
+        displayBarcode();
+    });
 </script>

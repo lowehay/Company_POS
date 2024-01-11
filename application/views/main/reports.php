@@ -15,6 +15,9 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#module4">Inventory Report</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#module5">Sales Report</a>
+        </li>
         <!-- Add more modules as needed -->
     </ul>
 
@@ -24,7 +27,7 @@
         <div class="tab-pane fade show active" id="module1">
             <div class="card-header">
                 <div class="card-body">
-                    <table class="table table-striped" id="user-datatables-module1">
+                    <table class="table" id="user-datatables-module1">
                         <thead>
                             <tr>
                                 <th>Purchase Order No.</th>
@@ -57,7 +60,7 @@
         <div class="tab-pane fade" id="module2">
             <div class="card-header">
                 <div class="card-body">
-                    <table class="table table-striped" id="user-datatables-module2">
+                    <table class="table" id="user-datatables-module2">
                         <thead>
                             <tr>
                                 <th>Goods Received No.</th>
@@ -153,6 +156,39 @@
                                     <td><?= $inv->new_quantity ?></td>
                                     <td><?= $inv->date_adjusted ?></td>
                                     <td><?= $inv->reason ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sales Report -->
+        <div class="tab-pane fade" id="module5">
+            <div class="card-header">
+                <div class="card-body">
+                    <table class="table" id="user-datatables-module5">
+                        <thead>
+                            <tr>
+                                <th>Reference No.</th>
+                                <th>Date Created</th>
+                                <th>Payment Method</th>
+                                <th>Total Cost</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($sa as $sales) { ?>
+                                <!-- Replace the following rows with dynamic data from your backend -->
+                                <tr>
+                                    <td><?= $sales->reference_no ?></td>
+                                    <td><?= $sales->date_created ?></td>
+                                    <td><?= ucfirst($sales->payment_method) ?></td>
+                                    <td>₱<?= $sales->total_cost ?></td>
+                                    <td>
+                                        <a href="<?php echo site_url('main/print_sales_report/' . $sales->sales_no_id); ?>" style="color: darkcyan; padding-left:6px;"><i class="fas fa-print"></i></a>
+                                    </td>
                                 </tr>
                             <?php } ?>
                         </tbody>

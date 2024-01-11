@@ -700,6 +700,17 @@ class Main extends CI_Controller
 
 		redirect('main/product');
 	}
+
+	function view_product($product_id)
+	{
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_product($product_id);
+		$this->data['select'] = $this->product_model->select_one($product_id);
+		$this->load->model('supplier_model');
+		$this->load->view('main/header');
+		$this->load->view('main/view_product', $this->data);
+		$this->load->view('main/footer');
+	}
 	function inventory_adjustment()
 	{
 		$this->load->model('product_model');
@@ -774,6 +785,8 @@ class Main extends CI_Controller
 		$this->data['ia'] = $this->inventory_adjustment_model->get_all_adjust();
 		$this->load->model('goods_return_model');
 		$this->data['gr1'] = $this->goods_return_model->get_all_grt1();
+		$this->load->model('sales_model');
+		$this->data['sa'] = $this->sales_model->get_all_sales();
 		$this->load->view('main/header');
 		$this->load->view('main/reports', $this->data);
 		$this->load->view('main/footer');
@@ -849,10 +862,36 @@ class Main extends CI_Controller
 
 	function payment()
 	{
+		$this->add_payment_submit();
+		$this->load->model('sales_model');
+		$this->data['ref_no'] = $this->sales_model->generate_reference_number();
 		$this->load->view('main/header');
-		$this->load->view('main/payment');
+		$this->load->view('main/payment', $this->data);
 		$this->load->view('main/footer');
 	}
+	function add_payment_submit()
+	{
+		if ($this->input->post('btn_add_sales')) {
+			$this->load->model('sales_model');
+			$response = $this->sales_model->insert_sales();
+
+			if ($response) {
+				$success_message = 'Sales created successfully.';
+				$this->session->set_flashdata('success', $success_message);
+
+				// Store data in CodeIgniter session
+				$this->session->set_userdata('receipt_data', $this->input->post());
+			} else {
+				$error_message = 'Sales was not created successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			// Redirect to the receipt page instead of 'main/pos'
+			redirect('main/receipt');
+		}
+	}
+
+
 	function receipt()
 	{
 		$this->load->view('main/header');
@@ -866,5 +905,13 @@ class Main extends CI_Controller
 		$this->load->view('main/header');
 		$this->load->view('main/pos', $this->data);
 		$this->load->view('main/footer');
+	}
+
+	function print_sales_report($id)
+	{
+		$this->load->model('sales_model');
+		$this->data['code'] = $this->sales_model->code($id);
+		$this->data['view'] = $this->sales_model->view_all_sales($id);
+		$this->load->view('main/print_sales_report', $this->data);
 	}
 }

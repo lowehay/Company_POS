@@ -141,26 +141,39 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-group" id="cart-items">
-                            <!-- Cart items will be added here -->
+                            <table class="table table-bordered text-center" id="table_field">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50%;">Product Name</th>
+                                        <th style="width: 15%;">Quantity</th>
+                                        <th style="width: 20%;">Price</th>
+                                        <th style="width: 20%;">Total</th>
+                                        <th style="width: 20%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="row_content" id="row_product">
+                                </tbody>
+                            </table>
                         </ul>
                         <p class="total-price">Total Amount: ₱<span id="total">0.00</span></p>
 
                         <!-- Numeric Keypad for Weight Input -->
                         <div id="numeric-keypad">
-                            <button class="btn btn-secondary numeric-button">1</button>
-                            <button class="btn btn-secondary numeric-button">2</button>
-                            <button class="btn btn-secondary numeric-button">3</button>
-                            <button class="btn btn-secondary numeric-button">4</button>
-                            <button class="btn btn-secondary numeric-button">5</button>
-                            <button class="btn btn-secondary numeric-button">6</button>
-                            <button class="btn btn-secondary numeric-button">7</button>
-                            <button class="btn btn-secondary numeric-button">8</button>
-                            <button class="btn btn-secondary numeric-button">9</button>
-                            <button class="btn btn-secondary numeric-button">0</button>
-                            <button class="btn btn-secondary numeric-button">.</button>
+                            <button class="btn btn-secondary numeric-button" data-key="1">1</button>
+                            <button class="btn btn-secondary numeric-button" data-key="2">2</button>
+                            <button class="btn btn-secondary numeric-button" data-key="3">3</button>
+                            <button class="btn btn-secondary numeric-button" data-key="4">4</button>
+                            <button class="btn btn-secondary numeric-button" data-key="5">5</button>
+                            <button class="btn btn-secondary numeric-button" data-key="6">6</button>
+                            <button class="btn btn-secondary numeric-button" data-key="7">7</button>
+                            <button class="btn btn-secondary numeric-button" data-key="8">8</button>
+                            <button class="btn btn-secondary numeric-button" data-key="9">9</button>
+                            <button class="btn btn-secondary numeric-button" data-key="0">0</button>
+                            <button class="btn btn-secondary numeric-button" data-key=".">.</button>
                             <button class="btn btn-secondary clear-button">Clear</button>
                             <a href="<?php echo site_url('main/payment'); ?>" class="btn btn-warning payment-button">
-                                Payment <i class="fas fa-arrow-right"></i></a>
+                                Payment <i class="fas fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -209,45 +222,85 @@
                 }
             }
 
+            // Event handler for selecting items in the product list
             $(document).on('click', '.product-card', function() {
                 var productName = $(this).data('product-name');
                 var productPrice = parseFloat($(this).data('product-price'));
 
                 // Check if the product is already in the cart
                 if (isProductInCart(productName)) {
-                    toastr.error('This product is already on the cart.');
+                    toastr.error('This product is already in the cart.');
                     return; // Exit the function to prevent adding duplicates
                 }
 
-                // Create a new cart item element with weight text
-                var cartItem = $('<li class="list-group-item" data-product-price="' + productPrice.toFixed(2) + '">' + productName + ' - ₱' + productPrice.toFixed(2) + ' - Quantity: <span class="quantity-text">0</span> - Total: ₱<span class="product-total">0.00</span> <i class="fas fa-trash-alt text-danger float-right delete-item" style="cursor: pointer;"></i></li>');
+                // Create a new cart item element with quantity input
+                var cartItem = $('<tr data-product-name="' + productName + '" data-product-price="' + productPrice.toFixed(2) + '"></tr>');
+                cartItem.append('<td>' + productName + '</td>');
+                cartItem.append('<td><input class="form-control form-control-sm product-quantity" type="number" value="1" min="1"></td>');
+                cartItem.append('<td>' + productPrice.toFixed(2) + '</td>');
+                cartItem.append('<td class="product-total">' + productPrice.toFixed(2) + '</td>');
+                cartItem.append('<td><button class="btn btn-danger delete-item">Delete</button></td>');
 
-                // Append the cart item to the cart
-                $('#cart-items').append(cartItem);
+                // Append the cart item to the cart table
+                $('#table_field tbody').append(cartItem);
 
                 // Update the total price in the cart
-                updateTotal(productPrice);
+                updateTotal();
 
-                // Add a weight text field to the cart item
-                var quantityText = cartItem.find('.quantity-text');
+                // Store the cart items in localStorage
+                updateLocalStorage();
+            });
 
-                // Update the total price as the weight text changes
-                quantityText.on('input', function() {
-                    var quantity = parseFloat($(this).text());
-                    var productPrice = parseFloat(cartItem.data('product-price'));
-                    var productTotal = weight * productPrice;
-                    $(this).closest('li').find('.product-total').text(productTotal.toFixed(2));
+            // Function to update localStorage with cart items
+            function updateLocalStorage() {
+                var cartItems = [];
 
-                    // Update the total price for all products in the cart
-                    updateTotal();
+                // Iterate through cart items and store them in an array
+                $('#table_field tbody').find('tr').each(function() {
+                    var item = {
+                        productName: $(this).data('product-name'),
+                        productPrice: parseFloat($(this).data('product-price')),
+                        quantity: parseFloat($(this).find('.product-quantity').val())
+                    };
+                    cartItems.push(item);
                 });
+
+                // Store the cart items array in localStorage
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            }
+
+            // Event handler for updating quantities and calculating total prices
+            $('#table_field tbody').on('input', '.product-quantity', function() {
+                // Update the quantity in the localStorage
+                updateLocalStorage();
+
+                var quantity = parseFloat($(this).val());
+                var productPrice = parseFloat($(this).closest('tr').data('product-price'));
+                var totalPrice = quantity * productPrice;
+
+                // Update the total price and individual product's total
+                $(this).closest('tr').find('.product-total').text(totalPrice.toFixed(2));
+                updateTotal();
+            });
+
+
+            // Event handler for deleting items from the cart
+            $('#table_field tbody').on('click', '.delete-item', function() {
+                var listItem = $(this).closest('tr');
+                var itemPrice = parseFloat(listItem.data('product-price'));
+
+                // Update the total price by subtracting the item price
+                updateTotal(-itemPrice);
+
+                // Remove the item from the cart
+                listItem.remove();
             });
 
             // Function to check if a product is already in the cart
             function isProductInCart(productName) {
                 var inCart = false;
-                $('#cart-items li').each(function() {
-                    var cartProductName = $(this).text().split(' - ')[0].trim(); // Extract product name from the cart item
+                $('#table_field tbody').find('tr').each(function() {
+                    var cartProductName = $(this).data('product-name');
                     if (cartProductName === productName) {
                         inCart = true;
                         return false; // Exit the loop early since we found a match
@@ -256,14 +309,13 @@
                 return inCart;
             }
 
-
             function updateTotal() {
                 // Calculate and update the total price for all products in the cart
                 var total = 0;
-                $('#cart-items li').each(function() {
+                $('#table_field tbody').find('tr').each(function() {
                     var productPrice = parseFloat($(this).data('product-price'));
-                    var quantity = parseFloat($(this).find('.quantity-text').text());
-                    quantity = isNaN(quantity) ? 0 : quantity; // Ensure weight is a valid number
+                    var quantity = parseFloat($(this).find('.product-quantity').val());
+                    quantity = isNaN(quantity) ? 0 : quantity; // Ensure quantity is a valid number
                     var totalPrice = quantity * productPrice;
                     total += totalPrice;
                     // Update the individual product's total
@@ -281,125 +333,68 @@
                 localStorage.setItem('totalPriceForCheckout', totalPriceForCheckout);
             }
 
-            var selectedCartItem = null; // Initialize the selectedCartItem variable
-
-            // Click event handler for selecting items in the cart
-            $('#cart-items').on('click', 'li', function() {
-                if (selectedCartItem) {
-                    // Remove the 'selected-item' class from the previously selected item
-                    selectedCartItem.removeClass('selected-item');
-                }
-
-                // Add the 'selected-item' class to the clicked item
-                $(this).addClass('selected-item');
-
-                // Update the total price when a product is selected
-                var productPrice = parseFloat($(this).data('product-price'));
-                var quantity = parseFloat($(this).find('.quantity-text').text());
-                quantity = isNaN(quantity) ? 0 : quantity; // Ensure weight is a valid number
-                var totalPrice = quantity * productPrice;
-                updateTotal();
-
-                // Set the currently selected item
-                selectedCartItem = $(this);
+            // Event handler for clearing all quantities when the "Clear" button is clicked
+            $('#numeric-keypad .clear-button').on('click', function() {
+                // Set the quantity to zero for all rows in the cart
+                $('.product-quantity').val(0);
+                // Trigger the input event to recalculate totals
+                $('.product-quantity').trigger('input');
             });
 
-            // Click event handler for deleting items from the cart (using event delegation)
-            $('#cart-items').on('click', '.delete-item', function() {
-                var listItem = $(this).closest('li');
-                var itemPrice = parseFloat(listItem.data('product-price'));
-
-                // Update the total price by subtracting the item price
-                updateTotal(-itemPrice);
-
-                // Remove the item from the cart
-                listItem.remove();
+            // Event handler for clearing the quantity of a specific row
+            $('#table_field tbody').on('click', '.clear-row', function(event) {
+                event.stopPropagation(); // Stop the event from propagating to the parent elements
+                var row = $(this).closest('tr');
+                // Set the quantity to zero for the specific row
+                row.find('.product-quantity').val(0);
+                // Trigger the input event to recalculate totals
+                row.find('.product-quantity').trigger('input');
             });
 
-            // Add a keydown event listener to the entire document
-            $(document).on('keydown', function(event) {
-                // Check if a numeric key or decimal point was pressed
-                if (event.key.match(/[0-9.]/)) {
-                    // Simulate a click on the corresponding numeric keypad button
-                    var digit = event.key;
-                    $('#numeric-keypad .numeric-button:contains(' + digit + ')').click();
-                } else if (event.key === 'Enter') {
-                    // Handle Enter key press (e.g., perform a search if necessary)
-                    performSearch();
-                } else if (event.key === 'Backspace') {
-                    // Handle Backspace key press (e.g., clear the selected item's weight)
-                    $('#numeric-keypad .clear-button').click();
+            // Event handler for checking if the cart is empty before allowing payment
+            $('#numeric-keypad .payment-button').on('click', function() {
+                if ($('#table_field tbody tr').length === 0) {
+                    toastr.error('Please add items to the cart before proceeding to payment.');
+                    return false; // Prevent the default behavior (e.g., following the link)
                 }
             });
 
-            function isCartEmpty() {
-                return $('#cart-items li').length === 0;
-            }
-
-            $('.payment-button').on('click', function(e) {
-                // Check if the cart is empty
-                if (isCartEmpty()) {
-                    e.preventDefault(); // Prevent the default behavior (proceeding to payment)
-                    toastr.error('There are no products in the cart. Please add products before proceeding to payment.');
-                } else if (hasUnspecifiedQuantity()) {
-                    e.preventDefault(); // Prevent the default behavior (proceeding to payment)
-                    toastr.warning('Please specify the quantity for all products in the cart before proceeding to payment.');
-                }
-            });
-
-            // Function to check if there are products in the cart without a specified weight
-            function hasUnspecifiedQuantity() {
-                var hasUnspecifiedQuantity = false;
-                $('#cart-items li').each(function() {
-                    var quantityText = $(this).find('.quantity-text').text();
-                    if (!quantityText || parseFloat(quantityText) <= 0) {
-                        hasUnspecifiedQuantity = true;
-                        return false; // Exit the loop early since we found a product without a weight
-                    }
-                });
-                return hasUnspecifiedQuantity;
-            }
-
-            // Numeric Keypad Logic (same as before)...
-            $('#numeric-keypad .numeric-button').on('click', function() {
-                var digit = $(this).text();
-                var selectedItem = $('.selected-item');
-                var quantityText = selectedItem.find('.quantity-text');
-
-                var currentQuantity = quantityText.text(); // Get the current weight as a string
-
-                if (digit === '.') {
-                    // If the clicked button is a decimal point (.), add it to the current weight text
-                    if (!currentQuantityt.includes('.')) {
-                        quantityText.text(currentWeight + digit);
-                    }
-                } else {
-                    // If the clicked button is a digit (0-9), update the weight text
-                    var newQuantity = currentQuantity === '0' ? digit : currentQuantity + digit;
-                    quantityText.text(newQuantity);
-                }
-
-                // Update the total price as the weight text changes
-                var productPrice = parseFloat(selectedItem.data('product-price'));
-                var totalPrice = parseFloat(quantityText.text()) * productPrice;
-                totalPrice = isNaN(totalPrice) ? 0 : totalPrice; // Ensure totalPrice is a valid number
-                updateTotal();
-            });
         });
 
-        $('#numeric-keypad .clear-button').on('click', function() {
-            var selectedItem = $('.selected-item');
-            if (selectedItem.length > 0) {
-                // Clear the weight of the selected item
-                var quantityText = selectedItem.find('.quantity-text');
-                quantityText.text('0');
+        // Event handler for numeric keypad buttons
+        $('#numeric-keypad .numeric-button').on('click', function() {
+            var key = $(this).data('key');
+            var selectedQuantityField = $('.selected-quantity');
 
-                // Trigger the 'input' event to update the total price in real-time
-                quantityText.trigger('input');
-
-                // Remove the 'selected-item' class
-                selectedItem.removeClass('selected-item');
+            if (key === 'Clear') {
+                // Clear the quantity field
+                selectedQuantityField.val(0);
+            } else {
+                // Append the pressed key to the quantity field
+                var currentValue = selectedQuantityField.val();
+                selectedQuantityField.val(currentValue + key);
             }
+
+            // Trigger the input event to recalculate totals
+            selectedQuantityField.trigger('input');
+        });
+
+        // Event handler for selecting a quantity field in the cart
+        $('#table_field tbody').on('click', '.product-quantity', function() {
+            // Remove the "selected-item" class from all quantity fields
+            $('.product-quantity').removeClass('selected-quantity');
+
+            // Add the "selected-item" class to the clicked quantity field
+            $(this).addClass('selected-quantity');
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            <?php if ($this->session->flashdata('success')) { ?>
+                toastr.success('<?php echo $this->session->flashdata('success'); ?>');
+            <?php } elseif ($this->session->flashdata('error')) { ?>
+                toastr.error('<?php echo $this->session->flashdata('error'); ?>');
+            <?php } ?>
         });
     </script>
 </body>

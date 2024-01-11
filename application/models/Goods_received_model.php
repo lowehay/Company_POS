@@ -35,9 +35,12 @@ class Goods_received_model extends CI_Model
             $arr_rec = $received_quantity[$index];
             $arr_exp = $expiry_date[$index];
 
+            // Ensure that the received quantity does not exceed the ordered quantity
+            $arr_rec = min($arr_rec, $arr_quant);
+
             // Calculate cost for this product
             $cost = $arr_price * $arr_rec;
-            $total_cost += $cost; // Add cost to total cost variable
+            $total_cost += $cost; // Add cost to the total cost variable
 
             // Insert data into goods_received table
             $data_goods_received = [
@@ -63,6 +66,22 @@ class Goods_received_model extends CI_Model
             ];
 
             $this->db->insert('inventory_ledger', $data_inventory_ledger);
+
+            // Update product_quantity in the product table
+            // First, get the current product_quantity
+            $this->db->select('product_quantity');
+            $this->db->from('product');
+            $this->db->where('product_name', $arr_product);
+            $query = $this->db->get();
+            $current_quantity = $query->row()->product_quantity;
+
+            // Calculate the new product quantity
+            $new_quantity = $current_quantity + $arr_rec;
+
+            // Update product_quantity in the product table
+            $this->db->set('product_quantity', $new_quantity);
+            $this->db->where('product_name', $arr_product);
+            $this->db->update('product');
         }
 
         // Insert total cost into goods_received_no table

@@ -55,7 +55,7 @@
             </div>
             <div class="col-12 col-sm-3">
                 <label for="supplier_id" class="form-label">Supplier</label>
-                <select class="form-control form-control-sm selectpicker supplier-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
+                <select class="form-control form-control-sm supplier-select selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
                     <option value="" selected hidden>Select Supplier</option>
                     <?php foreach ($supplier as $supp) { ?>
                         <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -79,7 +79,7 @@
                         <tr>
                             <th style="width: 20%;">Product Name</th>
                             <th style="width: 15%;">Quantity</th>
-                            <th style="width: 15%;">Unit</th>
+                            <th style="width: 15%;">Unit of Measure</th>
                             <th style="width: 20%;">Price</th>
                             <th style="width: 20%;">Total Cost</th>
                             <th style="width: 10%;">
@@ -90,11 +90,9 @@
                     <tbody class="row_content" id="row_product">
                         <tr>
                             <td>
-                                <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
-                                    <option value="" selected hidden>Select Product</option>
-                                    <?php foreach ($product as $pro) { ?>
-                                        <option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
-                                    <?php } ?>
+                                <select class="form-control form-control-sm product-select selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
+                                    <option value="" selected disabled>Select Product</option>
+                                    <!-- Product options will be dynamically populated using JavaScript -->
                                 </select>
                                 <input type="hidden" name="selected_product" id="selected_product" value="">
                             </td>
@@ -103,7 +101,7 @@
                             </td>
                             <td>
                                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
-                                    <option value="" selected hidden>Select Unit</option>
+                                    <option value="" selected disabled>Select Unit</option>
                                     <option>Pcs</option>
                                     <option>Bottle</option>
                                     <option>box</option>
@@ -146,25 +144,34 @@
             input.value = '';
         });
 
+        // Clear the selected product in the new row
+        newRow.querySelector('select[name="product_name[]"]').selectedIndex = 0;
+
         // Append the new row to the table
         document.querySelector('#row_product').appendChild(newRow);
-    }
 
-    function removeProductRow(button) {
-        // Get the parent row (the <tr> element) of the clicked button
-        var row = button.closest('tr');
+        // Update product options based on selected supplier for the new row
+        updateProductOptions(newRow);
 
-        // Check if there's only one row left, don't remove it
-        var rowCount = document.querySelectorAll('.row_content tr').length;
-        if (rowCount > 1) {
-            // Remove the row from the table
-            if (row) {
-                row.remove();
+        // Initialize the selectpicker for the new row
+        $(newRow).find('.selectpicker').selectpicker();
+
+        // Attach event listeners to calculate and update totals for the new row
+        newRow.addEventListener('input', function(event) {
+            if (event.target.matches('input[name="po_product_quantity[]"], input[name="product_unitprice[]"]')) {
+                calculateTotalPrice(newRow);
             }
-        } else {
-            alert("You can't delete the last row.");
-        }
+
+            // Add this block to update the price field when a product is selected for the new row
+            if (event.target.matches('select[name="product_name[]"]')) {
+                var selectedOption = event.target.options[event.target.selectedIndex];
+                var priceField = newRow.querySelector('input[name="product_unitprice[]"]');
+                priceField.value = selectedOption.getAttribute('data-price') || '';
+                calculateTotalPrice(newRow);
+            }
+        });
     }
+
 
     // Function to calculate the total cost for a specific row
     function calculateTotalPrice(row) {
@@ -217,6 +224,37 @@
         }
     });
 
+    $(document).ready(function() {
+        // Store original product options for later use
+        var originalProductOptions = $('#po_product_name').html();
+
+        // Update product options based on selected supplier
+        $('#po_supplier').on('change', function() {
+            var selectedSupplierId = $(this).val();
+            var productOptions = '';
+
+            // Filter products based on the selected supplier
+            <?php foreach ($product as $pro) { ?>
+                if ('<?= $pro->supplier_id ?>' == selectedSupplierId) {
+                    productOptions += '<option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>';
+                }
+            <?php } ?>
+
+            // If no products for the selected supplier, show default message
+            if (productOptions === '') {
+                productOptions = '<option value="" selected disabled>No products available for the selected supplier</option>';
+            }
+
+            // Update the product select options
+            $('#po_product_name').html(productOptions);
+
+            // Refresh the SelectPicker
+            $('#po_product_name').selectpicker('refresh');
+        });
+
+        // Initialize product options with the original options
+        $('#po_supplier').trigger('change');
+    });
 
     // ... Your existing JavaScript code ...
 </script>

@@ -45,7 +45,7 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Preferred Supplier</label>
-						<select class="form-control selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" required>
+						<select class="form-control selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="supplier_id" required>
 							<option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
 							<?php foreach ($supplier as $supp) { ?>
 								<option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -61,7 +61,7 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Product Category</label>
-						<select class="form-control selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select category" name="product_category" required>
+						<select class="form-control selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_category" required>
 							<option class="text-info invisible" value="<?= $product->product_category ?>"><?= $product->product_category ?></option>
 							<option>Hardware</option>
 							<option>Food</option>
@@ -77,8 +77,8 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">VAT</label>
-						<select class="form-control" name="product_vat" required>
-							<option class="text-info invisible" value="<?= $product->product_category ?>"><?= $product->product_category ?></option>
+						<select class="form-control" name="product_vat" data-style="btn-sm btn-outline-secondary" required>
+							<option class="text-info invisible" value="<?= $product->product_vat ?>"><?= $product->product_vat ?></option>
 							<option>12%</option>
 							<option>Non-VAT</option>
 						</select>

@@ -19,6 +19,26 @@
     align-items: stretch;
   }
 
+  .col-custom {
+    flex: 0 0 20%;
+    /* Set the width to 20% to display 5 cards per line */
+    max-width: 20%;
+  }
+
+  .card-link {
+    text-decoration: none;
+    /* Remove default underline */
+    color: inherit;
+    /* Use the default text color */
+  }
+
+  .card-link:hover {
+    text-decoration: none;
+    /* Remove underline on hover */
+    color: inherit;
+    /* Use the default text color on hover */
+  }
+
   .cardni {
     border: 5px solid #ccc;
     border-radius: 15px;
@@ -46,7 +66,6 @@
     }
   }
 
-
   .card-body {
     flex: 1;
     overflow: hidden;
@@ -59,15 +78,31 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    /* Fill the entire card body */
+    align-items: center;
+    /* Center the content horizontally */
   }
 
-  .card-body-content h5 {
-    margin-bottom: 10px;
-  }
-
+  .card-body-content h5,
   .card-body-content p {
-    margin: 0;
+    text-align: center;
+    /* Center the text horizontally */
+  }
+
+  .card-body-content .btn {
+    margin-top: 5px;
+    /* Adjust the top margin to bring buttons closer */
+  }
+
+  .card-body-content .btn-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .card-body-content .btn-group .btn:not(:last-child) {
+    margin-right: 10px;
+    /* Add right margin to separate buttons */
   }
 
 
@@ -174,8 +209,9 @@
       <div class="col-sm-6">
         <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-box"></i> Add Product</a>
       </div>
-      <div class="col-sm-6">
-        <form class="form-inline float-right">
+      <div class="col-sm-6 d-flex justify-content-end align-items-center">
+        <a id="switchLayoutButton" class="btn btn-secondary btn-sm text-white"><i class="fas fa-list"></i></a>
+        <form class="form-inline ml-3">
           <div class="input-group">
             <input type="text" class="form-control" id="searchInput" placeholder="Search Product">
             <div class="input-group-append">
@@ -194,17 +230,23 @@
           $product_id = $row->product_id;
           $product_image = $row->product_image; // Assuming 'product_image' is the column name for the image filename
       ?>
-          <div class="col-md-4 mb-3 product-card">
-            <div class="cardni">
-              <img src="<?php echo base_url('assets/images/' . $product_image); ?>" class="card-img-top" alt="Product Image" style="max-height: 300px;">
-              <div class="card-body">
-                <h5 class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
-                <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
-                <p class="card-text">Price: ₱<?php echo $row->product_price; ?></p>
-                <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
-                <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+          <div class="col-custom mb-3 product-card">
+            <a href="<?php echo site_url('main/view_product/' . $product_id); ?>" class="card-link">
+              <div class="cardni">
+                <img src="<?php echo base_url('assets/images/' . $product_image); ?>" class="card-img-top" alt="Product Image" style="max-height: 300px;">
+                <div class="card-body">
+                  <div class="card-body-content">
+                    <h5 class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
+                    <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
+                    <p class="card-text">Price: ₱<?php echo $row->product_price; ?></p>
+                    <div class="btn-group">
+                      <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+                      <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
+            </a>
           </div>
       <?php
         }
@@ -219,7 +261,59 @@
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     const searchInput = document.getElementById("searchInput");
+    const productContainer = document.getElementById("productContainer");
     const productCards = Array.from(document.querySelectorAll(".product-card"));
+
+    // Initialize DataTable when the button is clicked
+    document.getElementById("switchLayoutButton").addEventListener("click", function() {
+      if ($.fn.dataTable.isDataTable("#productTable")) {
+        // DataTable is already initialized, destroy it
+        $("#productTable").DataTable().destroy();
+        productContainer.innerHTML = ""; // Clear the product container
+        // Rebuild the card layout (you may need to modify this part based on your actual data)
+        productCards.forEach(function(productCard) {
+          productContainer.appendChild(productCard);
+        });
+      } else {
+        // Initialize DataTable with Bootstrap styling
+        $("#productContainer").html('<table id="productTable" class="table table-striped table-bordered" style="width:100%"></table>');
+        const dataTable = $("#productTable").DataTable({
+          // DataTable configuration options go here
+          // You may need to customize this based on your actual data
+          columns: [{
+              title: "Product Code"
+            },
+            {
+              title: "Product Name"
+            },
+            {
+              title: "Price"
+            },
+            {
+              title: "Actions",
+              render: function(data, type, row, meta) {
+                const productId = productCards[meta.row].querySelector(".card-link").getAttribute("href").split('/').pop();
+                return `
+                <div class="btn-group">
+                  <a href="<?php echo site_url('main/edit_product/'); ?>${productId}" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
+                  <a href="<?php echo site_url('main/delete_product/'); ?>${productId}" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                </div>
+              `;
+              },
+            },
+          ],
+        });
+
+        // Populate DataTable with existing data
+        productCards.forEach(function(productCard) {
+          const productCode = productCard.querySelector(".card-text:nth-child(2)").textContent;
+          const productName = productCard.querySelector(".card-title").textContent;
+          const productPrice = productCard.querySelector(".card-text:nth-child(3)").textContent;
+
+          dataTable.row.add([productCode, productName, productPrice, "..."]).draw();
+        });
+      }
+    });
 
     searchInput.addEventListener("input", function() {
       const searchTerm = searchInput.value.trim().toLowerCase();
@@ -240,39 +334,5 @@
     <?php } elseif ($this->session->flashdata('error')) { ?>
       toastr.error('<?php echo $this->session->flashdata('error'); ?>');
     <?php } ?>
-  });
-</script>
-<script>
-  const scrollToTopButton = document.createElement("button");
-  scrollToTopButton.id = "scrollToTopButton";
-  scrollToTopButton.innerText = "Scroll to Top";
-  document.body.appendChild(scrollToTopButton);
-
-  // Function to check if the user is at the very bottom of the page
-  function isAtPageBottom() {
-    return window.innerHeight + window.scrollY >= document.body.offsetHeight;
-  }
-
-  // Show or hide the button based on scroll position
-  function toggleScrollToTopButton() {
-    if (isAtPageBottom() || window.scrollY > 100) {
-      scrollToTopButton.style.display = "block";
-    } else {
-      scrollToTopButton.style.display = "none";
-    }
-  }
-
-  // Show or hide the button initially
-  toggleScrollToTopButton();
-
-  // Listen for scroll events to toggle the button
-  window.addEventListener("scroll", toggleScrollToTopButton);
-
-  // Scroll to the top when the button is clicked
-  scrollToTopButton.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
   });
 </script>
