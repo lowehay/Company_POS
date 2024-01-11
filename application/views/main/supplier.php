@@ -13,7 +13,7 @@
 
     <div class="card-header  ">
 
-        <a href="<?php echo site_url('main/add_supplier'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-user-plus"></i>Add Supplier </a>
+        <a href="<?php echo site_url('main/add_supplier'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-truck"></i> Add Supplier </a>
 
 
     </div>

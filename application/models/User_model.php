@@ -59,6 +59,7 @@ class User_model extends CI_Model
 		$first_name = (string) $this->input->post('first_name');
 		$last_name = (string) $this->input->post('last_name');
 		$password = (string) $this->input->post('password');
+		$branch = (string) $this->input->post('branch');
 		$role = (string) $this->input->post('role');
 
 
@@ -67,6 +68,7 @@ class User_model extends CI_Model
 			'first_name' => $first_name,
 			'last_name' => $last_name,
 			'password' => sha1($password),
+			'branch' => $branch,
 			'role' => $role,
 		);
 

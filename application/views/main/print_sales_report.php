@@ -141,39 +141,10 @@
     </div>
     <div class="recepit_cont">
         <div>Payment Method:</div>
-        <div id="paymentMethod"><?= $code->payment_method ?></div>
+        <div id="paymentMethod"><?= ucfirst($code->payment_method) ?></div>
     </div>
     <h3>Reference No.: <?= $code->reference_no ?> | Date: <?= $code->date_created ?></h3>
     <div class="print-button" id="printButton">
         <i class="fas fa-print"></i> Print
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Trigger print when the page loads
-        window.print();
-
-        // Listen for the print event and handle it
-        window.onafterprint = function() {
-            // Redirect to the reports page
-            window.location.href = 'your_reports_page_url';
-        };
-
-        // Listen for the user canceling the print dialog
-        window.onbeforeprint = function() {
-            // Redirect to the reports page
-            window.location.href = 'your_reports_page_url';
-        };
-
-        // Check if the browser doesn't support the onafterprint event
-        if (window.matchMedia) {
-            var mediaQueryList = window.matchMedia('print');
-            mediaQueryList.addListener(function(mql) {
-                if (!mql.matches) {
-                    // Redirect to the reports page when the print dialog is canceled
-                    window.location.href = 'your_reports_page_url';
-                }
-            });
-        }
-    });
-</script>

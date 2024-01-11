@@ -18,9 +18,6 @@
 <h1>Inventory Adjustment</h1>
 <div class="card card-outline card-success">
     <div class="card-header  ">
-        <div class="float-right">
-            <a href="<?php echo site_url('visitor_portal/printphysicalcountsheet'); ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> Print Physical Count Sheet</a>
-        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
