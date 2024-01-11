@@ -63,6 +63,7 @@
       /* Allow the image's natural height on smaller screens */
       max-height: 200px;
       /* Set a maximum height for mobile screens */
+
     }
   }
 
@@ -167,6 +168,7 @@
       opacity: 1;
       transform: translateY(0px);
     }
+
   }
 
   .cardni:hover {
@@ -207,7 +209,9 @@
   <div class="card-header" style="padding-top: 0;">
     <div class="row align-items-center">
       <div class="col-sm-6">
+
         <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-box"></i> Add Product</a>
+
       </div>
       <div class="col-sm-6 d-flex justify-content-end align-items-center">
         <a id="switchLayoutButton" class="btn btn-secondary btn-sm text-white"><i class="fas fa-list"></i></a>

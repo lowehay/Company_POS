@@ -60,6 +60,7 @@
                 </td>
                 <td>
 
+
                   <?php if ($row->status == "deactivated") { ?>
 
                     <span class="badge bg-danger">
@@ -90,6 +91,7 @@
                   <?php
                   }
                   ?>
+
 
                 </td>
               </tr>

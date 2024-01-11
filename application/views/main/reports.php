@@ -4,6 +4,7 @@
     <!-- Navigation for Modules -->
     <ul class="nav nav-tabs" id="moduleTabs">
         <li class="nav-item">
+
             <a class="nav-link active" data-toggle="tab" href="#module1">Purchase Order Report</a>
         </li>
         <li class="nav-item">
@@ -14,6 +15,7 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#module4">Inventory Report</a>
+
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#module5">Sales Report</a>
@@ -21,7 +23,9 @@
         <!-- Add more modules as needed -->
     </ul>
 
+
     <!-- Purchase Order Report -->
+
     <div class="tab-content" id="moduleTabContent">
         <!-- Module 1 Content -->
         <div class="tab-pane fade show active" id="module1">
@@ -35,10 +39,12 @@
                                 <th>Date Created</th>
                                 <th>Total Cost</th>
                                 <th>Status</th>
+
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+
                             <?php foreach ($po as $pur) { ?>
                                 <!-- Replace the following rows with dynamic data from your backend -->
                                 <tr>
@@ -124,11 +130,13 @@
                                     </td>
                                 </tr>
                             <?php } ?>
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+
 
         <!-- Inventory Adjustment Report -->
         <div class="tab-pane fade" id="module4">
@@ -161,6 +169,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
 

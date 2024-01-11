@@ -35,6 +35,7 @@
         font-size: 12px;
         color: #727070;
         font-weight: 300;
+
     }
 
     .receipt_body {
@@ -216,4 +217,50 @@
             window.location.href = 'pos';
         }, 2000); // 2000 milliseconds (2 seconds) delay in this example
     });
+
+    function clearCartItems() {
+        cartItems = []; // Clear the cart items
+        updateCartDisplay(); // Update the table (payment-table) in the HTML 
+    }
+
+
+    window.addEventListener('beforeunload', function(event) {
+
+        localStorage.removeItem('cartItems');
+        clearCartItems();
+    });
+
+    function updateGeneratedTime() {
+        var currentDate = new Date();
+        var options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            timeZoneName: 'short'
+        };
+
+        var formattedDate = currentDate.toLocaleDateString('en-US', options);
+        document.getElementById('generated-time').textContent = 'Generated on ' + formattedDate;
+    }
+
+    // Call the function initially 
+    updateGeneratedTime();
+
+    // Update the time every second
+    setInterval(updateGeneratedTime, 1000);
+
+    function printDocument() {
+        // Hide the print button
+        var printButton = document.getElementById('printButton');
+        if (printButton) {
+            printButton.style.display = 'none';
+        }
+
+        // Trigger the print dialog
+        window.print();
+    }
 </script>

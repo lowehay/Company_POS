@@ -15,8 +15,10 @@
 </style>
 
 
+
 <div class="container mt-2">
 	<h1>Add User</h1>
+
 
 	<div class="row justify-content-center">
 		<div class="col-md-8">
@@ -49,7 +51,9 @@
 
 					<div class="form-group">
 						<label for="last_name" class="bold-label">Last Name</label>
+
 						<input type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-control <?php echo form_error('last_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('last_name'); ?>">
+
 						<span class="text-danger"><?php echo form_error('last_name'); ?></span>
 					</div>
 

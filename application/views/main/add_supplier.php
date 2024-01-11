@@ -61,6 +61,7 @@
         </div>
       </div>
 
+
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -95,6 +96,7 @@
             <span class="text-danger"><?php echo form_error('supplier_province'); ?></span>
           </div>
         </div>
+
       </div>
 
       <div class="mt-4">
