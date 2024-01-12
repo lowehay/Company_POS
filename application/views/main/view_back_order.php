@@ -42,16 +42,16 @@
 </style>
 
 <div class="container">
-    <h1 class="text-dark">View Goods Received</h1>
+    <h1 class="text-dark">View Back Order</h1>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="goods_received_no" class="form-label">Goods Received No</label>
-                <input type="text" value=" <?= $code->goods_received_no ?>" name="goods_received_no" readonly class="form-control form-control-sm">
+                <label for="goods_received_no" class="form-label">Back Order No</label>
+                <input type="text" value=" <?= $code->back_order_no ?>" name="goods_received_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
                 <label for="date_received" class="form-label">Date Received</label>
-                <input type="text" id="date_received" name="date_received" value="<?= $code->date_received ?>" readonly class="form-control form-control-sm">
+                <input type="text" id="date_received" name="date_received" value="<?= $code->bo_date_received ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
                 <label for="supplier_id" class="form-label">Supplier</label>
@@ -80,11 +80,11 @@
                         <?php foreach ($view as $row) {
                         ?>
                             <tr>
-                                <td><?= $row->product_name; ?></td>
-                                <td><?= $row->gr_total_quantity; ?></td>
-                                <td><?= $row->gr_received_quantity; ?></td>
-                                <td><?= $row->product_unit; ?></td>
-                                <td>₱<?= $row->gr_product_unitprice; ?></td>
+                                <td><?= $row->bo_product_name; ?></td>
+                                <td><?= $row->bo_total_quantity; ?></td>
+                                <td><?= $row->bo_received_quantity; ?></td>
+                                <td><?= $row->bo_unit; ?></td>
+                                <td>₱<?= $row->bo_product_unitprice; ?></td>
                             </tr>
 
                         <?php } ?>
@@ -92,15 +92,15 @@
                     <tfoot>
                         <tr>
                             <td colspan="3" style="text-align: right;"><strong>Total Cost:</strong></td>
-                            <td id="total_cost" class="total_cost">₱<?= $row->gr_total_cost; ?></td>
+                            <td id="total_cost" class="total_cost">₱<?= $row->bo_total_cost; ?></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
             <div class="card-footer bg-transparent text-end">
                 <span class="badge bg-warning float-start" style="font-size: 1.2em;"><?= $row->status; ?></span>
-                <a class="btn btn-secondary btn-sm" href="<?= base_url('main/print_purchase_order/' . $row->purchase_order_no_id); ?>"><i class="fas fa-print"></i> Print</a>
-                <a class="btn btn-secondary btn-sm" href="<?= base_url('main/goods_received_list') ?>"><i class="fas fa-reply"></i> back</a>
+                <a class="btn btn-secondary btn-sm" href="<?= base_url('main/print_back_order/' . $row->back_order_id); ?>"><i class="fas fa-print"></i> Print</a>
+                <a class="btn btn-secondary btn-sm" href="<?= base_url('main/back_order_list') ?>"><i class="fas fa-reply"></i> back</a>
             </div>
         </div>
     </form>

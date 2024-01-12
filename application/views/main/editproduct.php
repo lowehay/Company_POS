@@ -154,18 +154,17 @@
 									<th style="width: 15%;">Barcode</th>
 									<th style="width: 20%;">Price</th>
 									<th style="width: 10%;">
-										<button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
+										<button type="button" class="btn btn-info" id="btn_po"><i class="fas fa-plus"></i></button>
 									</th>
 								</tr>
 							</thead>
 							<tbody class="row_content" id="row_product">
-								<?php foreach ($barcode as $bar) :
-									if ($productname === $bar->product_name) :
-										echo $productname; ?>
+								<?php foreach ($barcodes as $bar) :
+									if ($productname === $bar->product_name) : ?>
 										<tr>
 											<td>
 												<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>
-													<option select hidden><?= $barcode->unit ?></option>
+													<option select hidden><?= $bar->unit ?></option>
 													<?php foreach ($unit as $pro) { ?>
 														<option value="<?= $pro->unit ?>"><?= $pro->unit ?></option>
 													<?php } ?>
@@ -182,11 +181,9 @@
 												<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
 											</td>
 										</tr>
-
+										<input type="hidden" name="barcode_id" value="<?= $barcode->barcode_id; ?>">
 									<?php endif; ?>
-
 								<?php endforeach; ?>
-
 							</tbody>
 						</table>
 					</div>
@@ -205,32 +202,53 @@
 
 </div>
 <script>
-	function addProductRow() {
-		// Clone the first row (assuming it's your template row)
-		var newRow = document.querySelector('.row_content tr:first-child').cloneNode(true);
+	$(document).on('click', '#btn_po', function() {
 
-		// Clear the input values in the new row
-		newRow.querySelectorAll('input').forEach(function(input) {
-			input.value = '';
+		var selectedProduct = $('select[name="product_unit[]"]').last().val();
+		var productAlreadyExists = false;
+
+		// Check if the selected product already exists in the table
+		$('select[name="product_unit[]"]').not(':last').each(function() {
+			if ($(this).val() == selectedProduct) {
+				productAlreadyExists = true;
+			}
 		});
 
+		if (productAlreadyExists) {
+			toastr.error('This unit has already been added.');
+			return;
+		}
+
+		var newRow = '<tr>' +
+			'<td>' +
+			'<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>' +
+			'<option select hidden>Select Unit</option>' +
+			'<?php foreach ($unit as $pro) { ?>' +
+			'<option value="<?= $pro->unit ?>"><?= $pro->unit ?></option>' +
+			'<?php } ?>' +
+			'</select><input type="hidden" name="selected_product" id="selected_product" value=""></td>' +
+			'<td>' +
+			'<input class="form-control form-control-sm " placeholder="Enter Barcode" type="text" name="product_barcode[]" id="product_barcode" title="Please enter barcode" placeholder="Enter Barcode">' +
+			'</td>' +
+			'<td>' +
+			'<input class="form-control form-control-sm product-cost-price"  placeholder="Enter Price" type="text" name="product_price[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" placeholder="Enter Price">' +
+			'</td>' +
+			'<td>' +
+			'<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>' +
+			'</td>' +
+			'</tr>';
+
+
 		// Append the new row to the table
-		document.querySelector('#row_product').appendChild(newRow);
-	}
+		$('#table_field tbody tr:last').after(newRow);
+
+		// Refresh selectpicker for the new row
+		$('.selectpicker').selectpicker('refresh');
+
+	});
 
 	function removeProductRow(button) {
-		// Get the parent row (the <tr> element) of the clicked button
-		var row = button.closest('tr');
-
-		// Check if there's only one row left, don't remove it
-		var rowCount = document.querySelectorAll('.row_content tr').length;
-		if (rowCount > 1) {
-			// Remove the row from the table
-			if (row) {
-				row.remove();
-			}
-		} else {
-			alert("You can't delete the last row.");
-		}
+		// Remove the parent row of the clicked button
+		$(button).closest('tr').remove();
 	}
 </script>

@@ -75,7 +75,7 @@
                                     <input class="form-control form-control-sm" value="<?= $row->gr_unserved_quantity ?>" type="number" name="unserved_quantity[]" id="receive_quantity" min="0" max="<?= $row->gr_total_quantity - $row->gr_received_quantity ?>" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="price" name="product_unitprice[]">
+                                    <input class="form-control form-control-sm" value="<?= $row->gr_product_unitprice ?>" id="price" name="product_unitprice[]">
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price_display" readonly>
@@ -113,19 +113,22 @@
         </div>
 </main>
 <script>
-    $(document).ready(function() {
-        $('input[id^="receive_quantity"], input[id^="price"]').on('input', function() {
-            var quantity = $(this).closest('tr').find('input[id^="receive_quantity"]').val();
-            var price = $(this).closest('tr').find('input[id^="price"]').val();
-            var totalQuantity = quantity;
-            var totalPrice = (quantity * price).toFixed(2); // round to 2 decimal places
-            $(this).closest('tr').find('input[id^="total_quantity"]').val(totalQuantity);
-            $(this).closest('tr').find('input[id^="total_price"]').val(totalPrice);
-            $(this).closest('tr').find('td[id^="total_price_display"]').text(totalPrice);
-        }).trigger('input');
-    });
-</script>
-<script>
+    // Function to update the grand total cost for all products
+    function calculateTotalPrice(row) {
+        const unservedQuantity = parseFloat(row.querySelector('input[name="unserved_quantity[]"]').value);
+        const orderedQuantity = parseFloat(row.querySelector('input[name="quantity[]"]').value);
+        const unitPrice = parseFloat(row.querySelector('input[name="product_unitprice[]"]').value);
+        const totalPriceField = row.querySelector('input[name="total_price[]"]');
+
+        if (!isNaN(unservedQuantity) && !isNaN(unitPrice) && !isNaN(orderedQuantity)) {
+            const difference = orderedQuantity - unservedQuantity;
+            const total = difference * unitPrice;
+            totalPriceField.value = total.toFixed(2);
+        } else {
+            totalPriceField.value = '';
+        }
+    }
+
     // Function to update the grand total cost for all products
     function updateGrandTotal() {
         let grandTotal = 0;

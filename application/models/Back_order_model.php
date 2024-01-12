@@ -39,7 +39,7 @@ class Back_order_model extends CI_Model
         $quantity = $this->input->post('quantity');
         $unit = $this->input->post('unit');
         $product_unitprice = $this->input->post('product_unitprice');
-        $received_quantity = $this->input->post('received_quantity');
+        $unserved_quantity = $this->input->post('unserved_quantity');
         $expiry_date = $this->input->post('expiry_date');
 
         $total_cost = 0; // Initialize total cost variable
@@ -49,8 +49,10 @@ class Back_order_model extends CI_Model
             $arr_quant = $quantity[$index];
             $arr_unit = $unit[$index];
             $arr_price = $product_unitprice[$index];
-            $arr_rec = $received_quantity[$index];
+            $arr_un = $unserved_quantity[$index];
             $arr_exp = $expiry_date[$index];
+
+            $arr_rec = $arr_quant - $arr_un;
 
             // Calculate cost for this product
             $cost = $arr_price * $arr_rec;
@@ -76,7 +78,7 @@ class Back_order_model extends CI_Model
 
             // Update product_quantity and product_expirydate in product table
             $this->db->set('product_quantity', "product_quantity + $arr_rec", FALSE);
-            $this->db->set('product_expirydate', $arr_exp);
+
             $this->db->where('product_name', $arr_product);
             $this->db->update('product');
         }
@@ -122,13 +124,12 @@ class Back_order_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('back_order_no');
-        $this->db->join('purchase_order_no', 'back_order_no.purchase_order_id = purchase_order_no.purchase_order_id', 'left');
+        $this->db->join('purchase_order_no', 'back_order_no.purchase_order_id = purchase_order_no.purchase_order_no_id', 'left');
         $this->db->join('suppliers', 'back_order_no.supplier_id = suppliers.supplier_id', 'left');
         $this->db->where('back_order_no.back_order_id', $id);
         $query = $this->db->get()->row();
         return $query;
     }
-
 
     function Select_one($id)
     {

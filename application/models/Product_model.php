@@ -68,6 +68,7 @@ class Product_model extends CI_Model
 		);
 
 		$response = $this->db->insert('product', $data);
+
 		if ($response) {
 			$last_product_id = $this->db->insert_id();
 
@@ -118,7 +119,6 @@ class Product_model extends CI_Model
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
 		$supplier_id = (string) $this->input->post('supplier_id');
-		$product_barcode = (string) $this->input->post('product_barcode');
 		$product_category = (string) $this->input->post('product_category');
 		$product_margin = (string) $this->input->post('product_margin');
 		$product_vat = (string) $this->input->post('product_vat');
@@ -130,9 +130,6 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
-
-
-
 
 
 		// Initialize the product_image variable
@@ -184,7 +181,6 @@ class Product_model extends CI_Model
 			'product_code' => $product_code,
 			'product_name' => $product_name,
 			'supplier_id' => $supplier_id,
-			'product_barcode' => $product_barcode,
 			'product_category' => $product_category,
 			'product_margin' => $product_margin,
 			'product_vat' => $product_vat,
@@ -208,6 +204,44 @@ class Product_model extends CI_Model
 			return FALSE;
 		}
 	}
+
+
+	function update_barcode($product_id)
+	{
+
+		$product_name = (string) $this->input->post('product_name');
+
+		$product_unit = $this->input->post('product_unit[]');
+		$product_barcode = $this->input->post('product_barcode[]');
+		$product_price = $this->input->post('product_price[]');
+
+		foreach ($product_unit as $index => $units) {
+			$arr_unit = $units;
+			$arr_barcode = $product_barcode[$index];
+			$arr_price = $product_price[$index];
+
+			// Check if the barcode already exists for the given product_id and unit
+			$existing_record = $this->db->get_where('barcode', array('product_id' => $product_id, 'unit' => $arr_unit))->row();
+
+			$data_barcode = [
+				'unit' => $arr_unit,
+				'product_id' => $product_id,
+				'product_name' => $product_name,
+				'barcode' => $arr_barcode,
+				'price' => $arr_price,
+			];
+
+			if ($existing_record && $existing_record->product_id === $product_id && $existing_record->unit === $arr_unit) {
+				$this->db->where('barcode_id', $existing_record->barcode_id);
+				$this->db->update('barcode', $data_barcode);
+			} else {
+				$this->db->insert('barcode', $data_barcode);
+			}
+		}
+
+		return $product_id;
+	}
+
 
 	function delete_product($product_id)
 	{
@@ -236,10 +270,17 @@ class Product_model extends CI_Model
 	function get_barcode($id)
 	{
 		$this->db->select('*');
-		$this->db->from('product AS pro');
-		$this->db->join('barcode AS bar', 'pro.product_id = bar.product_id', 'left');
-		$this->db->where('bar.product_id',  $id);
+		$this->db->from('barcode AS bar');
+		$this->db->join('product AS pro', 'bar.product_id = pro.product_id', 'left');
+		$this->db->where('pro.product_id', $id);
 		$query = $this->db->get()->row();
+		return $query;
+	}
+	function get_all_barcode()
+	{
+		$this->db->select('*');
+		$this->db->from('barcode');
+		$query = $this->db->get()->result();
 		return $query;
 	}
 

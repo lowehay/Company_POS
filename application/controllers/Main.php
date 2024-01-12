@@ -324,6 +324,7 @@ class Main extends CI_Controller
 		$this->data['code'] = $this->purchase_order_model->code($id);
 		$this->data['select'] = $this->purchase_order_model->Select_one($id);
 		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+		$this->data['barcode'] = $this->purchase_order_model->get_product_unit();
 
 		$this->load->view('main/header');
 		$this->load->view('main/edit_purchase_order', $this->data);
@@ -630,6 +631,7 @@ class Main extends CI_Controller
 		$this->data['product'] = $this->product_model->get_product($product_id);
 		$this->data['select'] = $this->product_model->select_one($product_id);
 		$this->data['barcode'] = $this->product_model->get_barcode($product_id);
+		$this->data['barcodes'] = $this->product_model->get_all_barcode();
 		$this->load->model('supplier_model');
 		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
 		$this->data['procat'] = $this->product_model->get_all_product_category();
@@ -646,7 +648,6 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required');
 			$this->form_validation->set_rules('supplier_id', 'Supplier', 'trim|required');
-			$this->form_validation->set_rules('product_barcode', 'Product Barcode', 'trim|required');
 			$this->form_validation->set_rules('product_category', 'Product Category', 'trim|required');
 			$this->form_validation->set_rules('product_margin', 'Product Margin', 'trim|required');
 			$this->form_validation->set_rules('product_vat', 'Product VAT', 'trim|required');
@@ -657,6 +658,10 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('product_required_quantity', 'Product Required Quantity', 'trim|required');
 			$this->form_validation->set_rules('product_maximum_quantity', 'Product Maximum Quantityr', 'trim|required');
 			$this->form_validation->set_rules('product_minimum_order_quantity', 'Product Minimum Order Quantity', 'trim|required');
+
+			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
+			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_price[]', 'Product Price', 'trim|required');
 
 
 			if ($this->form_validation->run() != FALSE) {
@@ -703,8 +708,9 @@ class Main extends CI_Controller
 
 				// Update the product data
 				$response = $this->product_model->update_product($product_id, $update_image);
+				$other_response = $this->product_model->update_barcode($product_id);
 
-				if ($response) {
+				if ($response && $other_response) {
 					$success_message = 'Product updated successfully.';
 					$this->session->set_flashdata('success', $success_message);
 					echo $success_message; // Debugging: Output the success message
@@ -1355,81 +1361,5 @@ class Main extends CI_Controller
 		$this->load->view('main/header');
 		$this->load->view('main/unit', $this->data);
 		$this->load->view('main/footer');
-	}
-	function add_unit()
-	{
-
-		$this->add_unit_submit();
-		$this->load->view('main/header');
-		$this->load->view('main/add_unit');
-		$this->load->view('main/footer');
-	}
-	function add_unit_submit()
-	{
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->form_validation->set_rules('unit', 'Product Unit', 'trim|required|is_unique[unit.unit]');
-
-			if ($this->form_validation->run() != FALSE) {
-				$this->load->model('unit_model');
-				$response = $this->unit_model->insert_added_unit();
-				if ($response) {
-					$success_message = 'Product category added successfully.';
-					$this->session->set_flashdata('success', $success_message);
-				} else {
-					$error_message = 'Product category was not added successfully.';
-					$this->session->set_flashdata('error', $error_message);
-				}
-				redirect('main/unit');
-			}
-		}
-	}
-	function edit_unit($unit_id)
-	{
-		$this->edit_unit_submit();
-		$this->load->model('unit_model');
-		$this->data['unit'] = $this->unit_model->get_unit($unit_id);
-		$this->load->view('main/header');
-		$this->load->view('main/edit_unit', $this->data);
-		$this->load->view('main/footer');
-	}
-	function edit_unit_submit()
-	{
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->form_validation->set_rules('unit', 'Product Unit', 'trim|required');
-
-
-			if ($this->form_validation->run() != FALSE) {
-				$this->load->model('unit_model');
-
-				$response = $this->unit_model->update_added_unit();
-
-				if ($response) {
-					$success_message = 'Product Unit updated successfully.';
-					$this->session->set_flashdata('success', $success_message);
-				} else {
-					$error_message = 'Product Unit was not updated successfully.';
-					$this->session->set_flashdata('error', $error_message);
-				}
-				redirect('main/unit');
-			}
-		}
-	}
-	public function delete_unit($id)
-	{
-
-		$this->load->model('unit_model');
-		$response = $this->unit_model->delete_unit($id);
-
-		if ($response) {
-			$success_message = 'Product Unit deleted successfully.';
-			$this->session->set_flashdata('success', $success_message);
-		} else {
-			$error_message = 'Product Unit was not deleted successfully.';
-			$this->session->set_flashdata('error', $error_message);
-		}
-
-		redirect('main/unit/');
 	}
 }
