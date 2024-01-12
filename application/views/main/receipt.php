@@ -1,4 +1,5 @@
 <style>
+
     @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
 
     * {
@@ -35,6 +36,7 @@
         font-size: 12px;
         color: #727070;
         font-weight: 300;
+
 
     }
 
@@ -73,6 +75,7 @@
     }
 
     .change_cont {
+
         display: flex;
         justify-content: space-between;
         font-weight: bold;
@@ -98,7 +101,9 @@
         margin-top: 15px;
         text-align: center;
         text-transform: uppercase;
+
         font-size: 10px;
+
     }
 
     .print-button {
@@ -110,6 +115,7 @@
         cursor: pointer;
     }
 </style>
+
 
 <div class="container">
     <div class="receipt_header">
@@ -229,6 +235,7 @@
         localStorage.removeItem('cartItems');
         clearCartItems();
     });
+
 
     function updateGeneratedTime() {
         var currentDate = new Date();

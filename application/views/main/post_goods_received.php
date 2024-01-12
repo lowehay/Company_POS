@@ -74,7 +74,7 @@
                             <th style="width: 200px;" id="table_style">Product Name</th>
                             <th id="table_style">Unit</th>
                             <th id="table_style">Ordered Quantity</th>
-                            <th id="table_style">Received Quantity</th>
+                            <th id="table_style">Unserved Quantity</th>
                             <th id="table_style">Price</th>
                             <th id="table_style">Total Cost</th>
                             <th id="table_style">Expiry Date</th>
@@ -87,19 +87,28 @@
                                 <input type="hidden" name="gr_code" value="<?= $row->purchase_order_id ?> ">
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_name ?>" name="product_name[]" readonly>
-                                    <input type="hidden" name="product_barcode" value="<?php echo $row->product_barcode; ?>">
+
+
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unit ?>" name="product_unit[]" readonly>
+                                    <?php foreach ($barcode as $bar) {
+                                        if ($row->product_name === $bar->product_name && $row->product_unit === $bar->unit) { ?>
+                                            <input type="hidden" name="product_barcode" value="<?= $bar->barcode; ?>">
+                                    <?php }
+                                    } ?>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->po_product_quantity ?>" name="po_product_quantity[]" min="0" readonly>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" type="number" name="received_quantity[]" id="received_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" readonly>
+
+                                    <input class="form-control form-control-sm" type="number" name="unserved_quantity[]" id="unserved_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" readonly>
+
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="product_unitprice" name="product_unitprice[]">
+                                    <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="product_unitprice" name="product_unitprice[]" readonly>
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price_display" readonly>
@@ -134,12 +143,14 @@
 <script>
     // Function to calculate and update the total price for a specific row
     function calculateTotalPrice(row) {
-        const receivedQuantity = parseFloat(row.querySelector('input[name="received_quantity[]"]').value);
+        const unservedQuantity = parseFloat(row.querySelector('input[name="unserved_quantity[]"]').value);
+        const orderedQuantity = parseFloat(row.querySelector('input[name="po_product_quantity[]"]').value);
         const unitPrice = parseFloat(row.querySelector('input[name="product_unitprice[]"]').value);
         const totalPriceField = row.querySelector('input[name="total_price[]"]');
 
-        if (!isNaN(receivedQuantity) && !isNaN(unitPrice)) {
-            const total = receivedQuantity * unitPrice;
+        if (!isNaN(unservedQuantity) && !isNaN(unitPrice) && !isNaN(orderedQuantity)) {
+            const difference = orderedQuantity - unservedQuantity;
+            const total = difference * unitPrice;
             totalPriceField.value = total.toFixed(2);
         } else {
             totalPriceField.value = '';
@@ -161,7 +172,7 @@
     }
 
     // Attach event listeners to input fields for real-time calculations
-    const receivedQuantityFields = document.querySelectorAll('input[name="received_quantity[]"]');
+    const receivedQuantityFields = document.querySelectorAll('input[name="unserved_quantity[]"]');
     const unitPriceFields = document.querySelectorAll('input[name="product_unitprice[]"]');
 
     receivedQuantityFields.forEach(function(element) {
@@ -198,7 +209,9 @@
 
         // Loop through the product barcodes
         const productBarcodes = document.getElementsByName('product_barcode');
-        const receivedQuantities = document.getElementsByName('received_quantity[]');
+
+        const receivedQuantities = document.getElementsByName('unserved_quantity[]');
+
 
         for (let i = 0; i < productBarcodes.length; i++) {
             // Check if the scanned barcode matches any of the product barcodes

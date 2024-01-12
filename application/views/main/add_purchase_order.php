@@ -78,9 +78,11 @@
                     <thead>
                         <tr>
                             <th style="width: 20%;">Product Name</th>
-                            <th style="width: 15%;">Quantity</th>
-                            <th style="width: 15%;">Unit of Measure</th>
+
+                            <th style="width: 15%;">Unit</th>
+
                             <th style="width: 20%;">Price</th>
+                            <th style="width: 15%;">Quantity</th>
                             <th style="width: 20%;">Total Cost</th>
                             <th style="width: 10%;">
                                 <button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
@@ -90,29 +92,35 @@
                     <tbody class="row_content" id="row_product">
                         <tr>
                             <td>
-                                <select class="form-control form-control-sm product-select selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
-                                    <option value="" selected disabled>Select Product</option>
-                                    <!-- Product options will be dynamically populated using JavaScript -->
+
+                                <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
+                                    <option value="" selected hidden>Select Product</option>
+                                    <?php foreach ($product as $pro) { ?>
+
+                                        <option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
+
+                                    <?php } ?>
+
                                 </select>
                                 <input type="hidden" name="selected_product" id="selected_product" value="">
                             </td>
                             <td>
 
-                                <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" required min="0">
-
-                            </td>
-                            <td>
                                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
-                                    <option value="" selected disabled>Select Unit</option>
-                                    <option>Pcs</option>
-
-                                    <option>Bottle</option>
-                                    <option>box</option>
+                                    <option value="" selected hidden>Select Unit</option>
 
                                 </select>
+
+                            </td>
+
+
+                            <td>
+                                <input class=" form-control form-control-sm product-cost-price" type="text" name="product_unitprice[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" title="Please enter a valid price number">
                             </td>
                             <td>
-                                <input class="form-control form-control-sm product-cost-price" type="text" name="product_unitprice[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" title="Please enter a valid price number">
+
+                                <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" required min="0">
+
                             </td>
                             <td>
                                 <input class="form-control form-control-sm" type="text" name="total_price[]" id="total_price" readonly>
@@ -232,39 +240,44 @@
             priceField.value = selectedOption.getAttribute('data-price') || '';
         }
     });
+    document.addEventListener('change', function(event) {
+        if (event.target.matches('select[name="product_name[]"]')) {
+            var selectedProduct = event.target.value;
+            var unitField = event.target.closest('tr').querySelector('select[name="product_unit[]"]');
+            var units = <?php echo json_encode($barcode); ?>; // Assuming $barcode contains the units data
 
-    $(document).ready(function() {
-        // Store original product options for later use
-        var originalProductOptions = $('#po_product_name').html();
+            // Clear previous options
+            unitField.innerHTML = '<option value="" selected hidden>Select Unit</option>';
 
-        // Update product options based on selected supplier
-        $('#po_supplier').on('change', function() {
-            var selectedSupplierId = $(this).val();
-            var productOptions = '';
-
-            // Filter products based on the selected supplier
-            <?php foreach ($product as $pro) { ?>
-                if ('<?= $pro->supplier_id ?>' == selectedSupplierId) {
-                    productOptions += '<option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>';
+            // Filter and populate units based on selected product
+            units.forEach(function(unit) {
+                if (unit.product_name === selectedProduct) {
+                    var option = document.createElement('option');
+                    option.value = unit.unit;
+                    option.textContent = unit.unit;
+                    unitField.appendChild(option);
                 }
-            <?php } ?>
-
-            // If no products for the selected supplier, show default message
-            if (productOptions === '') {
-                productOptions = '<option value="" selected disabled>No products available for the selected supplier</option>';
-            }
-
-            // Update the product select options
-            $('#po_product_name').html(productOptions);
-
-            // Refresh the SelectPicker
-            $('#po_product_name').selectpicker('refresh');
-        });
-
-        // Initialize product options with the original options
-        $('#po_supplier').trigger('change');
+            });
+        }
     });
+    document.addEventListener('change', function(event) {
+        if (event.target.matches('select[name="product_name[]"], select[name="product_unit[]"]')) {
+            var selectedProduct = event.target.closest('tr').querySelector('select[name="product_name[]"]').value;
+            var selectedUnit = event.target.closest('tr').querySelector('select[name="product_unit[]"]').value;
+            var priceField = event.target.closest('tr').querySelector('input[name="product_unitprice[]"]');
+            var barcode = <?php echo json_encode($barcode); ?>; // Assuming $barcode contains the barcode data
 
 
-    // ... Your existing JavaScript code ...
+            // Reset price field
+            priceField.value = '';
+
+
+            // Find the corresponding price for the selected product and unit
+            barcode.forEach(function(bar) {
+                if (bar.product_name === selectedProduct && bar.unit === selectedUnit) {
+                    priceField.value = bar.price;
+                }
+            });
+        }
+    });
 </script>

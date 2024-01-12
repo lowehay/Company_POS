@@ -93,7 +93,7 @@
                         <tbody class="row_content" id="row_product">
                             <tr>
                                 <td>
-                                    <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
+                                    <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
                                         <option value="<?= $row->product_name ?>"><?= $row->product_name ?></option>
                                         <?php foreach ($product as $pro) { ?>
                                             <option value="<?= $pro->product_name ?>"> <?= $pro->product_name ?></option>
@@ -104,22 +104,28 @@
                                     <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" value="<?= $row->po_product_quantity ?>" pattern="[0-9]+" required>
                                 </td>
                                 <td>
-                                    <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
+                                    <select class="form-control form-control-sm selectpicker unit-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
                                         <option class="text-info invisible" value="<?= $row->product_unit ?>"><?= $row->product_unit ?></option>
-                                        <option>Pcs</option>
-                                        <option>Tablet</option>
-                                        <option>Capsule</option>
-                                        <option>box</option>
-                                        <option>Pad</option>
+                                        <?php foreach ($barcode as $bar) {
+                                            if ($row->product_name === $bar->product_name) { ?>
+                                                <option value="<?= $bar->unit ?>"> <?= $bar->unit ?></option>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </select>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" type="number" name="product_unitprice[]" id="product_unitprice" value="<?= $row->product_unitprice ?>" required>
+                                    <?php foreach ($barcode as $bar) {
+                                        if ($row->product_name === $bar->product_name && $bar->unit === $row->product_unit) { ?>
+                                            <input class="form-control form-control-sm" type="number" name="product_unitprice[]" id="product_unitprice" value="<?= $bar->price ?>" required>
+                                        <?php } ?>
+                                    <?php } ?>
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price_display" readonly>
                                 </td>
                             </tr>
+
                         <?php } ?>
                         </tbody>
                         <tfoot>
@@ -191,12 +197,12 @@
         <td><input class="form-control form-control-sm" type="number" name="po_product_quantity[]" value="" pattern="[0-9]+" required></td>
         <td>
             <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" required>
-                <option></option>
-                <option>Pcs</option>
-                <option>Tablet</option>
-                <option>Capsule</option>
-                <option>box</option>
-                <option>Pad</option>
+                <option value=" ></option>
+              <?php foreach ($barcode as $bar) {
+                    if ($row->product_name === $bar->product_name) { ?>
+                                                <option value="<?= $bar->unit ?>"> <?= $bar->unit ?></option>
+                                            <?php } ?>
+                                        <?php } ?>
             </select>
         </td>
         <td><input class="form-control form-control-sm" type="number" name="product_unitprice[]" value="" required></td>

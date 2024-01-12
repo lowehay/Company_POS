@@ -203,6 +203,11 @@
 <div class="row mb-2">
   <div class="col-sm-6">
   </div>
+  <h1 class="m-0 text-dark">
+    <a href="<?php echo site_url('main/product'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-boxes"></i> Products</a>
+    <a href="<?php echo site_url('main/product_category'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-list"></i> Product Category</a>
+    <a href="<?php echo site_url('main/unit'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-barcode"></i> Unit Management</a>
+  </h1>
 
 </div>
 <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
@@ -234,6 +239,7 @@
           $product_id = $row->product_id;
           $product_image = $row->product_image; // Assuming 'product_image' is the column name for the image filename
       ?>
+
           <div class="col-custom mb-3 product-card">
             <a href="<?php echo site_url('main/view_product/' . $product_id); ?>" class="card-link">
               <div class="cardni">
@@ -249,6 +255,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
             </a>
           </div>

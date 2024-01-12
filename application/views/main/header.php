@@ -1,3 +1,4 @@
+
   <!DOCTYPE html>
   <html lang="en">
 
@@ -114,6 +115,7 @@
           <i class="fas fa-envelope"></i> COMPANY
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -122,6 +124,11 @@
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/user') ?>">User</a>
             </li>
             <li class="nav-item">
+
+              <a class="nav-link active" aria-current="page" href="<?= base_url('main/branch') ?>">Branch</a>
+            </li>
+            <li class="nav-item">
+
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/supplier') ?>">Supplier</a>
             </li>
             <li class="nav-item">
@@ -135,6 +142,9 @@
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="<?= base_url('main/purchase_order') ?>">Purchase Order</a></li>
                 <li><a class="dropdown-item" href="<?= base_url('main/goods_received') ?>">Goods Received</a></li>
+
+                <li><a class="dropdown-item" href="<?= base_url('main/back_order') ?>">Back Order</a></li>
+
                 <li><a class="dropdown-item" href="<?= base_url('main/goods_return') ?>">Goods Return</a></li>
               </ul>
             </li>
@@ -153,12 +163,14 @@
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/pos') ?>">POS</a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/reports') ?>">Reports</a>
             </li>
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="<?= base_url('main/backup') ?>">Backup & Restore</a>
             </li>
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-user"></i>
@@ -174,8 +186,12 @@
             </li>
           </ul>
         </div>
-      </div>
-    </nav>
-  </body>
+
+
+
+    </div>
+  </nav>
+</body>
+
 
   </html>
