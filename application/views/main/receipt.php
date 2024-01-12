@@ -13,238 +13,215 @@
         display: block;
         width: 100%;
         background: #fff;
-        max-width: 350px;
-        padding: 25px;
+        max-width: 300px;
+        /* Adjust the width as needed */
+        padding: 15px;
         margin: 50px auto 0;
         box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
     }
 
     .receipt_header {
-        padding-bottom: 40px;
-        border-bottom: 1px dashed #000;
         text-align: center;
+        margin-bottom: 15px;
     }
 
     .receipt_header h1 {
-        font-size: 20px;
+        font-size: 18px;
         margin-bottom: 5px;
         color: #000;
         text-transform: uppercase;
     }
 
-    .receipt_header h1 span {
-        display: block;
-        font-size: 25px;
-    }
-
     .receipt_header h2 {
-        font-size: 14px;
+        font-size: 12px;
         color: #727070;
         font-weight: 300;
 
+
     }
 
-    body {
-
-        background: #eee;
-    }
-
-    .print-only {
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-        max-width: 300px;
-        /* Adjust the width based on your preference */
-        margin: 0 auto;
-    }
-
-    .well {
-        background-color: #f5f5f5;
-        padding: 10px;
-        border-radius: 5px;
-        text-align: center;
-    }
-
-    .invoice-to ul {
-        list-style-type: none;
-        padding: 0;
-    }
-
-    .invoice-items table {
-        width: 100%;
-        border-collapse: collapse;
+    .receipt_body {
         margin-top: 10px;
     }
 
-    .invoice-items th,
-    .invoice-items td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
+    table {
+        width: 100%;
+        border-collapse: collapse;
     }
 
+    th,
+    td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: left;
+    }
 
     .recepit_cont {
         display: flex;
-        justify-content: center;
-        column-gap: 25px;
+        justify-content: space-between;
         font-weight: bold;
-        font-size: 15px;
+        font-size: 12px;
         color: #000;
+        margin-top: 10px;
+    }
+
+    .cashpayment_cont {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 12px;
+        color: #000;
+        margin-top: 10px;
+    }
+
+    .change_cont {
+
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 12px;
+        color: #000;
+        margin-top: 10px;
     }
 
     .items {
-        margin-top: 20px;
-        color: #000;
+        margin-top: 15px;
+    }
+
+    .items th,
+    .items td {
+        padding: 10px;
+        text-align: left;
     }
 
     h3 {
         color: #000;
         border-top: 1px dashed #000;
         padding-top: 10px;
-        margin-top: 25px;
+        margin-top: 15px;
         text-align: center;
         text-transform: uppercase;
-        font-size: 10px
+
+        font-size: 10px;
 
     }
 
     .print-button {
         color: #000;
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+        cursor: pointer;
     }
 </style>
 
-<div class="card shadow" style="max-width: 2000px; margin: 0 auto; height: 100vh;">
-    <div class="card-header text-center">
-        <h2>Receipt</h2>
+
+<div class="container">
+    <div class="receipt_header">
+        <h1><i class="fas fa-shopping-basket"></i> COMPANY</h1>
+        <h2>Prepared By: <?= ucfirst($this->session->userdata('UserLoginSession')['username']) ?></h2>
     </div>
-    <div class="card-body" style="flex-grow: 1;">
-        <div class="row">
-            <!-- Left column for payment method -->
-            <!-- Right column for total price, cash payment, and change -->
-            <div class="receipt col-md-8 text-center">
-                <div class="border p-3">
-                    <div class="container bootdey">
-                        <div class="row invoice row-printable">
-                            <div class="col-md-10 mx-auto">
-                                <!-- col-md-10 start here -->
-                                <div class="panel panel-default plain" id="dash_0">
-                                    <!-- Start .panel -->
-                                    <div class="panel-body p30">
-                                        <div class="row">
-                                            <div class="col-lg-12 mx-auto">
-
-                                                <!-- col-lg-12 start here -->
-                                                <div class="print-only">
-                                                    <div class="well">
-                                                        <ul class="list-unstyled mb0">
-                                                            <li><strong>Receipt</strong></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="invoice-to mt25">
-                                                        <ul class="list-unstyled">
-                                                            <li><strong>Company</strong></li>
-                                                            <li>Welcome,</li>
-                                                            <li>Sample</li>
-                                                            <li>Surallah, South Cotabato</li>
-                                                            <li></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="invoice-items">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="per70">Description</th>
-                                                                        <th class="per5">Qty</th>
-                                                                        <th class="per25">Total</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="payment-table">
-                                                                    <!-- ... table body content ... -->
-                                                                </tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <th colspan="2" class="text-right">Total:</th>
-                                                                        <th id="total-amount">₱0.00</th>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <p id="generated-time"></p>
-                                                </div>
-
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <!-- col-lg-12 end here -->
-                                </div>
-                                <!-- End .row -->
-                            </div>
-                        </div>
-                        <!-- End .panel -->
-                    </div>
-                    <!-- col-md-10 end here -->
-                    <div class="invoice-footer mt25">
-                        <p class="text-center"></p>
-                        <a href="#" class="btn btn-default ml15" onclick="printDocument()">
-                            <i class="fa fa-print mr5"></i> Print
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <div class="receipt_body">
+        <div class="items">
+            <table>
+                <thead>
+                    <th>ITEM NAME</th>
+                    <th>QUANTITY</th>
+                    <th>PRICE</th>
+                </thead>
+                <tbody id="itemTableBody"></tbody>
+            </table>
         </div>
     </div>
+    <div class="recepit_cont">
+        <div>Total:</div>
+        <div id="totalAmount"></div>
+    </div>
+    <div class="recepit_cont">
+        <div>Payment Method:</div>
+        <div id="paymentMethod"></div>
+    </div>
+    <div class="cashpayment_cont">
+        <div>Cash Payment:</div>
+        <div id="cashpayment"></div>
+    </div>
+    <div class="change_cont">
+        <div>Change:</div>
+        <div id="change"></div>
+    </div>
+    <h3>Reference No.: <span id="referenceNo"></span> | Date: <?php echo date('m/d/y'); ?></h3>
+    <div class="print-button" id="printButton">
+        <i class="fas fa-print"></i> Print
+    </div>
 </div>
-<!-- end of receipt code -->
-</div>
-</div>
-</div>
-<!-- Numeric Keypad for Weight Input -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    function confirmBack() {
-        var confirmMessage = "Are you sure you want to go back and make new transactions?";
+    document.addEventListener('DOMContentLoaded', function() {
+        // Retrieve stored product data from localStorage
+        var storedProducts = localStorage.getItem('paymentPageCartItems');
+        var products = JSON.parse(storedProducts);
 
-        // Display a confirmation dialog
-        var userConfirmed = window.confirm(confirmMessage);
+        // Display products in the table
+        var itemTableBody = document.getElementById('itemTableBody');
+        var totalAmount = 0;
 
-        // Check the user's choice
-        if (userConfirmed) {
-            // If the user clicked "OK," navigate back to the dashboard page
-            window.location.href = "<?php echo site_url('main/'); ?>";
+        products.forEach(function(product) {
+            var row = document.createElement('tr');
+            row.innerHTML = '<td>' + product.productName + '</td>' +
+                '<td>' + product.quantity + '</td>' +
+                '<td>' + product.productPrice.toFixed(2) + '</td>';
+            itemTableBody.appendChild(row);
+
+            // Calculate total amount
+            totalAmount += parseFloat(product.productPrice);
+        });
+
+        // Display total amount
+        document.getElementById('totalAmount').textContent = '₱' + totalAmount.toFixed(2);
+
+        // Retrieve and display payment method value
+        var storedPaymentMethod = localStorage.getItem('selectedPaymentMethod');
+        var capitalizedPaymentMethod = storedPaymentMethod.charAt(0).toUpperCase() + storedPaymentMethod.slice(1);
+        document.getElementById('paymentMethod').textContent = '' + capitalizedPaymentMethod;
+
+        // Retrieve stored payment data from localStorage
+        var storedPaymentData = localStorage.getItem('paymentData');
+        var paymentData = JSON.parse(storedPaymentData);
+
+        // Display payment data
+        document.getElementById('totalAmount').textContent = '₱' + paymentData.totalAmount;
+        document.getElementById('cashpayment').textContent = '₱' + paymentData.cashPayment;
+        document.getElementById('change').textContent = '₱' + paymentData.change;
+
+        // Retrieve and display reference number
+        var storedReferenceNo = localStorage.getItem('referenceNo');
+        document.getElementById('referenceNo').textContent = storedReferenceNo;
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Your existing code to retrieve and display data
+
+        // Hide the print button
+        var printButton = document.getElementById('printButton');
+        if (printButton) {
+            printButton.style.display = 'none';
         }
-        // If the user clicked "Cancel" or closed the dialog, stay on the payment page
-    }
-    function startNewTransaction() {
-        // Clear the cart items array and update the cart display
-        cartItems = [];
-        updateCartDisplay();
-    }
 
-    $(document).ready(function () {
-        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        var paymentTable = $('#payment-table');
+        // Trigger the print functionality
+        window.print();
 
-        // Loop through cartItems and add them to the payment table
-        cartItems.forEach(function (item) {
-            var row = $('<tr></tr>');
-            row.append($('<td class="per70 text-center">' + item.name + '</td>'));
-            row.append($('<td class="per5 text-center">' + item.weight + '</td>')); // Display the weight
-            row.append($('<td class="per25 text-center"> ₱' + item.price + '</td>'));
-            paymentTable.append(row);
-        });
+        // Revert the display property after a delay (adjust the delay as needed)
+        setTimeout(function() {
+            if (printButton) {
+                printButton.style.display = 'block';
+            }
+        }, 1000); // 1000 milliseconds (1 second) delay in this example
 
-        // Calculate and display the subtotal and total amounts
-        var subtotal = 0;
-        cartItems.forEach(function (item) {
-            subtotal += parseFloat(item.price);
-        });
-        $('#subtotal-amount').text('₱' + subtotal.toFixed(2));
-        $('#total-amount').text('₱' + subtotal.toFixed(2));
+        // Redirect to the POS page after another delay (adjust the delay as needed)
+        setTimeout(function() {
+            window.location.href = 'pos';
+        }, 2000); // 2000 milliseconds (2 seconds) delay in this example
     });
 
     function clearCartItems() {
@@ -253,11 +230,13 @@
     }
 
 
-    window.addEventListener('beforeunload', function (event) {
+    window.addEventListener('beforeunload', function(event) {
 
         localStorage.removeItem('cartItems');
         clearCartItems();
     });
+
+
     function updateGeneratedTime() {
         var currentDate = new Date();
         var options = {

@@ -15,7 +15,7 @@
     }
 </style>
 
-<h1>To Be Received</h1>
+<h1>Waiting For Delivery</h1>
 <div class="card card-outline card-success">
     <div class="card-header">
         <h2 class="text-dark">

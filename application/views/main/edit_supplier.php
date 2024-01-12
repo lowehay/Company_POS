@@ -30,7 +30,7 @@
             <?= form_open_multipart('', array('onsubmit' => 'return confirm(\'Are you sure you want to update this data?\')')); ?>
 
             <div class="custom-form-group">
-                <label for="supplier_name" class="custom-label">Supplier Name</label>
+                <label for="supplier_name" class="custom-label">Contact Persons Name</label>
                 <input type="text" name="supplier_name" class="form-control custom-input <?php echo form_error('supplier_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('supplier_name', $supplier->supplier_name); ?>">
                 <span style="color: red;"><?php echo form_error('supplier_name'); ?></span>
             </div>
@@ -42,7 +42,7 @@
             </div>
 
             <div class="custom-form-group">
-                <label for="supplier_contact" class="custom-label">Contact</label>
+                <label for="supplier_contact" class="custom-label">Contact Number</label>
                 <input type="tel" name="supplier_contact" maxlength="11" pattern="[0-9]+" class="form-control custom-input <?php echo form_error('supplier_contact') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('supplier_contact', $supplier->supplier_contact); ?>">
                 <span style="color: red;"><?php echo form_error('supplier_contact'); ?></span>
             </div>

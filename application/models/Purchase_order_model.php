@@ -114,6 +114,7 @@ class Purchase_order_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+
     function get_product_unit()
     {
         $this->db->select('*');
@@ -122,6 +123,7 @@ class Purchase_order_model extends CI_Model
         $query = $this->db->get()->result();
         return $query;
     }
+
 
     function get_all_gr()
     {
@@ -272,4 +274,5 @@ class Purchase_order_model extends CI_Model
         $this->db->from('purchase_order_no');
         return $this->db->count_all_results();
     }
+
 }

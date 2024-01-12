@@ -71,7 +71,9 @@
                         <tr>
                             <th id="table_style">Product Name</th>
                             <th id="table_style">Quantity</th>
+
                             <th id="table_style">Received Quantity</th>
+
                             <th id="table_style">Unit</th>
                             <th id="table_style">Price</th>
                         </tr>

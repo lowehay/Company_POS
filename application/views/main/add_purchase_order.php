@@ -55,7 +55,7 @@
             </div>
             <div class="col-12 col-sm-3">
                 <label for="supplier_id" class="form-label">Supplier</label>
-                <select class="form-control form-control-sm selectpicker supplier-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
+                <select class="form-control form-control-sm supplier-select selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
                     <option value="" selected hidden>Select Supplier</option>
                     <?php foreach ($supplier as $supp) { ?>
                         <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -78,7 +78,9 @@
                     <thead>
                         <tr>
                             <th style="width: 20%;">Product Name</th>
+
                             <th style="width: 15%;">Unit</th>
+
                             <th style="width: 20%;">Price</th>
                             <th style="width: 15%;">Quantity</th>
                             <th style="width: 20%;">Total Cost</th>
@@ -90,6 +92,7 @@
                     <tbody class="row_content" id="row_product">
                         <tr>
                             <td>
+
                                 <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
                                     <option value="" selected hidden>Select Product</option>
                                     <?php foreach ($product as $pro) { ?>
@@ -97,12 +100,15 @@
                                         <option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
 
                                     <?php } ?>
+
                                 </select>
                                 <input type="hidden" name="selected_product" id="selected_product" value="">
                             </td>
                             <td>
+
                                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
                                     <option value="" selected hidden>Select Unit</option>
+
                                 </select>
 
                             </td>
@@ -150,25 +156,34 @@
             input.value = '';
         });
 
+        // Clear the selected product in the new row
+        newRow.querySelector('select[name="product_name[]"]').selectedIndex = 0;
+
         // Append the new row to the table
         document.querySelector('#row_product').appendChild(newRow);
-    }
 
-    function removeProductRow(button) {
-        // Get the parent row (the <tr> element) of the clicked button
-        var row = button.closest('tr');
+        // Update product options based on selected supplier for the new row
+        updateProductOptions(newRow);
 
-        // Check if there's only one row left, don't remove it
-        var rowCount = document.querySelectorAll('.row_content tr').length;
-        if (rowCount > 1) {
-            // Remove the row from the table
-            if (row) {
-                row.remove();
+        // Initialize the selectpicker for the new row
+        $(newRow).find('.selectpicker').selectpicker();
+
+        // Attach event listeners to calculate and update totals for the new row
+        newRow.addEventListener('input', function(event) {
+            if (event.target.matches('input[name="po_product_quantity[]"], input[name="product_unitprice[]"]')) {
+                calculateTotalPrice(newRow);
             }
-        } else {
-            alert("You can't delete the last row.");
-        }
+
+            // Add this block to update the price field when a product is selected for the new row
+            if (event.target.matches('select[name="product_name[]"]')) {
+                var selectedOption = event.target.options[event.target.selectedIndex];
+                var priceField = newRow.querySelector('input[name="product_unitprice[]"]');
+                priceField.value = selectedOption.getAttribute('data-price') || '';
+                calculateTotalPrice(newRow);
+            }
+        });
     }
+
 
     // Function to calculate the total cost for a specific row
     function calculateTotalPrice(row) {
@@ -252,8 +267,10 @@
             var priceField = event.target.closest('tr').querySelector('input[name="product_unitprice[]"]');
             var barcode = <?php echo json_encode($barcode); ?>; // Assuming $barcode contains the barcode data
 
+
             // Reset price field
             priceField.value = '';
+
 
             // Find the corresponding price for the selected product and unit
             barcode.forEach(function(bar) {

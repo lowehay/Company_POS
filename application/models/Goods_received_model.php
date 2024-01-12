@@ -36,7 +36,9 @@ class Goods_received_model extends CI_Model
             $arr_un = $unserved_quantity[$index];
             $arr_exp = $expiry_date[$index];
 
+
             $arr_rec = $arr_quant - $arr_un;
+
 
             // Calculate cost for this product
             $cost = $arr_price * $arr_rec;

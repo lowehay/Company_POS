@@ -88,6 +88,8 @@
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_name ?>" name="product_name[]" readonly>
 
+
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unit ?>" name="product_unit[]" readonly>
@@ -101,7 +103,9 @@
                                     <input class="form-control form-control-sm" value="<?= $row->po_product_quantity ?>" name="po_product_quantity[]" min="0" readonly>
                                 </td>
                                 <td>
+
                                     <input class="form-control form-control-sm" type="number" name="unserved_quantity[]" id="unserved_quantity" min="0" max="<?= $row->po_product_quantity ?>" value="<?= $row->po_product_quantity ?>" readonly>
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" value="<?= $row->product_unitprice ?>" id="product_unitprice" name="product_unitprice[]" readonly>
@@ -205,7 +209,9 @@
 
         // Loop through the product barcodes
         const productBarcodes = document.getElementsByName('product_barcode');
+
         const receivedQuantities = document.getElementsByName('unserved_quantity[]');
+
 
         for (let i = 0; i < productBarcodes.length; i++) {
             // Check if the scanned barcode matches any of the product barcodes

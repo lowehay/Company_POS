@@ -40,6 +40,7 @@ class Product_model extends CI_Model
 		$product_quantity = (string) $this->input->post('product_quantity');
 
 
+
 		// Calculate selling price based on product margin and product price
 		$product_sellingprice = $product_price + ($product_price * $product_margin);
 
@@ -50,6 +51,7 @@ class Product_model extends CI_Model
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
+
 			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_margin' => $product_margin,
 			'product_vat' => $product_vat,
@@ -61,9 +63,10 @@ class Product_model extends CI_Model
 			'product_minimum_quantity' => $product_minimum_quantity,
 			'product_required_quantity' => $product_required_quantity,
 			'product_maximum_quantity' => $product_maximum_quantity,
-			'product_minimum_order_quantity' => $product_minimum_order_quantity,
+
 			'product_image' => $image_file_name,
 			'product_sellingprice' => $product_sellingprice, // Add the calculated selling price to the data array
+
 
 		);
 
@@ -130,6 +133,7 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
+
 
 
 		// Initialize the product_image variable

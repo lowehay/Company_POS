@@ -59,35 +59,43 @@
 
 					<div class="form-group">
 						<label for="password" class="bold-label">Password</label>
-						<input type="password" id="password" name="password" placeholder="Password" class="form-control <?php echo form_error('password') ? 'is-invalid' : ''; ?>">
-						<span class="text-danger"><?php echo form_error('password'); ?></span>
+						<input type="password" id="password" placeholder="Password" name="password" value="<?php echo set_value('password'); ?>" class="form-control <?php echo form_error('password') ? 'is-invalid' : ''; ?>">
 					</div>
 
 					<div class="form-group">
-						<label for="branch" class="bold-label">Branch</label>
-						<select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Branch" name="branch" required>
-							<option value="" selected hidden>Select Branch</option>
-							<?php foreach ($branch as $br) { ?>
-								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
-							<?php } ?>
+						<label for="password1" class="bold-label">Confirm Password</label>
+						<input type="password" id="password1" placeholder="Confirm Password" name="password1" class="form-control <?php echo form_error('password1') ? 'is-invalid' : ''; ?>">
+						<span style="color: red;"><?php echo form_error('password1'); ?></span>
+					</div>
+
+					<div class="form-group">
+
+						<label for="branch" class="bold-label">Branch</label><br>
+						<select name="role" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
+							<option selected hidden>Select Branch</option>
+							<option value="main branch">Main Branch</option>
+							<option value="branch 1">Branch 1</option>
+							<option value="branch 2">Branch 2</option>
+
 						</select>
 						<span class="text-danger"><?php echo form_error('branch'); ?></span>
 					</div>
 
 					<div class="form-group">
-						<label for="role" class="bold-label">Roles</label>
-						<select class="form-select" id="role" name="role" aria-label="Default select example">
+						<label for="role" class="bold-label">Roles</label><br>
+						<select name="role" id="role-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
 							<option selected hidden>Select Role</option>
-							<option value="admin">Admin</option>
-							<option value="cashier">Accounting</option>
-							<option value="cashier">Branch Admin</option>
-							<option value="cashier">Branch Clerk</option>
-							<option value="cashier">Branch Supervisor</option>
-							<option value="cashier">Cashier</option>
-							<option value="cashier">Finance</option>
+
+							<option value="super-admin">Admin</option>
+							<option value="branch admin">Branch Admin</option>
 							<option value="inventory clerk">Inventory Clerk</option>
-							<option value="cashier">Warehouse Clerk</option>
-							<option value="cashier">Warehouse Supervisor</option>
+							<option value="cashier">Cashier</option>
+							<option value="branch supervisor">Branch Supervisor</option>
+							<option value="finance">Fianance</option>
+							<option value="accounting">Accounting</option>
+							<option value="branch clerk">Branch clerk</option>
+							<option value="warehouse clerk">Warehouse Clerk</option>
+							<option value="warehouse supervisor">Warehouse Supervisor</option>
 
 						</select>
 						<span class="text-danger"><?php echo form_error('role'); ?></span>

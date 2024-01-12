@@ -42,7 +42,9 @@
 
                     <div class="form-group col-3 d-inline-block">
                         <label class="bold-label">Preferred Supplier</label>
+
                         <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" required>
+
                             <option value="" selected hidden>Select Supplier</option>
                             <?php foreach ($suppliers as $supp) { ?>
                                 <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -52,7 +54,9 @@
 
                     <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">Product Category</label>
+
                         <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select category" name="product_category" required>
+
                             <option value="" selected hidden>Select Product Category</option>
                             <?php foreach ($procat as $pc) { ?>
                                 <option value="<?= $pc->product_category ?>"><?= $pc->product_category ?> </option>
@@ -63,7 +67,7 @@
 
                     <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">VAT</label>
-                        <select class="form-control" name="product_vat" required>
+                        <select class="form-control selectpicker" data-live-search="true" data-style="btn-outline-secondary" title="Select VAT" name="product_vat" required>
                             <option value="" selected hidden>Select Tax</option>
                             <option>12%</option>
                             <option>Non-VAT</option>
