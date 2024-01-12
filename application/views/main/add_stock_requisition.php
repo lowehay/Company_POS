@@ -33,7 +33,7 @@
                             <th style="width: 160px;" id="table_style">Quantity</th>
                             <th style="width: 160px;" id="table_style">Unit</th>
                             <th style="width: 160px;" id="table_style">Price</th>
-                            <th style="width: 160px;" id="table_style">Total Cost</th>
+
                             <th style="width: 50px;" id="table_style">
                                 <button type="button" id="btn_sr" class="btn btn-sm btn-info"><i class=" fas fa-plus"></i></button>
                             </th>
@@ -42,7 +42,7 @@
                     <tbody class="row_content" id="row_product">
                         <tr>
                             <td>
-                                <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required>
+                                <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required>
                                     <option value="" selected hidden>Select Product</option>
                                     <?php foreach ($product as $pro) { ?>
                                         <option value="<?= $pro->product_name ?>" data-selling-price="" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option>
@@ -53,7 +53,7 @@
                                 <input class="form-control form-control-sm" type="number" name="quantity[]" pattern="[0-9]+" id="quantity" min="0" max="" required>
                             </td>
                             <td>
-                                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" id="unit" required>
+                                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" id="unit" required>
                                     <option value="" selected hidden>Select Unit</option>
                                     <option>Pcs</option>
                                     <option>Tablet</option>
@@ -63,9 +63,7 @@
                             <td>
                                 <input class="form-control form-control-sm product-selling-price" type="text" name="product_sellingprice[]" id="product_sellingprice" pattern="[0-9]+([\.|,][0-9]+)?">
                             </td>
-                            <td>
-                                <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price" readonly>
-                            </td>
+
                             <td>
                                 <button class="btn btn-sm btn-danger remove-category"><i class="fas fa-trash"></i></button>
                             </td>
@@ -104,9 +102,9 @@
         }
 
         var newRow = '<tr>' +
-            '<td> <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required><option value="" selected hidden>Select Product</option><?php foreach ($product as $pro) { ?><option value="<?= $pro->product_name ?>" data-selling-price="<?= $pro->product_sellingprice ?>" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option><?php } ?></select></td>' +
+            '<td> <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required><option value="" selected hidden>Select Product</option><?php foreach ($product as $pro) { ?><option value="<?= $pro->product_name ?>" data-selling-price="<?= $pro->product_sellingprice ?>" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option><?php } ?></select></td>' +
             '<td> <input class="form-control form-control-sm" type="number" name="quantity[]" pattern="[0-9]+" id="quantity" min="0" max="" required></td>' +
-            '<td><select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" required><option value="" selected hidden>Select Unit</option><option>Pcs</option><option>Tablet</option><option>Capsule</option></select></td>' +
+            '<td><select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" required><option value="" selected hidden>Select Unit</option><option>Pcs</option><option>Tablet</option><option>Capsule</option></select></td>' +
             '<td><input class="form-control form-control-sm product-selling-price" type="text" name="product_sellingprice[]" id="product_sellingprice" pattern="[0-9]+([\.|,][0-9]+)?"></td>' +
             '<td><input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price" readonly></td>' +
             '<td><button class="btn btn-sm btn-danger remove-category"><i class="fas fa-trash"></i></button></td>' +

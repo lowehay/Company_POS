@@ -51,7 +51,7 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Preferred Supplier</label>
-						<select class="form-control selectpicker" data-live-search="true" data-style="btn-outline-secondary" name="supplier_id" required>
+						<select class="form-control " data-live-search="true" data-style="btn-outline-secondary" name="supplier_id" required>
 							<option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
 							<?php foreach ($supplier as $supp) { ?>
 								<option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>

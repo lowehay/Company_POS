@@ -71,11 +71,12 @@
 					<div class="form-group">
 
 						<label for="branch" class="bold-label">Branch</label><br>
-						<select name="role" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
-							<option selected hidden>Select Branch</option>
-							<option value="main branch">Main Branch</option>
-							<option value="branch 1">Branch 1</option>
-							<option value="branch 2">Branch 2</option>
+						<select name="branch" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
+							<?php foreach ($branch as $br) { ?>
+
+								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
+
+							<?php } ?>
 
 						</select>
 						<span class="text-danger"><?php echo form_error('branch'); ?></span>

@@ -27,7 +27,7 @@
                         <th>No.</th>
                         <th>Name</th>
                         <th>Category</th>
-                        <th>Qty/Unit</th>
+                        <th>Qty</th>
                         <th>Selling Price</th>
                         <th>Critical Level</th>
                         <th>Action</th>

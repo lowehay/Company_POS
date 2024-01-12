@@ -13,10 +13,6 @@
         background-color: #2a3b57;
         border: 1px solid #ccc;
         cursor: pointer;
-        background-color: transparent;
-        /* Change the background color to transparent */
-        color: black;
-        /* Set the text color to black */
     }
 
     .numeric-button:hover {
@@ -27,7 +23,6 @@
         grid-column: span 1;
         background-color: #ff5555;
         color: #fff;
-
     }
 
     .payment-button {
@@ -35,7 +30,6 @@
         padding: 15px;
         background-color: #EED11A;
         color: #fff;
-        background-color: #009900;
     }
 
     .payment-button:hover {
@@ -92,25 +86,14 @@
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 90%;
-
-
+        /* Adjust the maximum width as needed */
     }
-
 
     .product-card {
         width: 400px;
         height: 380px;
         border-radius: 12px;
         position: relative;
-
-    }
-
-    .card {
-        margin: 10px auto;
-        background: rgba(255, 255, 255, 0);
-        /* Adjust the opacity (0.7 in this example) for transparency */
-        backdrop-filter: blur(10px);
-        /* Add a background blur effect */
     }
 
     .card {
@@ -123,7 +106,7 @@
         <div class="row">
             <!-- Left Column - Product List -->
             <div class="col-md-8">
-                <div class="card shadow" style="max-height: 100vh; overflow-y: auto; background: linear-gradient(to bottom, #a8e0ed 0%,#eaeaea 23%);">
+                <div class="card shadow" style="max-height: 100vh; overflow-y: auto;">
                     <div class="card-header">
                         <h2>Product List</h2>
                         <!-- Add the search input and button inside the card header -->
@@ -136,16 +119,12 @@
                         <div class="row">
                             <?php foreach ($result as $product) { ?>
                                 <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
-
-                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-price="<?php echo $product->product_sellingprice; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
-
+                                    <div class="card product-card" data-product-name="<?php echo $product->product_name; ?>" data-product-price="<?php echo $product->product_price; ?>" data-product-image="<?php echo base_url('assets/images/' . $product->product_image); ?>">
                                         <div class="card-body" style="height: 300px;">
                                             <h5 class="card-title" style="max-width: 100%;">
                                                 <?php echo $product->product_name; ?>
                                             </h5>
-
                                             <img src="<?php echo base_url('assets/images/' . $product->product_image); ?>" alt="<?php echo $product->product_name; ?>" class="img-fluid mb-3" style="max-width: 100%; max-height: 300px;">
-
                                         </div>
                                     </div>
                                 </div>
@@ -157,9 +136,8 @@
             <!-- Right Column - Cart -->
             <div class="col-md-4">
                 <div class="card shadow">
-                    <div class="card-header" style="background: linear-gradient(to bottom, #a8e0ed 0%,#eaeaea 23%);">
+                    <div class="card-header">
                         <h2>Cart</h2>
-
                     </div>
                     <div class="card-body">
                         <ul class="list-group" id="cart-items">
@@ -193,11 +171,9 @@
                             <button class="btn btn-secondary numeric-button" data-key="0">0</button>
                             <button class="btn btn-secondary numeric-button" data-key=".">.</button>
                             <button class="btn btn-secondary clear-button">Clear</button>
-
                             <a href="<?php echo site_url('main/payment'); ?>" class="btn btn-warning payment-button">
                                 Payment <i class="fas fa-arrow-right"></i>
                             </a>
-
                         </div>
                     </div>
                 </div>
@@ -248,13 +224,11 @@
 
             // Event handler for selecting items in the product list
             $(document).on('click', '.product-card', function() {
-                console.log('Product card clicked');
                 var productName = $(this).data('product-name');
                 var productPrice = parseFloat($(this).data('product-price'));
 
                 // Check if the product is already in the cart
                 if (isProductInCart(productName)) {
-
                     toastr.error('This product is already in the cart.');
                     return; // Exit the function to prevent adding duplicates
                 }
@@ -267,10 +241,8 @@
                 cartItem.append('<td class="product-total">' + productPrice.toFixed(2) + '</td>');
                 cartItem.append('<td><button class="btn btn-danger delete-item">Delete</button></td>');
 
-
                 // Append the cart item to the cart table
                 $('#table_field tbody').append(cartItem);
-
 
                 // Update the total price in the cart
                 updateTotal();
@@ -322,9 +294,7 @@
 
                 // Remove the item from the cart
                 listItem.remove();
-
             });
-
 
             // Function to check if a product is already in the cart
             function isProductInCart(productName) {
@@ -342,35 +312,26 @@
             function updateTotal() {
                 // Calculate and update the total price for all products in the cart
                 var total = 0;
-
                 $('#table_field tbody').find('tr').each(function() {
                     var productPrice = parseFloat($(this).data('product-price'));
                     var quantity = parseFloat($(this).find('.product-quantity').val());
                     quantity = isNaN(quantity) ? 0 : quantity; // Ensure quantity is a valid number
                     var totalPrice = quantity * productPrice;
-
                     total += totalPrice;
-
                     // Update the individual product's total
                     $(this).find('.product-total').text(totalPrice.toFixed(2));
-
-                    // Get the product name from the existing data attribute
-                    var productName = $(this).data('product-name');
-
-                    // Add the updated item to the cartItems array
-                    cartItems.push({
-                        name: productName,
-                        price: totalPrice,
-                        weight: weight
-                    });
                 });
 
                 $('#total').text(total.toFixed(2));
 
-                // Store the updated cartItems array in localStorage
-                localStorage.setItem('cartItems', JSON.stringify(cartItems));
-            }
+                // Store the total price in a JavaScript variable
+                var totalPriceForCheckout = total;
 
+                // Update the total price on the payment page (assuming you have a way to pass this data)
+                // For example, you can use a query parameter in the URL or use localStorage.
+                // Here, we'll update the total pricein localStorage.
+                localStorage.setItem('totalPriceForCheckout', totalPriceForCheckout);
+            }
 
             // Event handler for clearing all quantities when the "Clear" button is clicked
             $('#numeric-keypad .clear-button').on('click', function() {
@@ -378,7 +339,6 @@
                 $('.product-quantity').val(0);
                 // Trigger the input event to recalculate totals
                 $('.product-quantity').trigger('input');
-
             });
 
             // Event handler for clearing the quantity of a specific row
@@ -398,7 +358,6 @@
                     return false; // Prevent the default behavior (e.g., following the link)
                 }
             });
-
 
         });
 
@@ -425,7 +384,6 @@
             // Remove the "selected-item" class from all quantity fields
             $('.product-quantity').removeClass('selected-quantity');
 
-
             // Add the "selected-item" class to the clicked quantity field
             $(this).addClass('selected-quantity');
         });
@@ -439,3 +397,4 @@
             <?php } ?>
         });
     </script>
+</body>

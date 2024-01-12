@@ -3,23 +3,16 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         grid-gap: 5px;
-
     }
-
-    /* Rest of your existing CSS */
-
 
     .numeric-button {
         font-size: 1.5rem;
         padding: 10px;
         text-align: center;
-        background-color: transparent;
-        /* Change the background color to transparent */
+        background-color: #2a3b57;
         border: 1px solid #ccc;
         cursor: pointer;
-
         color: #fff;
-
     }
 
     .numeric-button:hover {
@@ -72,7 +65,6 @@
     .back-button:hover {
         background-color: #5E5B58;
     }
-
 </style>
 <?php echo form_open('', array('onsubmit' => 'return confirm(\'Are you sure you want to post this sales?\')')); ?>
 <div class="card shadow" style="max-width: 2000px; margin: 0 auto; height: auto;">
@@ -81,14 +73,12 @@
     </div>
     <div class="card-body" style="flex-grow: 1; position: relative;">
         <div class="row">
-
             <div class="col-md-7 text-center">
                 <div class="border p-3">
                     <p class="total-price" name="total_cost" style="font-size: 50px;">Total Amount: ₱<span id="total">0.00</span></p>
                     <p class="total-price" style="font-size: 30px;">Cash Payment: ₱<span id="cashPayment">0.00</span></p>
                     <p class="total-price" style="font-size: 30px;">Remaining Balance: ₱<span id="remainingBalance">0.00</span></p>
                     <p class="total-price" style="font-size: 30px;">Change: ₱<span id="change">0.00</span></p>
-
                 </div>
 
                 <!-- Numeric Keypad for Weight Input -->
@@ -146,17 +136,13 @@
                     </div>
                 </div>
             </div>
-            <!-- end of receipt code -->
-
         </div>
     </div>
 </div>
-
 </form>
-
 <script>
     function confirmBack() {
-        var confirmMessage = "Are you sure you want to go back and make new transactions?";
+        var confirmMessage = "Are you sureyou want to go back and make new transactions?";
 
         // Display a confirmation dialog
         var userConfirmed = window.confirm(confirmMessage);
@@ -168,58 +154,15 @@
         }
         // If the user clicked "Cancel" or closed the dialog, stay on the payment page
     }
-
-    function startNewTransaction() {
-        // Clear the cart items array and update the cart display
-        cartItems = [];
-        updateCartDisplay();
-    }
-
-
     $(document).ready(function() {
-        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-        var paymentTable = $('#payment-table');
+        var totalPriceForCheckout = localStorage.getItem('totalPriceForCheckout');
+        var cashPayment = 0;
 
-        // Loop through cartItems and add them to the payment table
-        cartItems.forEach(function(item) {
-            var row = $('<tr></tr>');
-            row.append($('<td class="per70 text-center">' + item.name + '</td>'));
-            row.append($('<td class="per5 text-center">' + item.weight + '</td>')); // Display the weight
-            row.append($('<td class="per25 text-center"> ₱' + item.price + '</td>'));
-            paymentTable.append(row);
-        });
-
-        // Calculate and display the subtotal and total amounts
-        var subtotal = 0;
-        cartItems.forEach(function(item) {
-            subtotal += parseFloat(item.price);
-        });
-        $('#subtotal-amount').text('₱' + subtotal.toFixed(2));
-        $('#total-amount').text('₱' + subtotal.toFixed(2));
-    });
-
-
-    function clearCartItems() {
-        cartItems = []; // Clear the cart items
-        updateCartDisplay(); // Update the table (payment-table) in the HTML 
-    }
-
-
-    window.addEventListener('beforeunload', function(event) {
-
-        localStorage.removeItem('cartItems');
-        clearCartItems();
-    });
-
-    function selectPaymentMethod(paymentMethod) {
-        // Show the text field for cash amount if "Cash" is selected
-        if (paymentMethod === 'Cash') {
-            $('#cashTextFieldContainer').show();
+        if (totalPriceForCheckout !== null && totalPriceForCheckout !== undefined) {
+            $('#total').text(parseFloat(totalPriceForCheckout).toFixed(2));
         } else {
-            // Hide the text field for other payment methods
-            $('#cashTextFieldContainer').hide();
+            $('#total').text('N/A');
         }
-
 
         function loadCartItems() {
             var cartItems = localStorage.getItem('cartItems');
@@ -248,13 +191,11 @@
         // Call the function to load cart items when the page is ready
         loadCartItems();
 
-
         // Intercept form submission to ensure proper data is sent
         $('form').submit(function() {
             // Ensure the form data is correctly populated before submitting
             var form = $(this);
             var formData = form.serializeArray();
-
 
             // Log form data to the console for debugging (optional)
             console.log(formData);
@@ -384,86 +325,5 @@
 
         // Call the function to update the checkout button state when the page is ready
         updateCheckoutButton();
-
     });
-
-    var originalTotalAmount;
-
-    $(document).ready(function() {
-
-        // Store the original total amount when the page loads load sa loasd load loasd loasd laosdloasd  load laod load laodlalalod 
-        var originalTotalAmount = parseFloat($('#total-amount').text().replace('₱', '')) || 0;
-        $('#total-amount').data('original-total-amount', originalTotalAmount);
-    });
-
-    function clearCashAmount() {
-        // Clear the cashAmount input field and the currentCashAmount variable
-        currentCashAmount = '';
-        $('#cashAmount').val('');
-
-        // Reset the total amount to its original value
-        $('#total-amount').text('₱' + originalTotalAmount.toFixed(2));
-    }
-
-    function generateReceipt() {
-        // Fetch the cart items from local storage
-        var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-        var changeAmount = $('#change-amount').text();
-        var originalTotalAmount = parseFloat($('#total-amount').data('original-total-amount')) || 0;
-        var cashAmount = parseFloat($('#cashAmount').val()) || 0;
-
-        if (cashAmount <= 0) {
-            // Display an error message
-            window.alert('Please enter a valid cash amount to confirm the payment.');
-            return; // Exit the function if the amount is zero
-        }
-
-        if (cashAmount < originalTotalAmount) {
-            // Display an error message
-            window.alert('The entered cash amount is less than the total amount. Please enter a valid amount.');
-            return; // Exit the function if the amount is less than the total
-        }
-
-        var receiptContent = '<div style="font-family: Arial, sans-serif;">';
-        receiptContent += '<h2 style="text-align: center; margin-bottom: 20px;">Receipt</h2>';
-        receiptContent += '<div style="margin-bottom: 10px;">';
-        receiptContent += '<p><strong>Date:</strong> ' + new Date().toLocaleString() + '</p>';
-        receiptContent += '</div>';
-        receiptContent += '<div style="margin-bottom: 20px;">';
-        receiptContent += '<table style="width: 100%; border-collapse: collapse;">';
-        receiptContent += '<tr>';
-        receiptContent += '<th style="text-align: left; padding: 8px; border: 1px solid #ddd;">Item</th>';
-        receiptContent += '<th style="text-align: center; padding: 8px; border: 1px solid #ddd;">Qty</th>';
-        receiptContent += '<th style="text-align: right; padding: 8px; border: 1px solid #ddd;">Total</th>';
-        receiptContent += '</tr>';
-
-        // Iterate through cart items and add them to the receipt table
-        cartItems.forEach(function(item) {
-            receiptContent += '<tr>';
-            receiptContent += '<td style="text-align: left; padding: 8px; border: 1px solid #ddd;">' + item.name + '</td>';
-            receiptContent += '<td style="text-align: center; padding: 8px; border: 1px solid #ddd;">' + item.weight + '</td>';
-            receiptContent += '<td style="text-align: right; padding: 8px; border: 1px solid #ddd;">₱' + item.price + '</td>';
-            receiptContent += '</tr>';
-        });
-
-        receiptContent += '</table>';
-        receiptContent += '</div>';
-        receiptContent += '<div style="margin-top: 20px;">';
-        receiptContent += '<p style="text-align: right;"><strong>Original Total Amount:</strong> ₱' + originalTotalAmount.toFixed(2) + '</p>';
-        receiptContent += '<p style="text-align: right;"><strong>Entered Cash Amount:</strong> ₱' + cashAmount.toFixed(2) + '</p>';
-        receiptContent += '<p style="text-align: right;"><strong>Change:</strong> ' + changeAmount + '</p>';
-        receiptContent += '</div>';
-        receiptContent += '</div>';
-        receiptContent += '</div>'; // Close the receipt content div
-        receiptContent += '<div class="print-button-container">';
-        receiptContent += '<button class="btn btn-primary" onclick="printReceipt()">Print Receipt</button>';
-        receiptContent += '</div>';
-
-        // Display the receipt content in the modal
-        $('#receipt-content').html(receiptContent);
-
-        // Show the receipt modal
-        $('#receipt-container').modal('show');
-    }
 </script>

@@ -65,7 +65,7 @@ class Product_model extends CI_Model
 			'product_maximum_quantity' => $product_maximum_quantity,
 
 			'product_image' => $image_file_name,
-			'product_sellingprice' => $product_sellingprice, // Add the calculated selling price to the data array
+			'product_price' => $product_sellingprice, // Add the calculated selling price to the data array
 
 
 		);

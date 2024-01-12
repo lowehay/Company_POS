@@ -58,5 +58,4 @@
       }
     });
   });
-  $('select').selectpicker();
 </script>

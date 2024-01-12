@@ -55,7 +55,7 @@
             </div>
             <div class="col-12 col-sm-3">
                 <label for="supplier_id" class="form-label">Supplier</label>
-                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="supplier_name" id="supplier_name" required>
+                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="supplier_name" id="supplier_name" required>
                     <option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
                     <?php foreach ($supplier as $supp) { ?>
                         <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?></option>
@@ -64,7 +64,7 @@
             </div>
             <div class="col-12 col-sm-3">
                 <label for="payment_method" class="form-label">Payment Method</label>
-                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="payment_method" id="payment_method" required>
+                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="payment_method" id="payment_method" required>
                     <option class="text-info invisible" value="<?= $code->payment_method ?>"><?= $code->payment_method ?></option>
                     <option>Cash</option>
                     <option>Check</option>
@@ -93,7 +93,7 @@
                         <tbody class="row_content" id="row_product">
                             <tr>
                                 <td>
-                                    <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
+                                    <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
                                         <option value="<?= $row->product_name ?>"><?= $row->product_name ?></option>
                                         <?php foreach ($product as $pro) { ?>
                                             <option value="<?= $pro->product_name ?>"> <?= $pro->product_name ?></option>
@@ -104,7 +104,7 @@
                                     <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" value="<?= $row->po_product_quantity ?>" pattern="[0-9]+" required>
                                 </td>
                                 <td>
-                                    <select class="form-control form-control-sm selectpicker unit-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
+                                    <select class="form-control form-control-sm  unit-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
                                         <option class="text-info invisible" value="<?= $row->product_unit ?>"><?= $row->product_unit ?></option>
                                         <?php foreach ($barcode as $bar) {
                                             if ($row->product_name === $bar->product_name) { ?>
@@ -187,7 +187,7 @@
         newRow.className = "row_content"; // Assign the 'row_content' class to the new row
 
         newRow.innerHTML = `<td>
-            <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" required>
+            <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" required>
                 <option value=""></option>
                 <?php foreach ($product as $pro) { ?>
                     <option value="<?= $pro->product_name ?>" data-product-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
@@ -196,7 +196,7 @@
         </td>
         <td><input class="form-control form-control-sm" type="number" name="po_product_quantity[]" value="" pattern="[0-9]+" required></td>
         <td>
-            <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" required>
+            <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" required>
                 <option value=" ></option>
               <?php foreach ($barcode as $bar) {
                     if ($row->product_name === $bar->product_name) { ?>

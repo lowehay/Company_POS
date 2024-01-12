@@ -55,7 +55,7 @@
             </div>
             <div class="col-12 col-sm-3">
                 <label for="supplier_id" class="form-label">Supplier</label>
-                <select class="form-control form-control-sm supplier-select selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
+                <select class="form-control form-control-sm supplier-select " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
                     <option value="" selected hidden>Select Supplier</option>
                     <?php foreach ($supplier as $supp) { ?>
                         <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -64,7 +64,7 @@
             </div>
             <div class="col-12 col-sm-3">
                 <label for="payment_method" class="form-label">Payment Option</label>
-                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Payment Method" name="payment_method" id="payment_method" required>
+                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Payment Method" name="payment_method" id="payment_method" required>
                     <option>Cash</option>
                     <option>Check</option>
                     <option>Credit Card</option>
@@ -93,7 +93,7 @@
                         <tr>
                             <td>
 
-                                <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
+                                <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
                                     <option value="" selected hidden>Select Product</option>
                                     <?php foreach ($product as $pro) { ?>
 
@@ -106,7 +106,7 @@
                             </td>
                             <td>
 
-                                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
+                                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
                                     <option value="" selected hidden>Select Unit</option>
 
                                 </select>

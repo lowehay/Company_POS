@@ -245,6 +245,7 @@ class Main extends CI_Controller
 
 		redirect('main/supplier');
 	}
+
 	function purchase_order()
 	{
 		$this->load->model('purchase_order_model');
@@ -910,104 +911,7 @@ class Main extends CI_Controller
 		$this->load->view('main/stock_requisition', $this->data);
 		$this->load->view('main/footer');
 	}
-	function add_stock_requisition()
-	{
-		$this->add_stock_requisition_submit();
-		$this->load->model('product_model');
-		$this->data['product'] = $this->product_model->get_all_product();
-		$this->load->model('stock_requisition_model');
-		$this->data['sr_no'] = $this->stock_requisition_model->sr_no();
-		$this->load->view('main/header');
-		$this->load->view('main/add_stock_requisition', $this->data);
-		$this->load->view('main/footer');
-	}
-	function add_stock_requisition_submit()
-	{
 
-		if ($this->input->post('btn_create_sr')) {
-
-			$this->load->model('stock_requisition_model');
-			$response = $this->stock_requisition_model->insertstockrequisition();
-			if ($response) {
-
-				$success_message = 'Stock Requisition created successfully.';
-				$this->session->set_flashdata('success', $success_message);
-			} else {
-				$error_message = 'Stock Requisition was not created successfully.';
-				$this->session->set_flashdata('error', $error_message);
-			}
-
-			redirect('main/stock_requisition');
-		}
-	}
-	function view_stock_requisition($id)
-	{
-		$this->view_stock_requisition_submit();
-		$this->load->model('stock_requisition_model');
-		$this->data['code'] = $this->stock_requisition_model->code($id);
-		$this->data['select'] = $this->stock_requisition_model->Select_one($id);
-		$this->data['view'] = $this->stock_requisition_model->view_all_sr($id);
-		$this->load->view('main/header');
-		$this->load->view('main/view_stock_requisition', $this->data);
-		$this->load->view('main/footer');
-	}
-	function view_stock_requisition_submit()
-	{
-
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-			$this->load->model('stock_requisition_model');
-
-			// Validate the form data
-			$product = $this->input->post('product');
-			$quantity = $this->input->post('quantity');
-
-			foreach ($product as $index => $product_name) {
-				$product_quantity = $this->stock_requisition_model->get_product_quantity($product_name);
-				if ($quantity[$index] > $product_quantity) {
-					$this->session->set_flashdata('exceeds', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-						<strong>Error!</strong> The quantity of "' . $product_name . '" in the form exceeds the available quantity in your stocks.
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-						</div>');
-					redirect('main/stock_requisition');
-				}
-			}
-
-			// Call the poststockrequisition() method if the form data is valid
-			$response = $this->stock_requisition_model->poststockrequisition();
-			if ($response) {
-				$success_message = 'Stock Requisition posted successfully.';
-				$this->session->set_flashdata('success', $success_message);
-			} else {
-				$error_message = 'Stock Requisition was not posted successfully.';
-				$this->session->set_flashdata('error', $error_message);
-			}
-
-			redirect('main/stock_requisition');
-		}
-	}
-	function edit_stock_requisition($id)
-	{
-
-		$this->edit_stock_requisition_submit();
-		$this->load->model('stock_requisition_model');
-		$this->data['code'] = $this->stock_requisition_model->code($id);
-		$this->data['select'] = $this->stock_requisition_model->Select_one($id);
-		$this->data['view'] = $this->stock_requisition_model->view_all_sr($id);
-		$this->load->model('product_model');
-		$this->data['product'] = $this->product_model->get_all_product();
-		$this->load->view('main/header');
-
-		$this->load->view('main/editstockrequisition', $this->data);
-		$this->load->view('main/footer');
-	}
-
-		$this->load->view('main/header');
-		$this->load->view('main/stock_requisition', $this->data);
-		$this->load->view('main/footer');
-	}
 	function add_stock_requisition()
 	{
 		$this->add_stock_requisition_submit();
@@ -1496,13 +1400,7 @@ class Main extends CI_Controller
 		$this->load->view('main/print_back_order', $this->data);
 	}
 
-	function unit()
-	{
-		$this->load->model('unit_model');
-		$this->data['unit'] = $this->unit_model->get_all_unit();
-		$this->load->view('main/header');
-		$this->load->view('main/unit', $this->data);
-		$this->load->view('main/footer');
+
 
 	function print_sales_report($id)
 	{
@@ -1510,6 +1408,93 @@ class Main extends CI_Controller
 		$this->data['code'] = $this->sales_model->code($id);
 		$this->data['view'] = $this->sales_model->view_all_sales($id);
 		$this->load->view('main/print_sales_report', $this->data);
+	}
 
+	function unit()
+	{
+		$this->load->model('unit_model');
+		$this->data['unit'] = $this->unit_model->get_all_unit();
+		$this->load->view('main/header');
+		$this->load->view('main/unit', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_unit()
+	{
+
+		$this->add_unit_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/add_unit');
+		$this->load->view('main/footer');
+	}
+	function add_unit_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('unit', 'Product Unit', 'trim|required|is_unique[unit.unit]');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('unit_model');
+				$response = $this->unit_model->insert_added_unit();
+				if ($response) {
+					$success_message = 'Product Unit added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product Unit was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/unit');
+			}
+		}
+	}
+
+	function edit_unit($unit_id)
+	{
+		$this->edit_unit_submit();
+		$this->load->model('unit_model');
+		$this->data['unit'] = $this->unit_model->get_unit($unit_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_unit', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_unit_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('unit', 'Product Unit', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('unit_model');
+
+				$response = $this->unit_model->update_added_unit();
+
+				if ($response) {
+					$success_message = 'Product Unit updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product Unit was not updated successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/unit');
+			}
+		}
+	}
+	public function delete_unit($id)
+	{
+
+		$this->load->model('unit_model');
+		$response = $this->unit_model->delete_unit($id);
+
+		if ($response) {
+			$success_message = 'Product Unit deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Product Unit was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/unit/');
 	}
 }
