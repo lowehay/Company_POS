@@ -1,10 +1,28 @@
+<style>
+    /* Adjust tab pane styles for better visibility on dark background */
+    .tab-pane {
+        background-color: #fff;
+        /* Dark background color */
+        color: #000;
+        /* Text color */
+        padding: 20px;
+        /* Add padding for better readability */
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    /* Optional: Customize active tab styles */
+    .nav-link.active {
+        background-color: #555;
+        /* Active tab background color */
+    }
+</style>
 <div class="container">
-    <h1>Report Dashboard</h1>
+    <h4>Report Dashboard</h4>
 
     <!-- Navigation for Modules -->
     <ul class="nav nav-tabs" id="moduleTabs">
         <li class="nav-item">
-
             <a class="nav-link active" data-toggle="tab" href="#module1">Purchase Order Report</a>
         </li>
         <li class="nav-item">
@@ -30,7 +48,7 @@
         <!-- Module 1 Content -->
         <div class="tab-pane fade show active" id="module1">
             <div class="card-header">
-                <div class="card-body">
+                <div class="card-body" style="color: dark;">
                     <table class="table" id="user-datatables-module1">
                         <thead>
                             <tr>

@@ -3,8 +3,8 @@
     font-weight: bold;
   }
 
-  h1 {
-    text-align: center;
+  h4 {
+    margin-left: 50px;
   }
 
   @media (max-width: 767px) {
@@ -17,7 +17,7 @@
 <div class="container">
   <div class="row mb-4">
     <div class="col-sm-6">
-      <h1 class="m-0">Add Supplier</h1>
+      <h4 class="m-0">Add Supplier</h4>
     </div>
   </div>
 

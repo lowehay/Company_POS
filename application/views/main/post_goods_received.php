@@ -42,26 +42,26 @@
 </style>
 <?php echo form_open_multipart('main/post_goods_received_submit', array('onsubmit' => 'return confirm(\'Are you sure you want to post this goods received?\')')); ?>
 <div class="container">
-    <h1 class="text-dark">Post Goods Received</h1>
+    <h4 class="text-white">Post Goods Received</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label text-white">Purchase Order No</label>
                 <input type="text" value=" <?= $code->purchase_order_no ?>" name="purchase_order_no" readonly class="form-control form-control-sm">
                 <input type="hidden" value="<?= $gr_no ?>" name="goods_received_no" readonly class="form-control form-control-sm">
                 <input type="hidden" name="gr_id" value="<?= $select->purchase_order_no_id ?>">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="date_created" class="form-label">Date Received</label>
+                <label for="date_created" class="form-label text-white">Date Received</label>
                 <input type="text" value="<?= date('m-d-Y h:i A'); ?>" name="date_received" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="supplier_id" class="form-label">Supplier</label>
+                <label for="supplier_id" class="form-label text-white">Supplier</label>
                 <input type="text" id="" name="" value="<?= $select->supplier_name ?>" readonly class="form-control form-control-sm">
                 <input type="hidden" value="<?= $select->supplier_id ?>" name="supplier_id">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="payment_method" class="form-label">Payment Method</label>
+                <label for="payment_method" class="form-label text-white">Payment Method</label>
                 <input type="text" id="payment_method" name="payment_method" value="<?= $code->payment_method ?>" readonly class="form-control form-control-sm">
             </div>
         </div>

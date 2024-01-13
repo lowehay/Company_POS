@@ -42,7 +42,7 @@
 </style>
 <?php echo form_open_multipart('main/post_goods_return_submit', array('onsubmit' => 'return confirm(\'Are you sure you want to post this goods received?\')')); ?>
 <div class="container">
-    <h1 class="text-dark">Post Goods Return</h1>
+    <h4 class="text-white">Post Goods Return</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
 
@@ -50,16 +50,16 @@
             <input type="hidden" name="grt_id" value="<?= $select->goods_received_no_id ?>">
 
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label text-white">Purchase Order No</label>
                 <input type="text" value="<?= $select1->purchase_order_no ?>" name="purchase_order_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="Supplier" class="form-label">Supplier</label>
+                <label for="Supplier" class="form-label text-white">Supplier</label>
                 <input type="text" name="" id="" class="form-control form-control-sm" value="<?= $select->supplier_name ?>" readonly>
                 <input type="hidden" value="<?= $select->supplier_id ?>" name="supplier_id">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="payment_method" class="form-label">Date Returned</label>
+                <label for="payment_method" class="form-label text-white">Date Returned</label>
                 <input type="text" value="<?= date('m-d-Y h:i A'); ?>" name="date_returned" readonly class="form-control form-control-sm">
             </div>
         </div>

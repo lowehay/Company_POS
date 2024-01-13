@@ -42,19 +42,19 @@
 </style>
 
 <div class="container">
-    <h1 class="text-dark">Edit Purchase Order</h1>
+    <h4 class="text-white">Edit Purchase Order</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label text-white">Purchase Order No</label>
                 <input type="text" value="<?= $code->purchase_order_no ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="date_created" class="form-label">Date Created</label>
+                <label for="date_created" class="form-label text-white">Date Created</label>
                 <input type="text" value="<?= $code->date_created ?>" name="date_created" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="supplier_id" class="form-label">Supplier</label>
+                <label for="supplier_id" class="form-label text-white">Supplier</label>
                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="supplier_name" id="supplier_name" required>
                     <option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
                     <?php foreach ($supplier as $supp) { ?>
@@ -63,7 +63,7 @@
                 </select>
             </div>
             <div class="col-12 col-sm-3">
-                <label for="payment_method" class="form-label">Payment Method</label>
+                <label for="payment_method" class="form-label text-white">Payment Method</label>
                 <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="payment_method" id="payment_method" required>
                     <option class="text-info invisible" value="<?= $code->payment_method ?>"><?= $code->payment_method ?></option>
                     <option>Cash</option>

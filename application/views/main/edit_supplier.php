@@ -4,21 +4,15 @@
         /* Adjust the width as needed */
     }
 
-    h1.custom-title {
-        text-align: center;
-    }
-
-    @media (max-width: 767px) {
-        h1.custom-title {
-            margin-left: 0;
-        }
+    h4 {
+        margin-left: 10px;
     }
 </style>
 
 <div class="container mt-2">
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="custom-title">Edit Supplier</h1>
+            <h4 class="custom-title">Edit Supplier</h4>
         </div><!-- /.col -->
     </div><!-- /.row -->
 

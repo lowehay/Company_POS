@@ -10,12 +10,12 @@
         margin-top: 10px;
     }
 
-    h1 {
+    h4 {
         margin-left: 50px;
     }
 </style>
 
-<h1>Goods Received List</h1>
+<h4>Goods Received List</h4>
 <div class="card card-outline card-success">
     <div class="card-header">
         <h2 class="text-dark">

@@ -9,7 +9,7 @@
         font-size: 1.5rem;
         padding: 10px;
         text-align: center;
-        background-color: #2a3b57;
+        background-color: #5a6268;
         border: 1px solid #ccc;
         cursor: pointer;
         color: #fff;

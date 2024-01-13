@@ -4,7 +4,7 @@
 		/* Adjust the width as needed */
 	}
 
-	h1 {
+	h4 {
 		text-align: center;
 	}
 
@@ -16,7 +16,7 @@
 </style>
 
 <div class="container mt-2">
-	<h1>Edit User</h1>
+	<h4>Edit User</h4>
 
 	<!-- Flash Messages -->
 	<?= $this->session->flashdata('add_user_submit'); ?>

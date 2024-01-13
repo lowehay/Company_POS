@@ -15,7 +15,7 @@
 <div class="container mt-3">
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0 text-light">View Product</h1>
+            <h1 class="m-0 text-dark">View Product</h1>
         </div><!-- /.col -->
     </div><!-- /.row -->
 

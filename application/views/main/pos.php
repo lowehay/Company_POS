@@ -10,7 +10,7 @@
         font-size: 1.5rem;
         padding: 10px;
         text-align: center;
-        background-color: #2a3b57;
+        background-color: #5a6268;
         border: 1px solid #ccc;
         cursor: pointer;
     }
@@ -90,8 +90,8 @@
     }
 
     .product-card {
-        width: 400px;
-        height: 380px;
+        width: 280px;
+        height: 300px;
         border-radius: 12px;
         position: relative;
     }
@@ -112,7 +112,7 @@
                         <!-- Add the search input and button inside the card header -->
                         <div class="input-group mb-1">
                             <input type="text" class="form-control" id="product-search" placeholder="Search for a product">
-                            <button class="btn btn-primary" id="search-button">Search</button>
+                            <button class="btn btn-secondary" id="search-button">Search</button>
                         </div>
                     </div>
                     <div class="card-body" id="product-list">

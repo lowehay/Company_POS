@@ -10,15 +10,15 @@
         margin-top: 10px;
     }
 
-    h1 {
+    h4 {
         margin-left: 50px;
     }
 </style>
 
-<h1>Purchase Orders</h1>
+<h4>Purchase Orders</h4>
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
-        <a href="<?php echo site_url('main/add_purchase_order'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-plus"></i> Create Purchase Order</a>
+        <a href="<?php echo site_url('main/add_purchase_order'); ?>" class="btn btn-dark btn-sm "><i class="fas fa-plus"></i> Create Purchase Order</a>
         <div class="float-right">
         </div>
     </div>

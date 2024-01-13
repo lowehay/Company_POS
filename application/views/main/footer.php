@@ -1,3 +1,8 @@
+</div>
+
+</body>
+
+</html>
 <!-- Bootstrap JS from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -58,5 +63,25 @@
       }
     });
   });
-  $('select').selectpicker();
+</script>
+<script>
+  var sidebarOpen = true; // Initial state of the sidebar
+  var toggleBtn = document.querySelector('.toggle-btn');
+
+  function toggleSidebar() {
+    var sidebar = document.querySelector('.sidebar');
+    var content = document.querySelector('.content');
+
+    sidebarOpen = !sidebarOpen; // Toggle the state
+
+    if (sidebarOpen) {
+      sidebar.style.left = '0';
+      content.style.marginLeft = '260px';
+      toggleBtn.style.marginLeft = '260px';
+    } else {
+      sidebar.style.left = '-260px';
+      content.style.marginLeft = '0';
+      toggleBtn.style.marginLeft = '15px';
+    }
+  }
 </script>

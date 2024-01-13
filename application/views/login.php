@@ -30,7 +30,7 @@
 
     .card-header {
 
-      background-color: #7289da;
+      background-color: #000;
 
       /* Remove Bootstrap's default background-color */
       color: white;
@@ -58,16 +58,16 @@
       width: 100%;
     }
 
-    .btn-primary {
+    .btn-dark {
 
-      background-color: #7289da;
+      background-color: #000;
 
       /* Button background color */
       border: none;
       width: 100%;
     }
 
-    .btn-primary:hover {
+    .btn-dark:hover {
       background-color: #836855;
       /* Hover color */
     }
@@ -100,7 +100,7 @@
         <div class="card-body">
           <!-- Logo div -->
           <div class="logo">
-            <img src="<?php echo base_url('assets/images/company.png'); ?>" alt="Company Logo">
+            <img src="<?php echo base_url('assets/images/store.png'); ?>" alt="Company Logo">
           </div>
           <form method="post" autocomplete="off" action="<?= base_url('port/loginNow') ?>" style="flex: 2;">
             <div class="mb-3">
@@ -116,7 +116,7 @@
               </div>
             </div>
             <div class="text-center">
-              <button type="submit" class="btn btn-primary">LOGIN</button>
+              <button type="submit" class="btn btn-dark">LOGIN</button>
             </div>
             <?php
             if ($this->session->flashdata('error')) { ?>
