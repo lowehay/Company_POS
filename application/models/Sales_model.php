@@ -102,4 +102,55 @@ class Sales_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    public function getTotalSales()
+    {
+        $this->db->select_sum('total_cost', 'total_sales');
+        $query = $this->db->get('sales_no');
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->total_sales;
+        } else {
+            return 0;
+        }
+    }
+    public function getTotalSalesForToday()
+    {
+        $this->db->select_sum('total_cost', 'total_sales');
+        $this->db->where('date_created', date('Y-m-d'));
+        $query = $this->db->get('sales_no');
+
+        if ($query->num_rows() > 0) {
+            return $query->row()->total_sales;
+        } else {
+            return 0; // No sales found for today
+        }
+    }
+    public function getMonthlySales()
+    {
+        $this->db->select('MONTH(date_created) as month, SUM(total_cost) as monthly_sales');
+        $this->db->group_by('MONTH(date_created)');
+        $query = $this->db->get('sales_no');
+
+        return $query->result();
+    }
+    public function update_added_sales()
+    {
+        $product_id = (int) $this->input->post('product_id');
+
+        $sales_srp = (string) $this->input->post('sales_srp');
+
+        $data = array(
+            'product_price' => $sales_srp,
+        );
+
+        $this->db->where('product_id', $product_id);
+
+        $response = $this->db->update('product', $data);
+
+        if ($response) {
+            return $product_id;
+        } else {
+            return FALSE;
+        }
+    }
 }

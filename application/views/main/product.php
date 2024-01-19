@@ -4,8 +4,8 @@
     margin: 10px auto;
   }
 
-  h1 {
-    margin-left: 50px;
+  h4 {
+    margin-left: 40px;
   }
 
   .row {
@@ -199,7 +199,7 @@
     background-color: #0056b3;
   }
 </style>
-<h1>Product Management</h1>
+<h4>Product Management</h4>
 <div class="row mb-2">
   <div class="col-sm-6">
   </div>
@@ -214,9 +214,7 @@
   <div class="card-header" style="padding-top: 0;">
     <div class="row align-items-center">
       <div class="col-sm-6">
-
-        <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-primary btn-sm"><i class="fas fa-box"></i> Add Product</a>
-
+        <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-dark btn-sm"><i class="fas fa-box"></i> Add Product</a>
       </div>
       <div class="col-sm-6 d-flex justify-content-end align-items-center">
         <a id="switchLayoutButton" class="btn btn-secondary btn-sm text-white"><i class="fas fa-list"></i></a>
@@ -250,8 +248,8 @@
                     <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
                     <p class="card-text">Price: ₱<?php echo $row->product_price; ?></p>
                     <div class="btn-group">
-                      <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit</a>
-                      <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                      <a href="<?php echo site_url('main/edit_product/' . $product_id); ?>" class="btn btn-dark btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                      <a href="<?php echo site_url('main/delete_product/' . $product_id); ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</a>
                     </div>
                   </div>
                 </div>

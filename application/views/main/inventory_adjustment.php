@@ -10,12 +10,12 @@
         margin-top: 10px;
     }
 
-    h1 {
-        margin-left: 50px;
+    h4 {
+        margin-left: 40px;
     }
 </style>
 
-<h1>Inventory Adjustment</h1>
+<h4>Inventory Adjustment</h4>
 <div class="card card-outline card-success">
     <div class="card-header  ">
     </div>
@@ -56,7 +56,7 @@
 
                             </td>
                             <td>
-                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-info" id="btn_po">Adjust</button></a>
+                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-dark" id="btn_po">Adjust</button></a>
                             </td>
                         </tr>
                     <?php endforeach ?>

@@ -6,7 +6,7 @@ class Purchase_order_model extends CI_Model
     {
 
         $year = date('Y');
-        $text = "PO" . '-' . $year;
+        $text = "PR" . '-' . $year;
         $query = "SELECT max(purchase_order_no) as code_auto from purchase_order_no";
         $data = $this->db->query($query)->row_array();
         if ($data["code_auto"] != NULL) {
@@ -54,9 +54,7 @@ class Purchase_order_model extends CI_Model
         $last_purchase_id = $this->db->insert_id();
 
         $product_name = $this->input->post('product_name');
-
         $po_product_quantity = $this->input->post('po_product_quantity');
-
         $product_unit = $this->input->post('product_unit');
         $product_unitprice = $this->input->post('product_unitprice');
         $total_cost = 0;

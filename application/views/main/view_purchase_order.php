@@ -1,3 +1,7 @@
+
+<div class="container">
+    <h4 class="text-white">View Purchase Request</h4>
+
 <style>
     .container {
         padding-top: 5px;
@@ -41,25 +45,24 @@
         font-weight: bold;
     }
 </style>
-<<div class="container">
-    <h1 class="text-dark">Approve Purchase Request</h1>
+
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
 
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label text-white">Purchase Request No</label>
                 <input type="text" value=" <?= $code->purchase_order_no ?>" name="purchase_order_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="date_created" class="form-label">Date Created</label>
+                <label for="date_created" class="form-label text-white">Date Created</label>
                 <input type="text" id="date_created" name="date_created" value="<?= $code->date_created ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="supplier_id" class="form-label">Supplier</label>
+                <label for="supplier_id" class="form-label text-white">Supplier</label>
                 <input type="text" id="supplier_id" name="supplier_id" value="<?= $select->supplier_name ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="payment_method" class="form-label">Payment Method</label>
+                <label for="payment_method" class="form-label text-white">Payment Method</label>
                 <input type="text" id="payment_method" name="payment_method" value="<?= $code->payment_method ?>" readonly class="form-control form-control-sm">
             </div>
         </div>

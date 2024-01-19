@@ -42,23 +42,23 @@
 </style>
 
 <div class="container">
-    <h1 class="text-dark">View Goods Received</h1>
+    <h4 class="text-white">View Goods Received</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="goods_received_no" class="form-label">Goods Received No</label>
+                <label for="goods_received_no" class="form-label text-white">Goods Received No</label>
                 <input type="text" value=" <?= $code->goods_received_no ?>" name="goods_received_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="date_received" class="form-label">Date Received</label>
+                <label for="date_received" class="form-label text-white">Date Received</label>
                 <input type="text" id="date_received" name="date_received" value="<?= $code->date_received ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="supplier_id" class="form-label">Supplier</label>
+                <label for="supplier_id" class="form-label text-white">Supplier</label>
                 <input type="text" id="supplier_id" name="supplier_id" value="<?= $select->supplier_name ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="payment_method" class="form-label">Payment Method</label>
+                <label for="payment_method" class="form-label text-white">Payment Method</label>
                 <input type="text" id="payment_method" name="payment_method" value="<?= $code->payment_method ?>" readonly class="form-control form-control-sm">
             </div>
         </div>

@@ -3,9 +3,11 @@
         font-weight: bold;
     }
 
+
     h1 {
         text-align: center;
     }
+
 
 
     @media (max-width: 767px) {
@@ -16,14 +18,14 @@
 </style>
 
 <div class="container mt-3">
-    <h1>Product Registration</h1>
+    <h4>Product Registration</h4>
     <div class="row justify-content-center">
         <div class="card">
             <div class="card-body">
                 <?= form_open_multipart('', array('onsubmit' => 'return confirm(\'Are you sure you want to add this product?\')')); ?>
 
                 <div class="section">
-                    <h4>Product Information</h4>
+                    <h5>Product Information</h5>
                     <div class="form-group col-md-3 d-inline-block">
                         <label for="product_code" class="bold-label">Product Code</label>
                         <input type="text" id="product_code" name="product_code" value="<?= $product_code ?>" class="form-control" readonly>
@@ -67,7 +69,9 @@
 
                     <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">VAT</label>
+
                         <select class="form-control " data-live-search="true" data-style="btn-outline-secondary" title="Select VAT" name="product_vat" required>
+
                             <option value="" selected hidden>Select Tax</option>
                             <option>12%</option>
                             <option>Non-VAT</option>
@@ -86,14 +90,16 @@
                 </div>
 
                 <div class="section">
-                    <h4>Inventory Information</h4>
+                    <h5>Inventory Information</h5>
                     <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">Inbound Threshold <i class="fa fa-question-circle" title="* Minimum quantity to trigger reordering"></i></label>
                         <input type="number" placeholder="Enter Quantity" name="product_inbound_threshold" min="0" value="<?= set_value('product_inbound_threshold'); ?>" class="form-control" id="product_inbound_threshold" required>
                         <?= form_error('product_inbound_threshold'); ?>
                     </div>
 
+
                     <div class="form-group col-md-3 d-inline-block">
+
                         <label class="bold-label">Shelf life <i class="fa fa-question-circle" title="* Maximum no. of days this product can be stored"></i></label>
                         <input type="number" placeholder="Enter No. of Days" name="product_shelf_life" min="0" value="<?= set_value('product_shelf_life'); ?>" class="form-control" id="product_shelf_life" required>
                         <?= form_error('product_shelf_life'); ?>
@@ -138,7 +144,7 @@
 
 
                 <div class="section">
-                    <h4>Image</h4>
+                    <h5>Image</h5>
                     <div class="form-group col-md-6 d-inline-block">
                         <label for="product_image" class="bold-label">Product Image</label>
                         <input type="file" id="product_image" name="product_image" value="<?= set_value('product_image'); ?>" class="form-control <?= form_error('product_image') ? 'is-invalid' : ''; ?>" required>
@@ -154,6 +160,7 @@
                             <table class="table table-bordered text-center" id="table_field">
                                 <thead>
                                     <tr>
+
                                         <th style="width: 20%;">UoM</th>
                                         <th style="width: 15%;">Barcode</th>
 

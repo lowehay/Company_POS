@@ -20,18 +20,22 @@
     .badge {
         font-size: 0.8em;
     }
+
+    h4 {
+        margin-left: 40px;
+    }
 </style>
 
-<h1>Inventory Ledger</h1>
+<h4>Inventory Ledger</h4>
 
 <div class="container">
     <form method="POST" action="" class="form-row">
         <div class="form-group col-md-4">
-            <label for="date_from">Date From:</label>
+            <label for="date_from" class="text-white">Date From:</label>
             <input type="date" id="date_from" name="date_from" class="form-control form-control-sm" required>
         </div>
         <div class="form-group col-md-4">
-            <label for="date_to">Date To:</label>
+            <label for="date_to" class="text-white">Date To:</label>
             <input type="date" id="date_to" name="date_to" class="form-control form-control-sm" required>
         </div>
         <div class="form-group col-md-4">

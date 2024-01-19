@@ -1,7 +1,26 @@
-<h1>Create Stock Requisition</h1>
+<style>
+    .bold-label {
+        font-weight: bold;
+    }
+
+    h4 {
+        margin-left: 10px;
+    }
+
+    @media (max-width: 767px) {
+        h1 {
+            margin-left: 0;
+        }
+    }
+</style>
+
+
+
+<h4>Create Stock Requisition</h4>
 
 
 <?php echo form_open_multipart('', array('onsubmit' => 'return confirm(\'Are you sure you want to add this stock requisition?\')')); ?>
+
 <main class="content">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="container-fluid">
@@ -84,8 +103,11 @@
             </div>
         </div>
         </form>
+
     </div>
-</main>
+</div>
+</form>
+
 <script>
     $(document).on('click', '#btn_sr', function() {
 

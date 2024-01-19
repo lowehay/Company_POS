@@ -3,9 +3,11 @@
 		font-weight: bold;
 	}
 
+
 	h1 {
 		text-align: center;
 	}
+
 
 
 	@media (max-width: 767px) {
@@ -17,7 +19,9 @@
 
 <div class="container mt-3">
 
-	<h1>Edit Product</h1>
+
+	<h4>Edit Product</h4>
+
 
 	<!-- Flash Messages -->
 	<?= $this->session->flashdata('add_user_submit'); ?>
@@ -29,7 +33,7 @@
 			<div class="card-body">
 				<?= form_open_multipart('main/edit_product_submit/' . $product->product_id, array('onsubmit' => 'return confirm(\'Are you sure you want to update this product?\')')); ?>
 				<div class="section">
-					<h4>Product Information</h4>
+					<h5>Product Information</h5>
 					<div class="form-group col-md-3 d-inline-block">
 						<label for="product_code" class="bold-label">Product Code</label>
 						<input type="text" id="product_code" name="product_code" value="<?= set_value('product_code', $product->product_code); ?>" class="form-control" readonly>
@@ -51,7 +55,9 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Preferred Supplier</label>
+
 						<select class="form-control " data-live-search="true" data-style="btn-outline-secondary" name="supplier_id" required>
+
 							<option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
 							<?php foreach ($supplier as $supp) { ?>
 								<option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -62,7 +68,9 @@
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Product Category</label>
 
+
 						<select class="form-control " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_category" required>
+
 
 							<option class="text-info invisible" value="<?= $product->product_category ?>"><?= $product->product_category ?></option>
 							<?php foreach ($procat as $pc) {
@@ -73,6 +81,7 @@
 					</div>
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">VAT</label>
+
 
 						<select class="form-control" name="product_vat" required>
 
@@ -92,7 +101,7 @@
 				</div>
 
 				<div class="section">
-					<h4>Inventory Information</h4>
+					<h5>Inventory Information</h5>
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Inbound Threshold <i class="fa fa-question-circle" title="* Minimum quantity to trigger reordering"></i></label>
 						<input type="number" placeholder="Enter Quantity" name="product_inbound_threshold" min="0" value="<?= set_value('product_inbound_threshold', $product->product_inbound_threshold); ?>" class="form-control" id="product_inbound_threshold" pattern="[1-9][0-9]*([.,][0-9]+)?" title="Please enter a valid number" required>
@@ -137,7 +146,7 @@
 				</div>
 
 				<div class="section">
-					<h4>Image</h4>
+					<h5>Image</h5>
 					<div class="form-group col-md-6 d-inline-block">
 						<label for="product_image" class="bold-label">Product Image</label>
 						<input type="file" id="product_image" name="product_image" value="<?= set_value('product_image'); ?>" class="form-control <?= form_error('product_image') ? 'is-invalid' : ''; ?>">
@@ -146,6 +155,7 @@
 				</div>
 
 				<input type="hidden" name="product_id" value="<?= $product->product_id; ?>">
+
 				<div class="section">
 					<h4>Barcode</h4>
 					<div class="card mb-4">
@@ -157,14 +167,17 @@
 										<th style="width: 20%;">Unit</th>
 										<th style="width: 15%;">Barcode</th>
 
+
 										<th style="width: 10%;">
 											<button type="button" class="btn btn-info" id="btn_po"><i class="fas fa-plus"></i></button>
+
 										</th>
 									</tr>
 								</thead>
 								<tbody class="row_content" id="row_product">
 									<?php foreach ($barcodes as $bar) :
 										if ($productname === $bar->product_name) : ?>
+
 											<tr>
 												<td>
 													<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>
@@ -183,6 +196,7 @@
 													<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
 												</td>
 											</tr>
+
 											<input type="hidden" name="barcode_id" value="<?= $barcode->barcode_id; ?>">
 										<?php endif; ?>
 									<?php endforeach; ?>
@@ -198,6 +212,7 @@
 					</div>
 				</div>
 			</div>
+
 
 
 		</div>

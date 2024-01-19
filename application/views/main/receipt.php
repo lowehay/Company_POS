@@ -9,14 +9,13 @@
     }
 
     .container {
-        display: block;
-        width: 100%;
-        background: #fff;
+        background: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         max-width: 300px;
-        /* Adjust the width as needed */
-        padding: 15px;
         margin: 50px auto 0;
-        box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+        font-family: 'Source Sans Pro', sans-serif;
     }
 
     .receipt_header {
@@ -25,17 +24,16 @@
     }
 
     .receipt_header h1 {
-        font-size: 18px;
+        font-size: 24px;
         margin-bottom: 5px;
-        color: #000;
+        color: #333;
         text-transform: uppercase;
     }
 
     .receipt_header h2 {
-        font-size: 12px;
-        color: #727070;
+        font-size: 14px;
+        color: #777;
         font-weight: 300;
-
     }
 
     .receipt_body {
@@ -45,69 +43,61 @@
     table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 10px;
     }
 
     th,
     td {
-        border: 1px solid #000;
+        border: none;
         padding: 8px;
         text-align: left;
     }
 
-    .recepit_cont {
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        font-size: 12px;
-        color: #000;
-        margin-top: 10px;
-    }
-
-    .cashpayment_cont {
-        display: flex;
-        justify-content: space-between;
-        font-weight: bold;
-        font-size: 12px;
-        color: #000;
-        margin-top: 10px;
-    }
-
+    .recepit_cont,
+    .cashpayment_cont,
     .change_cont {
         display: flex;
         justify-content: space-between;
         font-weight: bold;
-        font-size: 12px;
-        color: #000;
+        font-size: 14px;
+        color: #333;
         margin-top: 10px;
     }
 
-    .items {
-        margin-top: 15px;
-    }
-
-    .items th,
-    .items td {
-        padding: 10px;
-        text-align: left;
-    }
-
     h3 {
-        color: #000;
-        border-top: 1px dashed #000;
+        color: #333;
+        border-top: 1px dashed #333;
         padding-top: 10px;
         margin-top: 15px;
         text-align: center;
         text-transform: uppercase;
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .print-button {
-        color: #000;
+        color: #333;
         display: block;
         text-align: center;
         margin-top: 15px;
-        font-size: 14px;
+        font-size: 16px;
         cursor: pointer;
+    }
+
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+
+        .container,
+        .container * {
+            visibility: visible;
+        }
+
+        .container {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
     }
 </style>
 
@@ -191,32 +181,37 @@
         // Retrieve and display reference number
         var storedReferenceNo = localStorage.getItem('referenceNo');
         document.getElementById('referenceNo').textContent = storedReferenceNo;
-    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Your existing code to retrieve and display data
-
-        // Hide the print button
+        // Handle printing
         var printButton = document.getElementById('printButton');
         if (printButton) {
-            printButton.style.display = 'none';
+            printButton.addEventListener('click', function() {
+                printReceipt();
+            });
         }
 
-        // Trigger the print functionality
-        window.print();
-
-        // Revert the display property after a delay (adjust the delay as needed)
-        setTimeout(function() {
+        function printReceipt() {
+            // Hide the print button before printing
+            var printButton = document.getElementById('printButton');
             if (printButton) {
-                printButton.style.display = 'block';
+                printButton.style.display = 'none';
             }
-        }, 1000); // 1000 milliseconds (1 second) delay in this example
 
-        // Redirect to the POS page after another delay (adjust the delay as needed)
-        setTimeout(function() {
-            window.location.href = 'pos';
-        }, 2000); // 2000 milliseconds (2 seconds) delay in this example
+            // Trigger the print dialog
+            window.print();
+
+            // Revert the display property after a short delay
+            setTimeout(function() {
+                if (printButton) {
+                    printButton.style.display = 'block';
+                }
+            }, 1000); // Adjust the delay as needed
+        }
+        // Automatically trigger the print dialog
+        printReceipt();
     });
+
+
 
     function clearCartItems() {
         cartItems = []; // Clear the cart items
@@ -249,18 +244,4 @@
 
     // Call the function initially 
     updateGeneratedTime();
-
-    // Update the time every second
-    setInterval(updateGeneratedTime, 1000);
-
-    function printDocument() {
-        // Hide the print button
-        var printButton = document.getElementById('printButton');
-        if (printButton) {
-            printButton.style.display = 'none';
-        }
-
-        // Trigger the print dialog
-        window.print();
-    }
 </script>

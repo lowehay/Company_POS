@@ -11,14 +11,14 @@
     margin-top: 10px;
   }
 
-  h1 {
-    margin-left: 50px;
+  h4 {
+    margin-left: 40px;
   }
 </style>
-<h1>User Management</h1>
+<h4>User Management</h4>
 <div class="card" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
   <div class="card-header">
-    <a href="<?php echo site_url('main/add_user'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-user-plus"></i>
+    <a href="<?php echo site_url('main/add_user'); ?>" class="btn btn-dark btn-sm "><i class="fas fa-user-plus"></i>
       Add User </a>
   </div>
   <div class="card-body">

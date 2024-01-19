@@ -10,7 +10,7 @@
         font-size: 1.5rem;
         padding: 10px;
         text-align: center;
-        background-color: #2a3b57;
+        background-color: #5a6268;
         border: 1px solid #ccc;
         cursor: pointer;
     }
@@ -90,8 +90,8 @@
     }
 
     .product-card {
-        width: 400px;
-        height: 380px;
+        width: 280px;
+        height: 300px;
         border-radius: 12px;
         position: relative;
     }
@@ -108,11 +108,11 @@
             <div class="col-md-8">
                 <div class="card shadow" style="max-height: 100vh; overflow-y: auto;">
                     <div class="card-header">
-                        <h2>Product List</h2>
+                        <h3>Product List</h3>
                         <!-- Add the search input and button inside the card header -->
                         <div class="input-group mb-1">
                             <input type="text" class="form-control" id="product-search" placeholder="Search for a product">
-                            <button class="btn btn-primary" id="search-button">Search</button>
+                            <button class="btn btn-secondary" id="search-button">Search</button>
                         </div>
                     </div>
                     <div class="card-body" id="product-list">
@@ -137,7 +137,7 @@
             <div class="col-md-4">
                 <div class="card shadow">
                     <div class="card-header">
-                        <h2>Cart</h2>
+                        <h3>Cart</h3>
                     </div>
                     <div class="card-body">
                         <ul class="list-group" id="cart-items">
@@ -237,7 +237,7 @@
                 var cartItem = $('<tr data-product-name="' + productName + '" data-product-price="' + productPrice.toFixed(2) + '"></tr>');
                 cartItem.append('<td>' + productName + '</td>');
                 cartItem.append('<td><input class="form-control form-control-sm product-quantity" type="number" value="1" min="1"></td>');
-                cartItem.append('<td>' + productPrice.toFixed(2) + '</td>');
+                cartItem.append('<td>₱' + productPrice.toFixed(2) + '</td>');
                 cartItem.append('<td class="product-total">' + productPrice.toFixed(2) + '</td>');
                 cartItem.append('<td><button class="btn btn-danger delete-item">Delete</button></td>');
 

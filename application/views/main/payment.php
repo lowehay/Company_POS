@@ -9,7 +9,7 @@
         font-size: 1.5rem;
         padding: 10px;
         text-align: center;
-        background-color: #2a3b57;
+        background-color: #5a6268;
         border: 1px solid #ccc;
         cursor: pointer;
         color: #fff;
@@ -123,7 +123,7 @@
                             <input type="radio" name="payment_method" value="cash" data-method="cash" style="display: none;"> <!-- Hide radio button -->
                             Cash
                             <input type="hidden" value="<?= $ref_no ?>" name="reference_no" readonly class="form-control form-control-sm">
-                            <input type="hidden" value="<?= date('m-d-Y h:i A'); ?>" name="date_created" readonly class="form-control form-control-sm">
+                            <input type="hidden" value="<?= date('Y-m-d'); ?>" name="date_created" readonly class="form-control form-control-sm">
                         </label>
                         <label class="btn btn-primary btn-block payment-method" style="flex: 1; display: flex; align-items: center; justify-content: center; font-size: 20px; background-color: #6096B4; color: #FFF;" onclick="handlePaymentMethodClick(this)">
                             <input type="radio" name="payment_method" value="cheque" data-method="cheque" style="display: none;"> <!-- Hide radio button -->
