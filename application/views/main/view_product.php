@@ -15,13 +15,13 @@
 <div class="container mt-3">
     <div class="row mb-2">
         <div class="col-sm-6">
-            <h1 class="m-0 text-dark">View Product</h1>
+            <h4 class="m-0 text-white">View Product</h4>
         </div><!-- /.col -->
     </div><!-- /.row -->
 
     <div class="card">
         <div class="card-header">
-            <h4 class="mb-0">Product Information</h4>
+            <h3 class="mb-0">Product Information</h3>
         </div>
         <div class="card-body">
             <div class="row">

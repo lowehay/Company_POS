@@ -22,7 +22,7 @@
     }
 
     h4 {
-        align-items: center;
+        margin-left: 40px;
     }
 </style>
 

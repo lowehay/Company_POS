@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>COMPANY</title>
 
+  <link rel="shortcut icon" href="<?php echo base_url(); ?>/assets/images/store.png" />
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Font Awesome CSS (version 5.15.4) from CDN -->
@@ -169,10 +171,6 @@
       /* Adjust the margin as needed */
     }
 
-    .sidebar a:hover {
-      background-color: #384042;
-    }
-
     .content {
       margin-left: 250px;
       /* Adjusted to match the initial state of the sidebar */
@@ -186,6 +184,69 @@
       /* Line color */
       margin: 1px;
       /* Adjust as needed for spacing */
+    }
+
+    /* Custom Dropdown Styles */
+    .custom-dropdown {
+      position: relative;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .custom-dropdown a.dropdown-toggle::after {
+      display: none;
+      /* Hide the default Bootstrap caret */
+    }
+
+    .custom-dropdown .custom-caret {
+      display: inline-block;
+      width: 0;
+      height: 0;
+      vertical-align: middle;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 8px solid #000;
+      /* Adjust color and size as needed */
+      margin-left: 85px;
+      /* Adjust the margin to increase the distance */
+      transition: transform 0.3s ease;
+      /* Add transition for arrow effect */
+    }
+
+    .custom-dropdown.open .custom-caret {
+      transform: rotate(90deg);
+      /* Rotate arrow for open state */
+    }
+
+    .custom-dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #28282B;
+      /* Adjust background color as needed */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      width: 250px;
+      /* Set the width to match the sidebar */
+    }
+
+    .custom-dropdown.open .custom-dropdown-content {
+      display: block;
+    }
+
+    .custom-dropdown-content a.dropdown-item:hover {
+      background-color: transparent !important;
+      color: inherit !important;
+    }
+
+    .custom-dropdown.open .custom-dropdown-content {
+      display: block;
+    }
+
+    .sidebar a.active {
+      color: #ffffff;
+      /* Active link text color */
+      background-color: #28282B;
+      /* Active link background color */
     }
   </style>
 </head>
@@ -216,7 +277,7 @@
 
   <div class="sidebar">
 
-    <a href="<?= base_url('main') ?>" class="brand-link d-flex align-items-center">
+    <a href="<?= base_url('main') ?>" class="brand-link d-flex align-items-center exclude-from-highlight">
       <img src="<?php echo base_url('assets/images/store.png'); ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3 t" style="opacity: .8; max-width: 100%; max-height: 60px;">
     </a>
 
@@ -226,29 +287,32 @@
     <a href="<?= base_url('main/product') ?>"><i class="fas fa-box"></i> Product</a>
 
     <!-- Purchase Dropdown -->
-    <div class="dropdown">
-      <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+    <div class="custom-dropdown" id="purchaseDropdown">
+      <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="">
         <i class="fas fa-shopping-cart"></i> Purchase
+        <div class="custom-caret"></div>
       </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item text-dark" href="<?= base_url('main/purchase_order') ?>">Purchase Order</a>
-        <a class="dropdown-item text-dark" href="<?= base_url('main/goods_received') ?>">Goods Received</a>
-        <a class="dropdown-item text-dark" href="<?= base_url('main/goods_return') ?>">Goods Return</a>
+      <div class="custom-dropdown-content">
+        <a class="dropdown-item text-white" href="<?= base_url('main/purchase_order') ?>">Purchase Request</a>
+        <a class="dropdown-item text-white" href="<?= base_url('main/goods_received') ?>">Goods Received</a>
+        <a class="dropdown-item text-white" href="<?= base_url('main/goods_return') ?>">Goods Return</a>
       </div>
     </div>
 
     <!-- Inventory Dropdown -->
-    <div class="dropdown">
-      <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+    <div class="custom-dropdown" id="inventoryDropdown">
+      <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="">
         <i class="fas fa-archive"></i> Inventory
+        <div class="custom-caret"></div>
       </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item text-dark" href="<?= base_url('main/inventory_adjustment') ?>">Inventory Adjustment</a>
-        <a class="dropdown-item text-dark" href="<?= base_url('main/inventory_ledger') ?>">Inventory Ledger</a>
+      <div class="custom-dropdown-content">
+        <a class="dropdown-item text-white" href="<?= base_url('main/inventory_adjustment') ?>">Inventory Adjustment</a>
+        <a class="dropdown-item text-white" href="<?= base_url('main/inventory_ledger') ?>">Inventory Ledger</a>
       </div>
     </div>
 
     <a href="<?= base_url('main/stock_requisition') ?>"><i class="fas fa-clipboard-list"></i> Stock Requisition</a>
+    <a href="<?= base_url('main/sales') ?>"><i class="fas fa-shopping-basket"></i> Sales</a>
     <a href="<?= base_url('main/pos') ?>"><i class="fas fa-cash-register"></i> POS</a>
     <a href="<?= base_url('main/reports') ?>"><i class="fas fa-chart-bar"></i> Reports</a>
     <a href="<?= base_url('main/backup') ?>"><i class="fas fa-database"></i> Backup & Restore</a>

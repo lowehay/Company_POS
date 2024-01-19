@@ -1,52 +1,9 @@
-<style>
-    .container {
-        padding-top: 5px;
-        padding-bottom: 20px;
-    }
-
-    .container h1 {
-        font-size: 70px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .form-label {
-        font-size: 16px;
-    }
-
-    .form-control {
-        font-size: 16px;
-    }
-
-    .table {
-        font-size: 16px;
-    }
-
-    .table th,
-    .table td {
-        padding: 10px;
-    }
-
-    .card-body {
-        overflow: auto;
-        /* Add this line to make the card body scrollable */
-    }
-
-    .btn-sm {
-        font-size: 16px;
-    }
-
-    .total-cost {
-        font-weight: bold;
-    }
-</style>
-
 <div class="container">
-    <h4 class="text-white">View Purchase Order</h4>
+    <h4 class="text-white">View Purchase Request</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label text-white">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label text-white">Purchase Request No</label>
                 <input type="text" value=" <?= $code->purchase_order_no ?>" name="purchase_order_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">

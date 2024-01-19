@@ -79,7 +79,6 @@
 						<?= form_error('product_margin'); ?>
 					</div>
 
-
 				</div>
 
 				<div class="section">
@@ -135,64 +134,62 @@
 						<span style="color: red;"><?= form_error('product_image'); ?></span>
 					</div>
 				</div>
-			</div>
-			<input type="hidden" name="product_id" value="<?= $product->product_id; ?>">
-			<div class="section">
-				<h4>Barcode</h4>
-				<div class="card mb-4">
 
-					<div class="card-body">
-						<table class="table table-bordered text-center" id="table_field">
-							<thead>
-								<tr>
-									<th style="width: 20%;">Unit</th>
-									<th style="width: 15%;">Barcode</th>
-									<th style="width: 20%;">Price</th>
-									<th style="width: 10%;">
-										<button type="button" class="btn btn-info" id="btn_po"><i class="fas fa-plus"></i></button>
-									</th>
-								</tr>
-							</thead>
-							<tbody class="row_content" id="row_product">
-								<?php foreach ($barcodes as $bar) :
-									if ($productname === $bar->product_name) : ?>
-										<tr>
-											<td>
-												<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>
-													<option select hidden><?= $bar->unit ?></option>
-													<?php foreach ($unit as $pro) { ?>
-														<option value="<?= $pro->unit ?>"><?= $pro->unit ?></option>
-													<?php } ?>
-												</select>
-												<input type="hidden" name="selected_product" id="selected_product" value="">
-											</td>
-											<td>
-												<input class="form-control form-control-sm " value="<?= set_value('barcode', $bar->barcode); ?>" type="text" name="product_barcode[]" id="product_barcode" title="Please enter barcode" placeholder="Enter Barcode">
-											</td>
-											<td>
-												<input class="form-control form-control-sm product-cost-price" value="<?= set_value('barcode', $bar->price); ?>" type="text" name="product_price[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" placeholder="Enter Price">
-											</td>
-											<td>
-												<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
-											</td>
-										</tr>
-										<input type="hidden" name="barcode_id" value="<?= $barcode->barcode_id; ?>">
-									<?php endif; ?>
-								<?php endforeach; ?>
-							</tbody>
-						</table>
+				<input type="hidden" name="product_id" value="<?= $product->product_id; ?>">
+
+				<div class="section">
+					<h4>Barcode</h4>
+					<div class="card mb-4">
+
+						<div class="card-body">
+							<table class="table table-bordered text-center" id="table_field">
+								<thead>
+									<tr>
+										<th style="width: 20%;">Unit</th>
+										<th style="width: 15%;">Barcode</th>
+										<th style="width: 10%;">
+											<button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
+										</th>
+									</tr>
+								</thead>
+								<tbody class="row_content" id="row_product">
+									<?php foreach ($barcodes as $bar) :
+										if ($productname === $bar->product_name) : ?>
+
+											<tr>
+												<td>
+													<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>
+														<option select hidden><?= $bar->unit ?></option>
+														<?php foreach ($unit as $pro) { ?>
+															<option value="<?= $pro->unit ?>"><?= $pro->unit ?></option>
+														<?php } ?>
+													</select>
+													<input type="hidden" name="selected_product" id="selected_product" value="">
+												</td>
+												<td>
+													<input class="form-control form-control-sm " value="<?= set_value('barcode', $bar->barcode); ?>" type="text" name="product_barcode[]" id="product_barcode" title="Please enter barcode" placeholder="Enter Barcode">
+												</td>
+
+												<td>
+													<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
+												</td>
+											</tr>
+								</tbody>
+							<?php endif; ?>
+						<?php endforeach; ?>
+							</table>
+						</div>
 					</div>
-
 				</div>
 				<div class="card-footer bg-transparent text-end">
-					<button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Submit</button>
-					<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
-
+					<div class="form-group col-md-12">
+						<button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Submit</button>
+						<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
+					</div>
 				</div>
+
 			</div>
-
 		</div>
-
 	</div>
 
 </div>
@@ -216,25 +213,26 @@
 
 		var newRow = '<tr>' +
 			'<td>' +
-			'<select class="form-control form-control-sm" name="product_unit[]" title="Please enter unit" required>' +
-			'<option selected hidden>Select Unit</option>' +
+			'<select class="form-control form-control-sm" name="product_unit[]" id="product_unit" title="Please enter unit" required>' +
+			'<option select hidden>Select Unit</option>' +
 			'<?php foreach ($unit as $pro) { ?>' +
 			'<option value="<?= $pro->unit ?>"><?= $pro->unit ?></option>' +
 			'<?php } ?>' +
-			'</select><input type="hidden" name="selected_product" class="selected_product" value=""></td>' +
+			'</select><input type="hidden" name="selected_product" id="selected_product" value=""></td>' +
 			'<td>' +
-			'<input class="form-control form-control-sm " placeholder="Enter Barcode" type="text" name="product_barcode[]" title="Please enter barcode" placeholder="Enter Barcode">' +
-			'</td>' +
-			'<td>' +
-			'<input class="form-control form-control-sm product-cost-price" placeholder="Enter Price" type="text" name="product_price[]" pattern="[0-9]+(\.[0-9]{1,2})?" placeholder="Enter Price">' +
+			'<input class="form-control form-control-sm " placeholder="Enter Barcode" type="text" name="product_barcode[]" id="product_barcode" title="Please enter barcode" placeholder="Enter Barcode">' +
 			'</td>' +
 			'<td>' +
 			'<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>' +
 			'</td>' +
 			'</tr>';
 
+
 		// Append the new row to the table
-		$('#table_field tbody').append(newRow);
+		$('#table_field tbody tr:last').after(newRow);
+
+		// Refresh selectpicker for the new row
+		$('.selectpicker').selectpicker('refresh');
 
 	});
 

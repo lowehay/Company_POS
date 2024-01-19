@@ -15,6 +15,10 @@
         padding: 20px;
     }
 
+    h4 {
+        margin-left: 15px;
+    }
+
     h5,
     p {
         color: #000;
@@ -33,9 +37,9 @@
                 </div>
                 <div class="card-body">
                     <h5>Total Sales</h5>
-                    <p>$10,000</p>
+                    <p>₱ <?= $total_sales ?></p>
                     <h5>Today's Sales</h5>
-                    <p>$1,000</p>
+                    <p>₱ <?= $total_sales_today ?></p>
                 </div>
             </div>
         </div>
@@ -114,14 +118,26 @@
     <script>
         // Bar Chart Data
         var ctx = document.getElementById("salesChart").getContext('2d');
+
+        // Assuming you have fetched the monthly sales data from the backend
+        var monthlySalesData = <?php echo json_encode($monthly_sales); ?>;
+
+        var labels = [];
+        var data = [];
+
+        monthlySalesData.forEach(function(item) {
+            labels.push(monthName(item.month));
+            data.push(item.monthly_sales);
+        });
+
         var salesChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ["January", "February", "March", "April", "May"],
+                labels: labels,
                 datasets: [{
                     label: 'Monthly Sales',
-                    data: [1200, 1500, 1100, 1800, 1400],
-                    backgroundColor: 'rgb(245,245,245)',
+                    data: data,
+                    backgroundColor: 'rgb(167,167,167)',
                     borderColor: 'rgba(97, 93, 95, 1)',
                     borderWidth: 1
                 }]
@@ -129,13 +145,52 @@
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return '₱' + value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,'); // Format as currency
+                            },
+                            color: 'black' // set y-axis label color to black
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: 'black' // set x-axis label color to black
+                        }
                     }
                 },
                 maintainAspectRatio: false,
                 responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                color: 'black' // set legend label color to black
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                var label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += '₱' + context.formattedValue.replace(/\d(?=(\d{3})+\.)/g, '$&,'); // Format as currency
+                                return label;
+                            }
+                        }
+                    }
+                }
             }
         });
+
+        // Function to convert month number to month name
+        function monthName(monthNumber) {
+            var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return monthNames[monthNumber - 1];
+        }
+
 
         // Assuming $low_stock_products is the variable passed from the controller
         var lowStockProducts = <?php echo json_encode($lowStockProducts); ?>;
@@ -171,6 +226,15 @@
             options: {
                 maintainAspectRatio: false,
                 responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                color: 'black' // set legend label color to black
+                            }
+                        }
+                    }
+                }
             }
         });
     </script>

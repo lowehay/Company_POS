@@ -147,9 +147,6 @@
                                     <tr>
                                         <th style="width: 20%;">Unit</th>
                                         <th style="width: 15%;">Barcode</th>
-
-                                        <th style="width: 20%;">Price</th>
-
                                         <th style="width: 10%;">
                                             <button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
                                         </th>
@@ -170,10 +167,6 @@
                                         <td>
                                             <input class="form-control form-control-sm " value="<?= set_value('barcode'); ?>" type="text" name="product_barcode[]" id="product_barcode" title="Please enter barcode" placeholder="Enter Barcode">
 
-
-                                        </td>
-                                        <td>
-                                            <input class="form-control form-control-sm product-cost-price" type="text" name="product_price[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" placeholder="Enter Price">
 
                                         </td>
                                         <td>

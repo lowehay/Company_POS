@@ -13,7 +13,7 @@
     }
 
     h4 {
-        margin-left: 50px;
+        margin-left: 40px;
     }
 </style>
 
@@ -21,7 +21,7 @@
 <div class="card card-outline" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
 
-        <a href="<?php echo site_url('main/add_stock_requisition'); ?>" class="btn btn-secondary btn-sm "><i class="fas fa-plus"></i> Create Stock Request</a>
+        <a href="<?php echo site_url('main/add_stock_requisition'); ?>" class="btn btn-dark btn-sm "><i class="fas fa-plus"></i> Create Stock Request</a>
 
         <div class="float-right">
         </div>

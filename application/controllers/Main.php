@@ -8,6 +8,10 @@ class Main extends CI_Controller
 	{
 		$this->load->model('product_model');
 		$this->load->model('purchase_order_model');
+		$this->load->model('sales_model');
+		$this->data['total_sales'] = $this->sales_model->getTotalSales();
+		$this->data['total_sales_today'] = $this->sales_model->getTotalSalesForToday();
+		$this->data['monthly_sales'] = $this->sales_model->getMonthlySales();
 		$this->data['total_prod'] = $this->product_model->get_total_products();
 		$this->data['low_stocks'] = $this->product_model->getLowStockProductsCount();
 		$this->data['lowStockProducts'] = $this->product_model->getLowStockProducts();
@@ -573,12 +577,11 @@ class Main extends CI_Controller
 
 			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
 			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
-			$this->form_validation->set_rules('product_price[]', 'Product Price', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
 				$config['upload_path'] = './assets/images/'; // Set the upload directory
 				$config['allowed_types'] = 'jpg|jpeg|png|gif'; // Allowed file types
-				$config['max_size'] = 2048; // Maximum file size in kilobytes
+				$config['max_size'] = 10000; // Maximum file size in kilobytes
 				$config['encrypt_name'] = TRUE; // Encrypt the file name for security
 
 				$this->load->library('upload', $config);
@@ -658,7 +661,6 @@ class Main extends CI_Controller
 
 			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
 			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
-			$this->form_validation->set_rules('product_price[]', 'Product Price', 'trim|required');
 
 
 			if ($this->form_validation->run() != FALSE) {
@@ -1118,5 +1120,44 @@ class Main extends CI_Controller
 		$this->data['code'] = $this->sales_model->code($id);
 		$this->data['view'] = $this->sales_model->view_all_sales($id);
 		$this->load->view('main/print_sales_report', $this->data);
+	}
+	function sales()
+	{
+		$this->load->model('product_model');
+		$this->data['result'] = $this->product_model->get_all_product();
+		$this->load->view('main/header');
+		$this->load->view('main/sales', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_sales_product($product_id)
+	{
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_product($product_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_sales_product', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_sales_product_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('sales_srp', 'SRP', 'trim|required');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('sales_model');
+
+				$response = $this->sales_model->update_added_sales();
+
+				if ($response) {
+					$success_message = 'Product sale added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product sale was not updated successfully.';
+				}
+				redirect('main/sales');
+			}
+		}
 	}
 }

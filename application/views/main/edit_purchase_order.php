@@ -42,11 +42,11 @@
 </style>
 
 <div class="container">
-    <h4 class="text-white">Edit Purchase Order</h4>
+    <h4 class="text-white">Edit Purchase Request</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label text-white">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label text-white">Purchase Request No</label>
                 <input type="text" value="<?= $code->purchase_order_no ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
@@ -93,7 +93,7 @@
                         <tbody class="row_content" id="row_product">
                             <tr>
                                 <td>
-                                    <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
+                                    <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
                                         <option value="<?= $row->product_name ?>"><?= $row->product_name ?></option>
                                         <?php foreach ($product as $pro) { ?>
                                             <option value="<?= $pro->product_name ?>"> <?= $pro->product_name ?></option>
@@ -104,7 +104,7 @@
                                     <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" value="<?= $row->po_product_quantity ?>" pattern="[0-9]+" required>
                                 </td>
                                 <td>
-                                    <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
+                                    <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
                                         <option class="text-info invisible" value="<?= $row->product_unit ?>"><?= $row->product_unit ?></option>
                                         <option>Pcs</option>
                                         <option>Tablet</option>
@@ -181,7 +181,7 @@
         newRow.className = "row_content"; // Assign the 'row_content' class to the new row
 
         newRow.innerHTML = `<td>
-            <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" required>
+            <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" required>
                 <option value=""></option>
                 <?php foreach ($product as $pro) { ?>
                     <option value="<?= $pro->product_name ?>" data-product-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
@@ -190,7 +190,7 @@
         </td>
         <td><input class="form-control form-control-sm" type="number" name="po_product_quantity[]" value="" pattern="[0-9]+" required></td>
         <td>
-            <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" required>
+            <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" required>
                 <option></option>
                 <option>Pcs</option>
                 <option>Tablet</option>
