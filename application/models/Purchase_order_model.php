@@ -173,6 +173,14 @@ class Purchase_order_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    function net_product_cost($id)
+    {
+        $this->db->select('*');
+        $this->db->from('purchase_order AS po');
+        $this->db->join('purchase_order_no AS purc', 'po.purchase_order_no = purc.purchase_order_no_id');
+        $this->db->where('purchase_order_no', $id);
+    }
     public function update_po()
     {
         $purchase_id = (int) $this->input->post('purchase_id');
@@ -204,7 +212,7 @@ class Purchase_order_model extends CI_Model
             $arr_product = $product_name;
             $arr_quant = $po_product_quantity[$index];
             $arr_unit = $product_unit[$index];
-            $arr_code = $pr_code[$index];
+
             $arr_price = $product_unitprice[$index];
 
             $data = [
@@ -235,12 +243,49 @@ class Purchase_order_model extends CI_Model
 
     public function approved_po($id)
     {
+        var_dump($_POST);
+
         $data = array(
             'status' => 'To Be Received'
         );
         $this->db->where('purchase_order_no_id', $id);
         $response = $this->db->update('purchase_order_no', $data);
+
+
         if ($response) {
+
+            $product_name = $this->input->post('product_name');
+            $product_units = $this->input->post('product_unit');
+            $net_product_costs = $this->input->post('net_product_cost');
+
+            var_dump($product_name);
+            var_dump($product_units);
+            var_dump($net_product_costs);
+
+            foreach ($product_name as $index => $name) {
+                $current_product_name = $name;
+                $product_unit = $product_units[$index];
+                $net_product_cost = $net_product_costs[$index];
+
+                //Check if the record with the given product_name and unit already exists in the barcode table
+                $existingRecord = $this->db->get_where('barcode', array('product_name' => $current_product_name, 'unit' => $product_unit))->row();
+
+                $data_barcode = [
+                    'net_product_cost' => $net_product_cost,
+                ];
+
+                if ($existingRecord) {
+                    // Update existing record
+                    $this->db->where('barcode_id', $existingRecord->barcode_id);
+                    $this->db->update('barcode', $data_barcode);
+                } else {
+                    // Insert a new record if it doesn't exist
+                    $data_barcode['product_name'] = $current_product_name;
+                    $data_barcode['unit'] = $product_unit;
+                    $this->db->insert('barcode', $data_barcode);
+                }
+            }
+
             return $id;
         } else {
             return false;
@@ -274,5 +319,4 @@ class Purchase_order_model extends CI_Model
         $this->db->from('purchase_order_no');
         return $this->db->count_all_results();
     }
-
 }

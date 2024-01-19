@@ -36,22 +36,15 @@ class Product_model extends CI_Model
 		$product_required_quantity = (string) $this->input->post('product_required_quantity');
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
-		$product_price = (float) $this->input->post('product_price'); // Convert to float for calculations
 		$product_quantity = (string) $this->input->post('product_quantity');
 
 
-
-		// Calculate selling price based on product margin and product price
-		$product_sellingprice = $product_price + ($product_price * $product_margin);
-
 		$product_unit =  $this->input->post('product_unit[]');
 		$product_barcode =  $this->input->post('product_barcode[]');
-		$product_price = $this->input->post('product_price[]');
 
 		$data = array(
 			'product_code' => $product_code,
 			'product_name' => $product_name,
-
 			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_margin' => $product_margin,
 			'product_vat' => $product_vat,
@@ -63,11 +56,8 @@ class Product_model extends CI_Model
 			'product_minimum_quantity' => $product_minimum_quantity,
 			'product_required_quantity' => $product_required_quantity,
 			'product_maximum_quantity' => $product_maximum_quantity,
-
+			'product_minimum_order_quantity' => $product_minimum_order_quantity,
 			'product_image' => $image_file_name,
-			'product_price' => $product_sellingprice, // Add the calculated selling price to the data array
-
-
 		);
 
 		$response = $this->db->insert('product', $data);
@@ -78,16 +68,13 @@ class Product_model extends CI_Model
 			foreach ($product_unit as $index => $product_unit) {
 				$arr_unit = $product_unit;
 				$arr_barcode = $product_barcode[$index];
-				$arr_price = $product_price[$index];
 
 				// Insert data into barcode table
 				$data_barcode = [
-
 					'unit' => $arr_unit,
 					'product_id' => $last_product_id,
 					'product_name' => $product_name,
 					'barcode' => $arr_barcode,
-					'price' => $arr_price,
 				];
 				$this->db->insert('barcode', $data_barcode);
 			}
@@ -133,8 +120,6 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
-
-
 
 		// Initialize the product_image variable
 		$product_image = '';
@@ -217,12 +202,11 @@ class Product_model extends CI_Model
 
 		$product_unit = $this->input->post('product_unit[]');
 		$product_barcode = $this->input->post('product_barcode[]');
-		$product_price = $this->input->post('product_price[]');
+
 
 		foreach ($product_unit as $index => $units) {
 			$arr_unit = $units;
 			$arr_barcode = $product_barcode[$index];
-			$arr_price = $product_price[$index];
 
 			// Check if the barcode already exists for the given product_id and unit
 			$existing_record = $this->db->get_where('barcode', array('product_id' => $product_id, 'unit' => $arr_unit))->row();
@@ -232,7 +216,7 @@ class Product_model extends CI_Model
 				'product_id' => $product_id,
 				'product_name' => $product_name,
 				'barcode' => $arr_barcode,
-				'price' => $arr_price,
+
 			];
 
 			if ($existing_record && $existing_record->product_id === $product_id && $existing_record->unit === $arr_unit) {

@@ -42,11 +42,11 @@
 </style>
 
 <div class="container">
-    <h1 class="text-dark">Create Purchase Order</h1>
+    <h1 class="text-dark">Create Purchase Request</h1>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
-                <label for="purchase_order_no" class="form-label">Purchase Order No</label>
+                <label for="purchase_order_no" class="form-label">Purchase Request No</label>
                 <input type="text" value="<?= $po_no ?>" name="purchase_order_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
@@ -79,10 +79,11 @@
                         <tr>
                             <th style="width: 20%;">Product Name</th>
 
-                            <th style="width: 15%;">Unit</th>
+                            <th style="width: 15%;">UoM</th>
 
                             <th style="width: 20%;">Price</th>
                             <th style="width: 15%;">Quantity</th>
+
                             <th style="width: 20%;">Total Cost</th>
                             <th style="width: 10%;">
                                 <button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
@@ -184,6 +185,22 @@
         });
     }
 
+    function removeProductRow(button) {
+        // Get the parent row (the <tr> element) of the clicked button
+        var row = button.closest('tr');
+
+        // Check if there's only one row left, don't remove it
+        var rowCount = document.querySelectorAll('.row_content tr').length;
+        if (rowCount > 1) {
+            // Remove the row from the table
+            if (row) {
+                row.remove();
+            }
+        } else {
+            alert("You can't delete the last row.");
+        }
+    }
+
 
     // Function to calculate the total cost for a specific row
     function calculateTotalPrice(row) {
@@ -240,6 +257,7 @@
             priceField.value = selectedOption.getAttribute('data-price') || '';
         }
     });
+
     document.addEventListener('change', function(event) {
         if (event.target.matches('select[name="product_name[]"]')) {
             var selectedProduct = event.target.value;
@@ -256,26 +274,6 @@
                     option.value = unit.unit;
                     option.textContent = unit.unit;
                     unitField.appendChild(option);
-                }
-            });
-        }
-    });
-    document.addEventListener('change', function(event) {
-        if (event.target.matches('select[name="product_name[]"], select[name="product_unit[]"]')) {
-            var selectedProduct = event.target.closest('tr').querySelector('select[name="product_name[]"]').value;
-            var selectedUnit = event.target.closest('tr').querySelector('select[name="product_unit[]"]').value;
-            var priceField = event.target.closest('tr').querySelector('input[name="product_unitprice[]"]');
-            var barcode = <?php echo json_encode($barcode); ?>; // Assuming $barcode contains the barcode data
-
-
-            // Reset price field
-            priceField.value = '';
-
-
-            // Find the corresponding price for the selected product and unit
-            barcode.forEach(function(bar) {
-                if (bar.product_name === selectedProduct && bar.unit === selectedUnit) {
-                    priceField.value = bar.price;
                 }
             });
         }

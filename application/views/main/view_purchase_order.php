@@ -2,6 +2,7 @@
     .container {
         padding-top: 5px;
         padding-bottom: 20px;
+        width: 2000px;
     }
 
     .container h1 {
@@ -40,10 +41,10 @@
         font-weight: bold;
     }
 </style>
-
-<div class="container">
-    <h1 class="text-dark">View Purchase Order</h1>
+<<div class="container">
+    <h1 class="text-dark">Approve Purchase Request</h1>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
+
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
                 <label for="purchase_order_no" class="form-label">Purchase Order No</label>
@@ -67,26 +68,43 @@
             <div class="card-body">
                 <table class="table table-bordered" id="table_field">
                     <thead>
-
                         <tr>
                             <th id="table_style">Product Name</th>
                             <th id="table_style">Quantity</th>
-                            <th id="table_style">Unit</th>
-                            <th id="table_style">Price</th>
+                            <th id="table_style">UoM</th>
+                            <th id="table_style">Product Cost</th>
+                            <th id="table_style">VAT Type</th>
+                            <th id="table_style">VAT Amount (%)</th>
+                            <th id="table_style">Net Product Cost</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php foreach ($view as $row) {
-                        ?>
+                    <?php foreach ($view as $row) {
+                    ?>
+                        <tbody>
                             <tr>
-                                <td><?= $row->product_name; ?></td>
-                                <td><?= $row->po_product_quantity; ?></td>
-                                <td><?= $row->product_unit; ?></td>
-                                <td>₱<?= $row->product_unitprice; ?></td>
+                                <td>
+                                    <input type="text" id="product_name" name="product_name[]" value="<?= $row->product_name; ?>" readonly class="form-control form-control-sm">
+                                </td>
+                                <td> <input type="number" id="po_product_quantity" name="po_product_quantity" value="<?= $row->po_product_quantity; ?>" readonly class="form-control form-control-sm"></td>
+                                <td> <input type="text" id="product_unit" name="product_unit[]" value="<?= $row->product_unit; ?>" readonly class="form-control form-control-sm">
+                                <td> <input type="text" id="product_cost" value="<?= $row->product_unitprice; ?>" name="product_cost" readonly class="form-control form-control-sm"></td>
+                                <td>
+                                    <select class=" form-control " data-live-search=" true" data-style="btn-outline-secondary" title="Select VAT" name="product_vat[]" required>
+                                        <option value="" selected hidden>Select Type</option>
+                                        <option>VAT Exclusive</option>
+                                        <option>VAT Inclusive</option>
+                                        <option>VAT Exempt</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="number" placeholder="Enter VAT Amount" name="tax_amount[]" min="0" max="100" value="<?= set_value('tax_amount'); ?>" class="form-control" id="tax_amount" required>
+                                </td>
+                                <td>
+                                    <input type="number" placeholder="Net Product Cost" name="net_product_cost[]" min="0" value="<?= set_value('net_product_cost'); ?>" class="form-control" id="net_product_cost" readonly>
+                                </td>
                             </tr>
-
-                        <?php } ?>
-                    </tbody>
+                        </tbody>
+                    <?php } ?>
                     <tfoot>
                         <tr>
                             <td colspan="3" style="text-align: right;"><strong>Total Cost:</strong></td>
@@ -113,4 +131,41 @@
             </div>
         </div>
     </form>
-</div>
+    </div>
+    <script>
+        function calculateNetTotalCost(row) {
+            const cost = parseFloat(row.querySelector('input[name="product_cost"]').value);
+            const taxAmount = parseFloat(row.querySelector('input[name="tax_amount[]"]').value);
+            const taxType = row.querySelector('select[name="product_vat[]"]').value;
+            const netproductcost = row.querySelector('input[name="net_product_cost[]"]'); // Change this line
+
+            if (taxType == "VAT Exclusive" && !isNaN(taxAmount)) {
+                const percentage = taxAmount / 100;
+                const result = cost + (cost * percentage);
+                netproductcost.value = result.toFixed(2); // Change this line
+            } else if (taxType == "VAT Inclusive" && !isNaN(taxAmount)) {
+                const percentage = taxAmount / 100;
+                const result = cost - (cost * percentage);
+                netproductcost.value = result.toFixed(2); // Change this line
+            } else if (taxType == "VAT Exempt" && !isNaN(taxAmount)) {
+                netproductcost.value = cost.toFixed(2); // Change this line
+            }
+        }
+
+        const taxAmountFields = document.querySelectorAll('input[name="tax_amount[]"]');
+        const taxTypeFields = document.querySelectorAll('select[name="product_vat[]"]');
+
+        taxAmountFields.forEach(function(element) {
+            element.addEventListener('input', function() {
+                const row = element.closest('tr');
+                calculateNetTotalCost(row);
+            });
+        });
+
+        taxTypeFields.forEach(function(element) {
+            element.addEventListener('input', function() {
+                const row = element.closest('tr');
+                calculateNetTotalCost(row);
+            });
+        });
+    </script>

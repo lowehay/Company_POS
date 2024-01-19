@@ -15,10 +15,10 @@
     }
 </style>
 
-<h1>Purchase Orders</h1>
+<h1>Purchase Requests</h1>
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
-        <a href="<?php echo site_url('main/add_purchase_order'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-plus"></i> Create Purchase Order</a>
+        <a href="<?php echo site_url('main/add_purchase_order'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-plus"></i> Create Purchase Request</a>
         <div class="float-right">
         </div>
     </div>
@@ -27,7 +27,7 @@
             <table id="user-datatables" class="table table-striped" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Purchase Order No.</th>
+                        <th>Purchase Request No.</th>
                         <th>Supplier</th>
                         <th>Date Created</th>
                         <th>Total Cost</th>

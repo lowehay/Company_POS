@@ -93,7 +93,7 @@
                         <?= form_error('product_inbound_threshold'); ?>
                     </div>
 
-                    <div class="form-group col-md-2 d-inline-block">
+                    <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">Shelf life <i class="fa fa-question-circle" title="* Maximum no. of days this product can be stored"></i></label>
                         <input type="number" placeholder="Enter No. of Days" name="product_shelf_life" min="0" value="<?= set_value('product_shelf_life'); ?>" class="form-control" id="product_shelf_life" required>
                         <?= form_error('product_shelf_life'); ?>
@@ -154,10 +154,9 @@
                             <table class="table table-bordered text-center" id="table_field">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20%;">Unit</th>
+                                        <th style="width: 20%;">UoM</th>
                                         <th style="width: 15%;">Barcode</th>
 
-                                        <th style="width: 20%;">Price</th>
 
                                         <th style="width: 10%;">
                                             <button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
@@ -181,10 +180,7 @@
 
 
                                         </td>
-                                        <td>
-                                            <input class="form-control form-control-sm product-cost-price" type="text" name="product_price[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" placeholder="Enter Price">
 
-                                        </td>
                                         <td>
                                             <button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
                                         </td>

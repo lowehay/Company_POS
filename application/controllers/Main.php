@@ -229,22 +229,40 @@ class Main extends CI_Controller
 		}
 	}
 
-	public function delete_supplier($id)
+	function deactivate_supplier($supplier_id)
 	{
 
 		$this->load->model('supplier_model');
-		$response = $this->supplier_model->delete_supplier($id);
+
+		$response = $this->supplier_model->deactivate_supplier($supplier_id);
 
 		if ($response) {
-			$success_message = 'Supplier deleted successfully.';
+			$success_message = 'Supplier deactivated successfully.';
 			$this->session->set_flashdata('success', $success_message);
 		} else {
-			$error_message = 'Supplier was not deleted successfully.';
+			$error_message = 'Supplier was not deactivated successfully.';
 			$this->session->set_flashdata('error', $error_message);
 		}
-
 		redirect('main/supplier');
 	}
+
+	function reactivate_supplier($supplier_id)
+	{
+
+		$this->load->model('supplier_model');
+
+		$response = $this->supplier_model->reactivate_supplier($supplier_id);
+
+		if ($response) {
+			$success_message = 'Supplier activated successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Supplier was not activated successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+		redirect('main/supplier');
+	}
+
 
 	function purchase_order()
 	{
@@ -330,6 +348,7 @@ class Main extends CI_Controller
 		$this->load->view('main/edit_purchase_order', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	public function edit_purchase_order_submit($id)
 	{
 		if ($this->input->post('update_po')) {
@@ -360,6 +379,7 @@ class Main extends CI_Controller
 		$this->load->view('main/view_purchase_order', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	public function approved_po($id)
 	{
 		$this->load->model('purchase_order_model');
@@ -371,9 +391,10 @@ class Main extends CI_Controller
 		} else {
 			$error_message = 'Purchase order was not approved successfully.';
 			$this->session->set_flashdata('error', $error_message);
+			redirect('main/approve_po', $id);
 		}
 
-		redirect('main/purchase_order');
+		//redirect('main/purchase_order');
 	}
 	public function cancel_po($id)
 	{
@@ -491,6 +512,7 @@ class Main extends CI_Controller
 		$this->data['select'] = $this->goods_return_model->Select_one($id);
 		$this->data['select1'] = $this->goods_return_model->Select_two($id);
 		$this->data['view'] = $this->goods_return_model->view_all_grt($id);
+		$this->data['barcode'] = $this->goods_return_model->get_barcode();
 		$this->load->view('main/header');
 		$this->load->view('main/post_goods_return', $this->data);
 		$this->load->view('main/footer');
@@ -576,7 +598,7 @@ class Main extends CI_Controller
 
 			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
 			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
-			$this->form_validation->set_rules('product_price[]', 'Product Price', 'trim|required');
+
 
 			if ($this->form_validation->run() != FALSE) {
 				$config['upload_path'] = './assets/images/'; // Set the upload directory
@@ -661,7 +683,7 @@ class Main extends CI_Controller
 
 			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
 			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
-			$this->form_validation->set_rules('product_price[]', 'Product Price', 'trim|required');
+
 
 
 			if ($this->form_validation->run() != FALSE) {
