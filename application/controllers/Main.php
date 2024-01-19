@@ -23,9 +23,6 @@ class Main extends CI_Controller
 		$this->load->view('main/footer');
 	}
 
-
-
-
 	function user()
 	{
 		$this->load->model('user_model');
@@ -38,8 +35,10 @@ class Main extends CI_Controller
 	function add_user()
 	{
 		$this->add_user_submit();
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_all_branch();
 		$this->load->view('main/header');
-		$this->load->view('main/add_user');
+		$this->load->view('main/add_user', $this->data);
 		$this->load->view('main/footer');
 	}
 	function add_user_submit()
@@ -49,6 +48,7 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('first_name', 'first_name', 'trim|required|is_unique[user.first_name]', array('is_unique' => 'The username is already taken.'));
 			$this->form_validation->set_rules('last_name', 'last_name', 'trim|required|is_unique[user.last_name]');
 			$this->form_validation->set_rules('password', 'password', 'trim|required');
+			$this->form_validation->set_rules('branch', 'branch', 'trim|required');
 			$this->form_validation->set_rules('role', 'role', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
@@ -71,7 +71,9 @@ class Main extends CI_Controller
 		$this->edit_user_submit();
 		$this->load->model('user_model');
 		$this->data['user'] = $this->user_model->get_users($user_id);
-
+		$this->data['select'] = $this->user_model->select_one($user_id);
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_all_branch();
 		$this->load->view('main/header');
 		$this->load->view('main/edituser', $this->data);
 		$this->load->view('main/footer');
@@ -84,6 +86,7 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 			$this->form_validation->set_rules('password1', 'Confirm New Password', 'required|matches[password]');
+			$this->form_validation->set_rules('branch', 'branch', 'trim|required');
 			$this->form_validation->set_rules('role', 'role', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
@@ -230,22 +233,41 @@ class Main extends CI_Controller
 		}
 	}
 
-	public function delete_supplier($id)
+	function deactivate_supplier($supplier_id)
 	{
 
 		$this->load->model('supplier_model');
-		$response = $this->supplier_model->delete_supplier($id);
+
+		$response = $this->supplier_model->deactivate_supplier($supplier_id);
 
 		if ($response) {
-			$success_message = 'Supplier deleted successfully.';
+			$success_message = 'Supplier deactivated successfully.';
 			$this->session->set_flashdata('success', $success_message);
 		} else {
-			$error_message = 'Supplier was not deleted successfully.';
+			$error_message = 'Supplier was not deactivated successfully.';
 			$this->session->set_flashdata('error', $error_message);
 		}
-
 		redirect('main/supplier');
 	}
+
+	function reactivate_supplier($supplier_id)
+	{
+
+		$this->load->model('supplier_model');
+
+		$response = $this->supplier_model->reactivate_supplier($supplier_id);
+
+		if ($response) {
+			$success_message = 'Supplier activated successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Supplier was not activated successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+		redirect('main/supplier');
+	}
+
+
 	function purchase_order()
 	{
 		$this->load->model('purchase_order_model');
@@ -267,8 +289,10 @@ class Main extends CI_Controller
 		$this->load->model('supplier_model');
 		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
 
+
 		$this->load->model('purchase_order_model');
 		$this->data['po_no'] = $this->purchase_order_model->po_no();
+		$this->data['barcode'] = $this->purchase_order_model->get_product_unit();
 		$this->load->view('main/header');
 		$this->load->view('main/add_purchase_order', $this->data);
 		$this->load->view('main/footer');
@@ -322,11 +346,13 @@ class Main extends CI_Controller
 		$this->data['code'] = $this->purchase_order_model->code($id);
 		$this->data['select'] = $this->purchase_order_model->Select_one($id);
 		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
+		$this->data['barcode'] = $this->purchase_order_model->get_product_unit();
 
 		$this->load->view('main/header');
 		$this->load->view('main/edit_purchase_order', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	public function edit_purchase_order_submit($id)
 	{
 		if ($this->input->post('update_po')) {
@@ -357,6 +383,7 @@ class Main extends CI_Controller
 		$this->load->view('main/view_purchase_order', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	public function approved_po($id)
 	{
 		$this->load->model('purchase_order_model');
@@ -368,9 +395,10 @@ class Main extends CI_Controller
 		} else {
 			$error_message = 'Purchase order was not approved successfully.';
 			$this->session->set_flashdata('error', $error_message);
+			redirect('main/approve_po', $id);
 		}
 
-		redirect('main/purchase_order');
+		//redirect('main/purchase_order');
 	}
 	public function cancel_po($id)
 	{
@@ -427,6 +455,8 @@ class Main extends CI_Controller
 	function post_goods_received($id)
 	{
 		$this->load->model('purchase_order_model');
+		$this->load->model('goods_received_model');
+		$this->data['barcode'] = $this->goods_received_model->get_barcode();
 		$this->data['code'] = $this->purchase_order_model->code($id);
 		$this->data['select'] = $this->purchase_order_model->Select_one($id);
 		$this->data['view'] = $this->purchase_order_model->view_all_PO($id);
@@ -450,7 +480,7 @@ class Main extends CI_Controller
 				$this->session->set_flashdata('error', $error_message);
 			}
 
-			redirect('main/purchase_order');
+			redirect('main/goods_received_list');
 		}
 	}
 	public function print_goods_received($id)
@@ -486,6 +516,7 @@ class Main extends CI_Controller
 		$this->data['select'] = $this->goods_return_model->Select_one($id);
 		$this->data['select1'] = $this->goods_return_model->Select_two($id);
 		$this->data['view'] = $this->goods_return_model->view_all_grt($id);
+		$this->data['barcode'] = $this->goods_return_model->get_barcode();
 		$this->load->view('main/header');
 		$this->load->view('main/post_goods_return', $this->data);
 		$this->load->view('main/footer');
@@ -527,12 +558,6 @@ class Main extends CI_Controller
 		$this->load->view('main/print_grt_report', $this->data);
 	}
 
-	function back_order()
-	{
-		$this->load->view('main/header');
-		$this->load->view('main/back_order');
-		$this->load->view('main/footer');
-	}
 
 	function product()
 	{
@@ -663,6 +688,7 @@ class Main extends CI_Controller
 			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
 
 
+
 			if ($this->form_validation->run() != FALSE) {
 				$this->load->model('product_model');
 
@@ -707,8 +733,9 @@ class Main extends CI_Controller
 
 				// Update the product data
 				$response = $this->product_model->update_product($product_id, $update_image);
+				$other_response = $this->product_model->update_barcode($product_id);
 
-				if ($response) {
+				if ($response && $other_response) {
 					$success_message = 'Product updated successfully.';
 					$this->session->set_flashdata('success', $success_message);
 					echo $success_message; // Debugging: Output the success message
@@ -741,6 +768,94 @@ class Main extends CI_Controller
 		redirect('main/product');
 	}
 
+	function product_category()
+	{
+		$this->load->model('product_model');
+		$this->data['procat'] = $this->product_model->get_all_product_category();
+		$this->load->view('main/header');
+		$this->load->view('main/product_category', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_product_category()
+	{
+
+		$this->add_product_category_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/add_product_category');
+		$this->load->view('main/footer');
+	}
+	function add_product_category_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_category', 'Product Category Name', 'trim|required|is_unique[product_category.product_category]');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('product_model');
+				$response = $this->product_model->insert_added_product_category();
+				if ($response) {
+					$success_message = 'Product category added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product category was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/product_category');
+			}
+		}
+	}
+	function edit_product_category($procat_id)
+	{
+		$this->edit_product_category_submit();
+		$this->load->model('product_model');
+		$this->data['procat'] = $this->product_model->get_product_category($procat_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_product_category', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_product_category_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_category', 'Product Category Name', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('product_model');
+
+				$response = $this->product_model->update_added_product_category();
+
+				if ($response) {
+					$success_message = 'Product category updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product category was not updated successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/product_category');
+			}
+		}
+	}
+	public function delete_product_category($id)
+	{
+
+		$this->load->model('product_model');
+		$response = $this->product_model->delete_product_category($id);
+
+		if ($response) {
+			$success_message = 'Product category deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Product category was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/product_category/');
+	}
+
+
 	function view_product($product_id)
 	{
 		$this->load->model('product_model');
@@ -751,6 +866,7 @@ class Main extends CI_Controller
 		$this->load->view('main/view_product', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	function inventory_adjustment()
 	{
 		$this->load->model('product_model');
@@ -814,10 +930,12 @@ class Main extends CI_Controller
 		$this->add_purchase_order_submit();
 		$this->load->model('stock_requisition_model');
 		$this->data['sr'] = $this->stock_requisition_model->get_all_sr();
+
 		$this->load->view('main/header');
 		$this->load->view('main/stock_requisition', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	function add_stock_requisition()
 	{
 		$this->add_stock_requisition_submit();
@@ -911,6 +1029,7 @@ class Main extends CI_Controller
 		$this->load->view('main/editstockrequisition', $this->data);
 		$this->load->view('main/footer');
 	}
+
 	function edit_stock_requisition_submit()
 	{
 
@@ -1114,6 +1233,199 @@ class Main extends CI_Controller
 		$this->load->view('main/footer');
 	}
 
+
+
+	function displayrec()
+	{
+		$this->load->view('main/header');
+		$this->load->view('main/displayrec');
+		$this->load->view('main/footer');
+	}
+
+	function record_sales()
+	{
+
+		$this->load->model('sales_model');
+		$this->data['sales'] = $this->sales_model->get_all_sales();
+		$this->load->view('main/header');
+		$this->load->view('main/recordsales', $this->data);
+		$this->load->view('main/footer');
+	}
+	function sales_return()
+	{
+
+		$this->load->model('sales_model');
+		$this->data['sales'] = $this->sales_model->get_all_sales1();
+		$this->load->view('main/header');
+		$this->load->view('main/sales_return', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function branch()
+	{
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_all_branch();
+		$this->load->view('main/header');
+		$this->load->view('main/branch', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_branch()
+	{
+
+		$this->add_branch_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/add_branch');
+		$this->load->view('main/footer');
+	}
+	function add_branch_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('branch', 'Branch Name', 'trim|required|is_unique[branch.branch]');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('branch_model');
+				$response = $this->branch_model->insert_added_branch();
+				if ($response) {
+					$success_message = 'New Branch added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'New Branch was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/branch');
+			}
+		}
+	}
+	function edit_branch($branch_id)
+	{
+		$this->edit_branch_submit();
+		$this->load->model('branch_model');
+		$this->data['branch'] = $this->branch_model->get_branch($branch_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_branch', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_branch_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('branch', 'Branch Name', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('branch_model');
+
+				$response = $this->branch_model->update_added_branch();
+
+				if ($response) {
+					$success_message = 'Branch updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Branch was not updated successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/branch');
+			}
+		}
+	}
+	public function delete_branch($id)
+	{
+
+		$this->load->model('branch_model');
+		$response = $this->branch_model->delete_branch($id);
+
+		if ($response) {
+			$success_message = 'Branch deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Branch was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/branch/');
+	}
+	function back_order()
+	{
+
+		$this->load->model('purchase_order_model');
+		$this->data['gr'] = $this->purchase_order_model->get_all_gr1();
+
+		$this->load->view('main/header');
+		$this->load->view('main/back_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	function post_back_order($id)
+	{
+
+		$this->load->model('goods_received_model');
+		$this->data['code'] = $this->goods_received_model->code($id);
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->data['barcode'] = $this->goods_received_model->get_barcode();
+		$this->data['view'] = $this->goods_received_model->view_all_GR1($id);;
+		$this->load->model('purchase_order_model');
+		$this->data['gr_no'] = $this->purchase_order_model->gr_no();
+		$this->load->model('back_order_model');
+		$this->data['bo_no'] = $this->back_order_model->bo_no();
+		$this->load->view('main/header');
+		$this->load->view('main/post_back_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function post_back_order_submit()
+	{
+
+		if ($this->input->post('btn_post_bo')) {
+
+			$this->load->model('back_order_model');
+			$response = $this->back_order_model->post_back_order();
+			if ($response) {
+
+				$success_message = 'Back order posted successfully.';
+				$this->session->set_flashdata('success', $success_message);
+			} else {
+				$error_message = 'Back order was not posted successfully.';
+				$this->session->set_flashdata('error', $error_message);
+			}
+
+			redirect('main/back_order_list');
+		}
+	}
+	function back_order_list()
+	{
+
+		$this->load->model('back_order_model');
+		$this->data['bo'] = $this->back_order_model->get_all_bo();
+		$this->load->view('main/header');
+		$this->load->view('main/back_order_list', $this->data);
+		$this->load->view('main/footer');
+	}
+	function view_back_order($id)
+	{
+
+		$this->load->model('goods_received_model');
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->load->model('back_order_model');
+		$this->data['code'] = $this->back_order_model->code($id);
+		$this->data['view'] = $this->back_order_model->view_all_bo($id);;
+		$this->load->view('main/header');
+		$this->load->view('main/view_back_order', $this->data);
+		$this->load->view('main/footer');
+	}
+	public function print_back_order($id)
+	{
+
+		$this->load->model('goods_received_model');
+		$this->data['select'] = $this->goods_received_model->Select_one($id);
+		$this->load->model('back_order_model');
+		$this->data['code'] = $this->back_order_model->code($id);
+		$this->data['view'] = $this->back_order_model->view_all_bo($id);;
+		$this->load->view('main/print_back_order', $this->data);
+	}
+
+
+
 	function print_sales_report($id)
 	{
 		$this->load->model('sales_model');
@@ -1160,4 +1472,94 @@ class Main extends CI_Controller
 			}
 		}
 	}
+
+
+	function unit()
+	{
+		$this->load->model('unit_model');
+		$this->data['unit'] = $this->unit_model->get_all_unit();
+		$this->load->view('main/header');
+		$this->load->view('main/unit', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function add_unit()
+	{
+
+		$this->add_unit_submit();
+		$this->load->view('main/header');
+		$this->load->view('main/add_unit');
+		$this->load->view('main/footer');
+	}
+	function add_unit_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('unit', 'Product Unit', 'trim|required|is_unique[unit.unit]');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('unit_model');
+				$response = $this->unit_model->insert_added_unit();
+				if ($response) {
+					$success_message = 'Product Unit added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product Unit was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/unit');
+			}
+		}
+	}
+
+	function edit_unit($unit_id)
+	{
+		$this->edit_unit_submit();
+		$this->load->model('unit_model');
+		$this->data['unit'] = $this->unit_model->get_unit($unit_id);
+		$this->load->view('main/header');
+		$this->load->view('main/edit_unit', $this->data);
+		$this->load->view('main/footer');
+	}
+
+	function edit_unit_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('unit', 'Product Unit', 'trim|required');
+
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('unit_model');
+
+				$response = $this->unit_model->update_added_unit();
+
+				if ($response) {
+					$success_message = 'Product Unit updated successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Product Unit was not updated successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/unit');
+			}
+		}
+	}
+	public function delete_unit($id)
+	{
+
+		$this->load->model('unit_model');
+		$response = $this->unit_model->delete_unit($id);
+
+		if ($response) {
+			$success_message = 'Product Unit deleted successfully.';
+			$this->session->set_flashdata('success', $success_message);
+		} else {
+			$error_message = 'Product Unit was not deleted successfully.';
+			$this->session->set_flashdata('error', $error_message);
+		}
+
+		redirect('main/unit/');
+	}
+
 }

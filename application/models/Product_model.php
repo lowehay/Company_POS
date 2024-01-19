@@ -37,8 +37,14 @@ class Product_model extends CI_Model
 		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
 
+
 		$product_unit =  $this->input->post('product_unit');
 		$product_barcode =  $this->input->post('product_barcode');
+
+
+
+		$product_unit =  $this->input->post('product_unit[]');
+		$product_barcode =  $this->input->post('product_barcode[]');
 
 		$data = array(
 			'product_code' => $product_code,
@@ -83,6 +89,27 @@ class Product_model extends CI_Model
 		}
 	}
 
+
+
+
+	function get_all_product()
+	{
+		$this->db->where('isDelete', 'no');
+		$query = $this->db->get('product');
+		$result = $query->result();
+
+		return $result;
+	}
+	function get_product($product_id)
+	{
+		$this->db->where('product_id', $product_id);
+		$query = $this->db->get('product');
+		$row = $query->row();
+
+		return $row;
+	}
+
+
 	function update_product($product_id, $update_image)
 	{
 		$product_code = (string) $this->input->post('product_code');
@@ -100,8 +127,10 @@ class Product_model extends CI_Model
 		$product_dateadded = (string) $this->input->post('product_dateadded');
 		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
 
+
 		$product_unit = $this->input->post('product_unit');
 		$product_barcode = $this->input->post('product_barcode');
+
 
 		// Initialize the product_image variable
 		$product_image = '';
@@ -205,6 +234,43 @@ class Product_model extends CI_Model
 		}
 	}
 
+
+	function update_barcode($product_id)
+	{
+
+		$product_name = (string) $this->input->post('product_name');
+
+		$product_unit = $this->input->post('product_unit[]');
+		$product_barcode = $this->input->post('product_barcode[]');
+
+
+		foreach ($product_unit as $index => $units) {
+			$arr_unit = $units;
+			$arr_barcode = $product_barcode[$index];
+
+			// Check if the barcode already exists for the given product_id and unit
+			$existing_record = $this->db->get_where('barcode', array('product_id' => $product_id, 'unit' => $arr_unit))->row();
+
+			$data_barcode = [
+				'unit' => $arr_unit,
+				'product_id' => $product_id,
+				'product_name' => $product_name,
+				'barcode' => $arr_barcode,
+
+			];
+
+			if ($existing_record && $existing_record->product_id === $product_id && $existing_record->unit === $arr_unit) {
+				$this->db->where('barcode_id', $existing_record->barcode_id);
+				$this->db->update('barcode', $data_barcode);
+			} else {
+				$this->db->insert('barcode', $data_barcode);
+			}
+		}
+
+		return $product_id;
+	}
+
+
 	function delete_product($product_id)
 	{
 		$data = array(
@@ -263,6 +329,24 @@ class Product_model extends CI_Model
 		$query = $this->db->get()->row();
 		return $query;
 	}
+
+	function get_barcode($id)
+	{
+		$this->db->select('*');
+		$this->db->from('barcode AS bar');
+		$this->db->join('product AS pro', 'bar.product_id = pro.product_id', 'left');
+		$this->db->where('pro.product_id', $id);
+		$query = $this->db->get()->row();
+		return $query;
+	}
+	function get_all_barcode()
+	{
+		$this->db->select('*');
+		$this->db->from('barcode');
+		$query = $this->db->get()->result();
+		return $query;
+	}
+
 	public function get_total_products()
 	{
 		// Assuming your table is named 'product'
@@ -299,12 +383,77 @@ class Product_model extends CI_Model
 
 		return $this->db->count_all_results();
 	}
+
 	function get_product($product_id)
 	{
 		$this->db->where('product_id', $product_id);
 		$query = $this->db->get('product');
+
+	function get_all_product_category()
+	{
+		$this->db->where('isCancel', 'no');
+		$query = $this->db->get('product_category');
+		$procat = $query->result();
+
+		return $procat;
+	}
+	public function insert_added_product_category()
+	{
+		$product_category = (string) $this->input->post('product_category');
+
+		$data = array(
+			'product_category' => $product_category,
+		);
+
+		$response = $this->db->insert('product_category', $data);
+
+		if ($response) {
+			return $this->db->insert_id();
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function update_added_product_category()
+	{
+		$procat_id = (int) $this->input->post('procat_id');
+		$product_category = (string) $this->input->post('product_category');
+
+		$data = array(
+			'product_category' => $product_category,
+		);
+
+		$this->db->where('procat_id', $procat_id);
+		$response = $this->db->update('product_category', $data);
+
+		if ($response) {
+			return $procat_id;
+		} else {
+			return FALSE;
+		}
+	}
+	public function get_product_category($procat_id)
+	{
+		$this->db->where('procat_id', $procat_id);
+		$query = $this->db->get('product_category');
+
 		$row = $query->row();
 
 		return $row;
 	}
+
+	public function delete_product_category($id)
+	{
+		$data = array(
+			'isCancel' => 'yes'
+		);
+		$this->db->where('procat_id', $id);
+		$response = $this->db->update('product_category', $data);
+		if ($response) {
+			return $id;
+		} else {
+			return false;
+		}
+	}
+
 }

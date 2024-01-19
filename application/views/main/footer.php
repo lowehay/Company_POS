@@ -63,6 +63,7 @@
       }
     });
   });
+
 </script>
 <script>
   var sidebarOpen = true; // Initial state of the sidebar
@@ -163,4 +164,5 @@
     // Call the function when the page loads
     highlightActiveLink();
   });
+
 </script>

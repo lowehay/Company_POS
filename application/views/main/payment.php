@@ -142,7 +142,7 @@
 </form>
 <script>
     function confirmBack() {
-        var confirmMessage = "Are you sure you want to go back and make new transactions?";
+        var confirmMessage = "Are you sureyou want to go back and make new transactions?";
 
         // Display a confirmation dialog
         var userConfirmed = window.confirm(confirmMessage);

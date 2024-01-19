@@ -329,7 +329,7 @@
 
                 // Update the total price on the payment page (assuming you have a way to pass this data)
                 // For example, you can use a query parameter in the URL or use localStorage.
-                // Here, we'll update the total price in localStorage.
+                // Here, we'll update the total pricein localStorage.
                 localStorage.setItem('totalPriceForCheckout', totalPriceForCheckout);
             }
 

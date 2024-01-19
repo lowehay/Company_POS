@@ -131,4 +131,14 @@ class User_model extends CI_Model
 			return FALSE;
 		}
 	}
+
+	function Select_one($id)
+	{
+		$this->db->select('*');
+		$this->db->from('user AS use');
+		$this->db->join('branch AS br', 'use.branch= br.branch_id', 'left');
+		$this->db->where('use.user_id', $id);
+		$query = $this->db->get()->row();
+		return $query;
+	}
 }

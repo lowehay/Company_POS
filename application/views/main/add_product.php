@@ -3,6 +3,13 @@
         font-weight: bold;
     }
 
+
+    h1 {
+        text-align: center;
+    }
+
+
+
     @media (max-width: 767px) {
         h1 {
             margin-left: 0;
@@ -37,7 +44,9 @@
 
                     <div class="form-group col-3 d-inline-block">
                         <label class="bold-label">Preferred Supplier</label>
-                        <select class="form-control selectpicker" data-live-search="true" data-style="btn-outline-secondary" title="Select Supplier" name="supplier_id" required>
+
+                        <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" required>
+
                             <option value="" selected hidden>Select Supplier</option>
                             <?php foreach ($suppliers as $supp) { ?>
                                 <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -47,7 +56,9 @@
 
                     <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">Product Category</label>
-                        <select class="form-control selectpicker" data-live-search="true" data-style="btn-outline-secondary" title="Select category" name="product_category" required>
+
+                        <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select category" name="product_category" required>
+
                             <option value="" selected hidden>Select Product Category</option>
                             <?php foreach ($procat as $pc) { ?>
                                 <option value="<?= $pc->product_category ?>"><?= $pc->product_category ?> </option>
@@ -58,7 +69,9 @@
 
                     <div class="form-group col-md-3 d-inline-block">
                         <label class="bold-label">VAT</label>
-                        <select class="form-control selectpicker" data-live-search="true" data-style="btn-outline-secondary" title="Select category" name="product_vat" required>
+
+                        <select class="form-control " data-live-search="true" data-style="btn-outline-secondary" title="Select VAT" name="product_vat" required>
+
                             <option value="" selected hidden>Select Tax</option>
                             <option>12%</option>
                             <option>Non-VAT</option>
@@ -84,7 +97,9 @@
                         <?= form_error('product_inbound_threshold'); ?>
                     </div>
 
-                    <div class="form-group col-md-2 d-inline-block">
+
+                    <div class="form-group col-md-3 d-inline-block">
+
                         <label class="bold-label">Shelf life <i class="fa fa-question-circle" title="* Maximum no. of days this product can be stored"></i></label>
                         <input type="number" placeholder="Enter No. of Days" name="product_shelf_life" min="0" value="<?= set_value('product_shelf_life'); ?>" class="form-control" id="product_shelf_life" required>
                         <?= form_error('product_shelf_life'); ?>
@@ -145,8 +160,11 @@
                             <table class="table table-bordered text-center" id="table_field">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20%;">Unit</th>
+
+                                        <th style="width: 20%;">UoM</th>
                                         <th style="width: 15%;">Barcode</th>
+
+
                                         <th style="width: 10%;">
                                             <button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
                                         </th>
@@ -169,6 +187,7 @@
 
 
                                         </td>
+
                                         <td>
                                             <button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
                                         </td>

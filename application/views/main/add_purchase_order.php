@@ -42,11 +42,13 @@
 </style>
 
 <div class="container">
+
     <h4 class="text-white">Create Purchase Request</h4>
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
         <div class="row mb-3">
             <div class="col-12 col-sm-3">
                 <label for="purchase_order_no" class="form-label text-white">Purchase Request No</label>
+
                 <input type="text" value="<?= $po_no ?>" name="purchase_order_no" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
@@ -54,7 +56,9 @@
                 <input type="text" id="date_created" name="date_created" value="<?= date('m-d-Y h:i A'); ?>" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
+
                 <label for="supplier_id" class="form-label text-white">Supplier</label>
+
                 <select class="form-control form-control-sm supplier-select " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" id="po_supplier" required>
                     <option value="" selected hidden>Select Supplier</option>
                     <?php foreach ($supplier as $supp) { ?>
@@ -63,7 +67,9 @@
                 </select>
             </div>
             <div class="col-12 col-sm-3">
+
                 <label for="payment_method" class="form-label text-white">Payment Option</label>
+
                 <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Payment Method" name="payment_method" id="payment_method" required>
                     <option>Cash</option>
                     <option>Check</option>
@@ -78,9 +84,14 @@
                     <thead>
                         <tr>
                             <th style="width: 20%;">Product Name</th>
-                            <th style="width: 15%;">Quantity</th>
-                            <th style="width: 15%;">Unit</th>
+
+
+                            <th style="width: 15%;">UoM</th>
+
+
                             <th style="width: 20%;">Price</th>
+                            <th style="width: 15%;">Quantity</th>
+
                             <th style="width: 20%;">Total Cost</th>
                             <th style="width: 10%;">
                                 <button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
@@ -90,32 +101,40 @@
                     <tbody class="row_content" id="row_product">
                         <tr>
                             <td>
-                                <select class="form-control form-control-sm product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
+
+
+                                <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product_name[]" id="po_product_name" required>
+
                                     <option value="" selected hidden>Select Product</option>
                                     <?php foreach ($product as $pro) { ?>
 
                                         <option value="<?= $pro->product_name ?>" data-price="<?= $pro->product_price ?>"><?= $pro->product_name ?></option>
 
                                     <?php } ?>
+
+
                                 </select>
                                 <input type="hidden" name="selected_product" id="selected_product" value="">
                             </td>
                             <td>
 
-                                <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" required min="0">
-
-                            </td>
-                            <td>
                                 <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="product_unit[]" id="po_unit" required>
                                     <option value="" selected hidden>Select Unit</option>
-                                    <option>Pcs</option>
-                                    <option>Box</option>
-                                    <option>Bundle</option>
 
                                 </select>
+
+                            </td>
+
+
+
+
+                            <td>
+                                <input class=" form-control form-control-sm product-cost-price" type="text" name="product_unitprice[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" title="Please enter a valid price number">
                             </td>
                             <td>
-                                <input class="form-control form-control-sm product-cost-price" type="text" name="product_unitprice[]" id="product_cost" pattern="[0-9]+(\.[0-9]{1,2})?" title="Please enter a valid price number">
+
+                                <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" required min="0">
+
                             </td>
                             <td>
                                 <input class="form-control form-control-sm" type="text" name="total_price[]" id="total_price" readonly>
@@ -170,6 +189,25 @@
             alert("You can't delete the last row.");
         }
     }
+
+
+    function removeProductRow(button) {
+        // Get the parent row (the <tr> element) of the clicked button
+        var row = button.closest('tr');
+
+        // Check if there's only one row left, don't remove it
+        var rowCount = document.querySelectorAll('.row_content tr').length;
+        if (rowCount > 1) {
+            // Remove the row from the table
+            if (row) {
+                row.remove();
+            }
+        } else {
+            alert("You can't delete the last row.");
+        }
+    }
+
+
 
     // Function to calculate the total cost for a specific row
     function calculateTotalPrice(row) {
@@ -227,5 +265,26 @@
         }
     });
 
-    // ... Your existing JavaScript code ...
+
+    document.addEventListener('change', function(event) {
+        if (event.target.matches('select[name="product_name[]"]')) {
+            var selectedProduct = event.target.value;
+            var unitField = event.target.closest('tr').querySelector('select[name="product_unit[]"]');
+            var units = <?php echo json_encode($barcode); ?>; // Assuming $barcode contains the units data
+
+            // Clear previous options
+            unitField.innerHTML = '<option value="" selected hidden>Select Unit</option>';
+
+            // Filter and populate units based on selected product
+            units.forEach(function(unit) {
+                if (unit.product_name === selectedProduct) {
+                    var option = document.createElement('option');
+                    option.value = unit.unit;
+                    option.textContent = unit.unit;
+                    unitField.appendChild(option);
+                }
+            });
+        }
+    });
+
 </script>

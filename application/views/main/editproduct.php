@@ -3,6 +3,13 @@
 		font-weight: bold;
 	}
 
+
+	h1 {
+		text-align: center;
+	}
+
+
+
 	@media (max-width: 767px) {
 		h1 {
 			margin-left: 0;
@@ -12,7 +19,9 @@
 
 <div class="container mt-3">
 
+
 	<h4>Edit Product</h4>
+
 
 	<!-- Flash Messages -->
 	<?= $this->session->flashdata('add_user_submit'); ?>
@@ -46,7 +55,9 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Preferred Supplier</label>
-						<select class="form-control" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Supplier" name="supplier_id" required>
+
+						<select class="form-control " data-live-search="true" data-style="btn-outline-secondary" name="supplier_id" required>
+
 							<option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
 							<?php foreach ($supplier as $supp) { ?>
 								<option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?> - <?= $supp->company_name ?></option>
@@ -56,7 +67,11 @@
 
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">Product Category</label>
+
+
 						<select class="form-control " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_category" required>
+
+
 							<option class="text-info invisible" value="<?= $product->product_category ?>"><?= $product->product_category ?></option>
 							<?php foreach ($procat as $pc) {
 								echo '<option value="' . $pc->product_category . '">' . $pc->product_category . '</option>';
@@ -66,7 +81,10 @@
 					</div>
 					<div class="form-group col-md-3 d-inline-block">
 						<label class="bold-label">VAT</label>
+
+
 						<select class="form-control" name="product_vat" required>
+
 							<option class="text-info invisible" value="<?= $product->product_vat ?>"><?= $product->product_vat ?></option>
 							<option>12%</option>
 							<option>Non-VAT</option>
@@ -78,6 +96,7 @@
 						<input type="number" placeholder="Margin" value="<?= set_value('product_margin', $product->product_margin); ?>" name="product_margin" min="0" value="10" class="form-control" id="product-margin" required>
 						<?= form_error('product_margin'); ?>
 					</div>
+
 
 				</div>
 
@@ -147,8 +166,11 @@
 									<tr>
 										<th style="width: 20%;">Unit</th>
 										<th style="width: 15%;">Barcode</th>
+
+
 										<th style="width: 10%;">
-											<button type="button" class="btn btn-info" id="btn_po" onclick="addProductRow()"><i class="fas fa-plus"></i></button>
+											<button type="button" class="btn btn-info" id="btn_po"><i class="fas fa-plus"></i></button>
+
 										</th>
 									</tr>
 								</thead>
@@ -174,22 +196,27 @@
 													<button class="btn btn-danger remove-category" onclick="removeProductRow(this)"><i class="fas fa-trash"></i></button>
 												</td>
 											</tr>
+
+											<input type="hidden" name="barcode_id" value="<?= $barcode->barcode_id; ?>">
+										<?php endif; ?>
+									<?php endforeach; ?>
 								</tbody>
-							<?php endif; ?>
-						<?php endforeach; ?>
 							</table>
 						</div>
+
 					</div>
-				</div>
-				<div class="card-footer bg-transparent text-end">
-					<div class="form-group col-md-12">
+					<div class="card-footer bg-transparent text-end">
 						<button type="submit" name="submit" class="btn btn-primary btn-sm"><i class="fas fa-save"></i> Submit</button>
 						<a class="btn btn-secondary btn-sm" href="<?= base_url('main/product') ?>"><i class="fas fa-reply"></i> Back</a>
+
 					</div>
 				</div>
-
 			</div>
+
+
+
 		</div>
+
 	</div>
 
 </div>

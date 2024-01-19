@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
   <meta charset="utf-8">
@@ -263,6 +265,7 @@
         <a class="dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa fa-user"></i>
         </a>
+
         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
           <a class="dropdown-item text-dark" href="#">User Profile</a>
           <a class="dropdown-item text-dark" href="#">Settings</a>
@@ -317,6 +320,7 @@
     <a href="<?= base_url('main/reports') ?>"><i class="fas fa-chart-bar"></i> Reports</a>
     <a href="<?= base_url('main/backup') ?>"><i class="fas fa-database"></i> Backup & Restore</a>
   </div>
+
 
 
   <div class="content">

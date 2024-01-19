@@ -58,17 +58,24 @@
 					</div>
 
 					<div class="form-group">
+
 						<label for="branch" class="bold-label">Branch</label><br>
 						<select name="branch" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('branch') ? 'is-invalid' : ''; ?>">
-							<option class="text-info invisible" value="<?= $user->branch ?>"><?= ucfirst($user->branch) ?></option>
-							<option value="main branch">Main Branch</option>
-							<option value="branch 1">Branch 1</option>
-							<option value="branch 2">Branch 2</option>
+							<option class="text-info invisible" value="<?= $select->branch ?>"><?= ucfirst($select->branch) ?></option>
+							<?php foreach ($branch as $br) { ?>
+
+								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
+
+							<?php } ?>
+
+
+
 						</select>
 						<?php echo form_error('role'); ?>
 					</div>
 
 					<div class="form-group">
+
 						<label for="role" class="bold-label">Roles</label><br>
 						<select name="role" id="role-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
 							<option class="text-info invisible" value="<?= $user->role ?>"><?= ucfirst($user->role) ?></option>
@@ -82,6 +89,7 @@
 							<option value="branch clerk">Branch clerk</option>
 							<option value="warehouse clerk">Warehouse Clerk</option>
 							<option value="warehouse supervisor">Warehouse Supervisor</option>
+
 						</select>
 						<?php echo form_error('role'); ?>
 					</div>

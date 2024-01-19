@@ -34,9 +34,11 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#module4">Inventory Report</a>
 
+
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#module5">Sales Report</a>
+
         </li>
         <!-- Add more modules as needed -->
     </ul>
@@ -48,8 +50,11 @@
         <!-- Module 1 Content -->
         <div class="tab-pane fade show active" id="module1">
             <div class="card-header">
+
                 <div class="card-body" style="color: dark;">
+4
                     <table class="table" id="user-datatables-module1">
+
                         <thead>
                             <tr>
                                 <th>Purchase Order No.</th>
@@ -188,6 +193,7 @@
                     </table>
                 </div>
 
+
             </div>
         </div>
 
@@ -221,6 +227,7 @@
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
 

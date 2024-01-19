@@ -20,6 +20,13 @@ class Goods_return_model extends CI_Model
             return $text . '-' . sprintf('%03s', 1);
         }
     }
+    function get_barcode()
+    {
+        $this->db->select('*');
+        $this->db->from('barcode');
+        $query = $this->db->get()->result();
+        return $query;
+    }
     function get_all_grt()
     {
         $this->db->select('*');

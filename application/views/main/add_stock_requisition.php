@@ -20,82 +20,90 @@
 
 
 <?php echo form_open_multipart('', array('onsubmit' => 'return confirm(\'Are you sure you want to add this stock requisition?\')')); ?>
-<div class="row mb-3">
-    <!--start purchase request no-->
-    <div class="col-3">
-        <label class="text-white">Stock Requisition No</label>
-        <input type="text" value="<?= $sr_no ?>" name="stock_requisition_no" readonly class="form-control form-control-sm">
-    </div>
 
-    <div class="col-3">
-        <label class="text-white">Date Created</label>
-        <input type="text" value="<?= date('Y-m-d'); ?>" name="date_created" readonly class="form-control form-control-sm">
-    </div>
+<main class="content">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div class="container-fluid">
+        <!--start select catergory-->
+        <div class="row mb-3">
+            <!--start purchase request no-->
+            <div class="col-3">
+                <label>Stock Requisition No</label>
 
-    <!--start purchase request no-->
-</div>
-<!--Start Table-->
+                <input type="text" value="<?= $sr_no ?>" name="stock_requisition_no" readonly class="form-control form-control-sm">
+            </div>
 
-<div class="card mb-3" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" id="card">
-    <div class="card-body" id="card-body">
-        <table class="table table-sm table-bordered text-center" id="table_field">
-            <thead>
+            <div class="col-3">
+                <label>Date Created</label>
+                <input type="text" value="<?= date('Y-m-d'); ?>" name="date_created" readonly class="form-control form-control-sm">
+            </div>
 
-                <tr>
-                    <th style="width: 250px;" id="table_style">Product Name</th>
-                    <th style="width: 160px;" id="table_style">Quantity</th>
-                    <th style="width: 160px;" id="table_style">Unit</th>
-                    <th style="width: 160px;" id="table_style">Price</th>
-                    <th style="width: 160px;" id="table_style">Total Cost</th>
-                    <th style="width: 50px;" id="table_style">
-                        <button type="button" id="btn_sr" class="btn btn-sm btn-info"><i class=" fas fa-plus"></i></button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="row_content" id="row_product">
-                <tr>
-                    <td>
-                        <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required>
-                            <option value="" selected hidden>Select Product</option>
-                            <?php foreach ($product as $pro) { ?>
-                                <option value="<?= $pro->product_name ?>" data-selling-price="" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option>
-                            <?php } ?>
-                        </select>
-                    </td>
-                    <td>
-                        <input class="form-control form-control-sm" type="number" name="quantity[]" pattern="[0-9]+" id="quantity" min="0" max="" required>
-                    </td>
-                    <td>
-                        <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" id="unit" required>
-                            <option value="" selected hidden>Select Unit</option>
-                            <option>Pcs</option>
-                            <option>Tablet</option>
-                            <option>Capsule</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input class="form-control form-control-sm product-selling-price" type="text" name="product_sellingprice[]" id="product_sellingprice" pattern="[0-9]+([\.|,][0-9]+)?">
-                    </td>
-                    <td>
-                        <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price" readonly>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-danger remove-category"><i class="fas fa-trash"></i></button>
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Grand Total Cost:</strong></td>
-                    <td id="total_cost" class="total_cost">0</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+            <!--start purchase request no-->
+        </div>
+        <!--Start Table-->
 
-    <div class="card-footer bg-transparent text-end">
-        <input type="submit" value="Create" name="btn_create_sr" id="submit_sr" class="btn btn-sm btn-primary">
-        <a href="<?php echo site_url('main/stock_requisition'); ?>"><input type="button" value="Back" class=" btn btn-primary btn-sm  btn_save"></a>
+        <div class="card border-success mb-3" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;" id="card">
+            <div class="card-body" id="card-body">
+                <table class="table table-sm table-bordered text-center" id="table_field">
+                    <thead>
+
+                        <tr>
+                            <th style="width: 250px;" id="table_style">Product Name</th>
+                            <th style="width: 160px;" id="table_style">Quantity</th>
+                            <th style="width: 160px;" id="table_style">Unit</th>
+                            <th style="width: 160px;" id="table_style">Price</th>
+
+                            <th style="width: 50px;" id="table_style">
+                                <button type="button" id="btn_sr" class="btn btn-sm btn-info"><i class=" fas fa-plus"></i></button>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="row_content" id="row_product">
+                        <tr>
+                            <td>
+                                <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required>
+                                    <option value="" selected hidden>Select Product</option>
+                                    <?php foreach ($product as $pro) { ?>
+                                        <option value="<?= $pro->product_name ?>" data-selling-price="" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option>
+                                    <?php } ?>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm" type="number" name="quantity[]" pattern="[0-9]+" id="quantity" min="0" max="" required>
+                            </td>
+                            <td>
+                                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" id="unit" required>
+                                    <option value="" selected hidden>Select Unit</option>
+                                    <option>Pcs</option>
+                                    <option>Tablet</option>
+                                    <option>Capsule</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class="form-control form-control-sm product-selling-price" type="text" name="product_sellingprice[]" id="product_sellingprice" pattern="[0-9]+([\.|,][0-9]+)?">
+                            </td>
+
+                            <td>
+                                <button class="btn btn-sm btn-danger remove-category"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" style="text-align: right;"><strong>Grand Total Cost:</strong></td>
+                            <td id="total_cost" class="total_cost">0</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="card-footer bg-transparent border-success text-end">
+                <input type="submit" value="Create" name="btn_create_sr" id="submit_sr" class="btn btn-sm btn-primary">
+                <a href="<?php echo site_url('main/stock_requisition'); ?>"><input type="button" value="Back" class=" btn btn-primary btn-sm  btn_save"></a>
+            </div>
+        </div>
+        </form>
+
     </div>
 </div>
 </form>
@@ -116,9 +124,9 @@
         }
 
         var newRow = '<tr>' +
-            '<td> <select class="form-control form-control-sm selectpicker product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required><option value="" selected hidden>Select Product</option><?php foreach ($product as $pro) { ?><option value="<?= $pro->product_name ?>" data-selling-price="<?= $pro->product_sellingprice ?>" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option><?php } ?></select></td>' +
+            '<td> <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Product" name="product[]" id="product" required><option value="" selected hidden>Select Product</option><?php foreach ($product as $pro) { ?><option value="<?= $pro->product_name ?>" data-selling-price="<?= $pro->product_sellingprice ?>" data-product-quantity="<?= $pro->product_quantity ?>"><?= $pro->product_name ?></option><?php } ?></select></td>' +
             '<td> <input class="form-control form-control-sm" type="number" name="quantity[]" pattern="[0-9]+" id="quantity" min="0" max="" required></td>' +
-            '<td><select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" required><option value="" selected hidden>Select Unit</option><option>Pcs</option><option>Tablet</option><option>Capsule</option></select></td>' +
+            '<td><select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" title="Select Unit" name="unit[]" required><option value="" selected hidden>Select Unit</option><option>Pcs</option><option>Tablet</option><option>Capsule</option></select></td>' +
             '<td><input class="form-control form-control-sm product-selling-price" type="text" name="product_sellingprice[]" id="product_sellingprice" pattern="[0-9]+([\.|,][0-9]+)?"></td>' +
             '<td><input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price" readonly></td>' +
             '<td><button class="btn btn-sm btn-danger remove-category"><i class="fas fa-trash"></i></button></td>' +

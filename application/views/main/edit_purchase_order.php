@@ -54,8 +54,10 @@
                 <input type="text" value="<?= $code->date_created ?>" name="date_created" readonly class="form-control form-control-sm">
             </div>
             <div class="col-12 col-sm-3">
-                <label for="supplier_id" class="form-label text-white">Supplier</label>
-                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="supplier_name" id="supplier_name" required>
+
+                <label for="supplier_id" class="form-label">Supplier</label>
+                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="supplier_name" id="supplier_name" required>
+
                     <option class="text-info invisible" value="<?= $select->supplier_id ?>"><?= $select->supplier_name ?> - <?= $select->company_name ?></option>
                     <?php foreach ($supplier as $supp) { ?>
                         <option value="<?= $supp->supplier_id ?>"><?= $supp->supplier_name ?></option>
@@ -63,8 +65,10 @@
                 </select>
             </div>
             <div class="col-12 col-sm-3">
-                <label for="payment_method" class="form-label text-white">Payment Method</label>
-                <select class="form-control form-control-sm selectpicker" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="payment_method" id="payment_method" required>
+
+                <label for="payment_method" class="form-label">Payment Method</label>
+                <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="payment_method" id="payment_method" required>
+
                     <option class="text-info invisible" value="<?= $code->payment_method ?>"><?= $code->payment_method ?></option>
                     <option>Cash</option>
                     <option>Check</option>
@@ -83,6 +87,7 @@
                             <th style="width: 160px;" id="table_style">Unit of Measure</th>
                             <th style="width: 160px;" id="table_style">Price</th>
                             <th style="width: 160px;" id="table_style">Total Cost</th>
+
                             <th style="width: 50px;" id="table_style">
                                 <button type="button" class="btn btn-sm btn-info" id="btn_po"><i class="fas fa-plus">
                             </th>
@@ -93,8 +98,10 @@
                         <tbody class="row_content" id="row_product">
                             <tr>
                                 <td>
-                                    <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
-                                        <option value="<?= $row->product_name ?>"><?= $row->product_name ?></option>
+
+                                    <select class="form-control form-control-sm  product-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_name[]" id="product_name" required>
+                                        <option class="text-info invisible" value="<?= $row->product_name ?>"><?= $row->product_name ?></option>
+
                                         <?php foreach ($product as $pro) { ?>
                                             <option value="<?= $pro->product_name ?>"> <?= $pro->product_name ?></option>
                                         <?php } ?>
@@ -104,22 +111,27 @@
                                     <input class="form-control form-control-sm" type="number" name="po_product_quantity[]" id="po_product_quantity" value="<?= $row->po_product_quantity ?>" pattern="[0-9]+" required>
                                 </td>
                                 <td>
-                                    <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
+
+                                    <select class="form-control form-control-sm  unit-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" id="unit" required>
+
                                         <option class="text-info invisible" value="<?= $row->product_unit ?>"><?= $row->product_unit ?></option>
-                                        <option>Pcs</option>
-                                        <option>Tablet</option>
-                                        <option>Capsule</option>
-                                        <option>box</option>
-                                        <option>Pad</option>
+                                        <?php foreach ($barcode as $bar) {
+                                            if ($row->product_name === $bar->product_name) { ?>
+                                                <option value="<?= $row->product_unit ?>"> <?= $bar->unit ?></option>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </select>
                                 </td>
                                 <td>
-                                    <input class="form-control form-control-sm" type="number" name="product_unitprice[]" id="product_unitprice" value="<?= $row->product_unitprice ?>" required>
+
+                                    <input class="form-control form-control-sm" type="number" name="product_unitprice[]" id="product_unitprice" value="<?= $row->product_unitprice ?>" pattern="[0-9]+" required>
+
                                 </td>
                                 <td>
                                     <input class="form-control form-control-sm" type="number" name="total_price[]" id="total_price_display" readonly>
                                 </td>
                             </tr>
+
                         <?php } ?>
                         </tbody>
                         <tfoot>
@@ -174,6 +186,25 @@
         grandTotalElement.textContent = "₱" + grandTotal.toFixed(2); // Ensure two decimal places
     }
 
+    const quantityFields = document.querySelectorAll('input[name="po_product_quantity[]"]');
+    const priceFields = document.querySelectorAll('input[name="product_unitprice[]"]');
+
+    quantityFields.forEach(function(element) {
+        element.addEventListener('input', function() {
+            const row = element.closest('tr');
+            calculateTotalPrice(row);
+            calculateGrandTotal();
+        });
+    });
+
+    priceFields.forEach(function(element) {
+        element.addEventListener('input', function() {
+            const row = element.closest('tr');
+            calculateTotalPrice(row);
+            calculateGrandTotal();
+        });
+    });
+
     // Function to add a new empty row
     function addEmptyRow() {
         var table = document.getElementById("table_field");
@@ -191,12 +222,14 @@
         <td><input class="form-control form-control-sm" type="number" name="po_product_quantity[]" value="" pattern="[0-9]+" required></td>
         <td>
             <select class="form-control form-control-sm " data-live-search="true" data-style="btn-sm btn-outline-secondary" name="product_unit[]" required>
-                <option></option>
-                <option>Pcs</option>
-                <option>Tablet</option>
-                <option>Capsule</option>
-                <option>box</option>
-                <option>Pad</option>
+
+                <option value=" ></option>
+              <?php foreach ($barcode as $bar) {
+                    if ($row->product_name === $bar->product_name) { ?>
+                                                <option value="<?= $row->product_unit ?>"> <?= $bar->unit ?></option>
+                                            <?php } ?>
+                                        <?php } ?>
+
             </select>
         </td>
         <td><input class="form-control form-control-sm" type="number" name="product_unitprice[]" value="" required></td>
@@ -249,4 +282,25 @@
         calculateTotalPrice(priceField.closest('tr'));
         calculateGrandTotal();
     }
+
+    document.addEventListener('change', function(event) {
+        if (event.target.matches('select[name="product_name[]"]')) {
+            var selectedProduct = event.target.value;
+            var unitField = event.target.closest('tr').querySelector('select[name="product_unit[]"]');
+            var units = <?php echo json_encode($barcode); ?>; // Assuming $barcode contains the units data
+
+            // Clear previous options
+            unitField.innerHTML = '<option value="" selected hidden>Select Unit</option>';
+
+            // Filter and populate units based on selected product
+            units.forEach(function(unit) {
+                if (unit.product_name === selectedProduct) {
+                    var option = document.createElement('option');
+                    option.value = unit.unit;
+                    option.textContent = unit.unit;
+                    unitField.appendChild(option);
+                }
+            });
+        }
+    });
 </script>
