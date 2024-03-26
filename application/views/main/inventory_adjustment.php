@@ -1,20 +1,3 @@
-<style>
-    .card {
-        width: 95%;
-        /* Adjust the width as needed */
-        margin: 20px auto;
-        /* Center the card on the page horizontally */
-    }
-
-    .row {
-        margin-top: 10px;
-    }
-
-    h4 {
-        margin-left: 40px;
-    }
-</style>
-
 <h4>Inventory Adjustment</h4>
 <div class="card card-outline card-success">
     <div class="card-header  ">
@@ -56,7 +39,7 @@
 
                             </td>
                             <td>
-                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-dark" id="btn_po">Adjust</button></a>
+                                <a href="<?php echo site_url('main/add_stock/' . $pro->product_id); ?>"><button type="button" class="btn btn-sm btn-success" id="btn_po">Adjust</button></a>
                             </td>
                         </tr>
                     <?php endforeach ?>

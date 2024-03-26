@@ -68,6 +68,18 @@ class Sales_model extends CI_Model
             $this->db->set('product_quantity', $new_quantity);
             $this->db->where('product_name', $product_name);
             $this->db->update('product');
+
+            // Insert data into inventory_ledger table
+            $data_inventory_ledger = [
+                'product_name' => $product_name,
+                'unit' => 'Pcs', // Adjust based on your unit information
+                'quantity' => -$quantity_value, // Negative quantity for sales
+                'price' => $product_price_value,
+                'activity' => 'Inbound', // Adjust based on your activity types
+                'date_posted' => date('Y-m-d'), // Adjust based on your date format
+            ];
+
+            $this->db->insert('inventory_ledger', $data_inventory_ledger);
         }
 
         // Update total_cost in the sales_no table
