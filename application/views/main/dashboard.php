@@ -3,26 +3,18 @@
         background-color: #fff;
         border: none;
         color: #000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+        /* x-offset y-offset blur-radius spread-radius color */
     }
 
     .card-header {
-        background-color: #4e4e4e;
+        background-color: #699E3C;
         border: none;
         color: #ffffff;
     }
 
     .card-body {
         padding: 20px;
-    }
-
-    h4 {
-        margin-left: 15px;
-    }
-
-    h5,
-    p {
-        color: #000;
-        margin-bottom: 10px;
     }
 </style>
 

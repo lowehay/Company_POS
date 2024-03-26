@@ -80,7 +80,7 @@
 </script>
 
 <body class="sb-nav-fixed">
-  <nav class="sb-topnav navbar navbar-expand navbar-dark navings">
+  <nav class="sb-topnav navbar navbar-expand navbar-light bg-light ">
     <!-- Navbar Brand-->
     <a href="<?= base_url('main') ?>" class="brand-link d-flex align-items-center exclude-from-highlight">
       <img src="<?= base_url('assets/images/gf.png'); ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 10.0; max-width: 90%; max-height: 65px" />
@@ -88,17 +88,17 @@
 
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
-      <i class="fas fa-bars text-white"></i>
+      <i class="fas fa-bars text-dark"></i>
     </button>
     <!-- Navbar Search-->
     <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></form>
     <!-- Navbar-->
-    <span class="user-greeting text-white">Hi,
+    <span class="user-greeting text-dark">Hi,
       <?= ucfirst($this->session->userdata('UserLoginSession')['username']) ?>! &nbsp;
     </span>
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw text-white"></i></a>
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw text-dark "></i></a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
           <li><a class="dropdown-item" href="#!">Settings</a></li>
           <li><a class="dropdown-item" href="#!">Activity Log</a></li>
@@ -112,7 +112,7 @@
   </nav>
   <div id="layoutSidenav">
     <div id="layoutSidenav_nav">
-      <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+      <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
         <div class="sb-sidenav-menu">
           <div class="nav">
             <div class="sb-sidenav-menu-heading">General</div>
@@ -126,26 +126,26 @@
 
             <a id="nav-link" class="nav-link" href="<?= base_url('main/user') ?>">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-user"></i>
               </div>
               User
             </a>
             <a id="nav-link" class="nav-link" href="<?= base_url('main/supplier') ?>">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-truck"></i>
               </div>
               Supplier
             </a>
             <a id="nav-link" class="nav-link" href="<?= base_url('main/product') ?>">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-box"></i>
               </div>
               Product
             </a>
 
             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-bed"></i>
+                <i class="fas fa-archive"></i>
               </div>
               Inventory
               <div class="sb-sidenav-collapse-arrow">
@@ -154,27 +154,27 @@
             </a>
             <div class="collapse bg-secondary" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
               <nav class="sb-sidenav-menu-nested nav">
-                <a class="nav-link" href="<?= base_url('main/inventory_adjustment') ?>">Inventory Adjustment</a>
-                <a class="nav-link" href="<?= base_url('main/inventory_ledger') ?>">Inventory Ledger</a>
+                <a class="nav-link text-white" href="<?= base_url('main/inventory_adjustment') ?>">Inventory Adjustment</a>
+                <a class="nav-link text-white" href="<?= base_url('main/inventory_ledger') ?>">Inventory Ledger</a>
               </nav>
             </div>
 
             <a id="nav-link" class="nav-link" href="<?= base_url('main/pos') ?>">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-cash-register"></i>
               </div>
               POS
             </a>
             <a id="nav-link" class="nav-link" href="<?= base_url('main/reports') ?>">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-chart-bar"></i>
               </div>
               Reports
             </a>
 
             <a id="nav-link" class="nav-link" href="<?= base_url('main/backup') ?>">
               <div class="sb-nav-link-icon">
-                <i class="fas fa-tachometer-alt"></i>
+                <i class="fas fa-database"></i>
               </div>
               Backup & Restore
             </a>

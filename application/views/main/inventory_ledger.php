@@ -1,31 +1,3 @@
-<style>
-    h1 {
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .card {
-        width: 95%;
-        margin: 20px auto;
-    }
-
-    .form-row {
-        margin-top: 20px;
-    }
-
-    #ledger-table_wrapper {
-        margin-top: 20px;
-    }
-
-    .badge {
-        font-size: 0.8em;
-    }
-
-    h4 {
-        margin-left: 40px;
-    }
-</style>
-
 <h4>Inventory Ledger</h4>
 
 <div class="container">
@@ -40,7 +12,7 @@
         </div>
         <div class="form-group col-md-4">
             <label>&nbsp;</label>
-            <button type="submit" class="btn btn-primary btn-block btn-sm">Search</button>
+            <button type="submit" class="btn btn-success btn-block btn-sm">Search</button>
         </div>
     </form>
 

@@ -1,21 +1,7 @@
-<style>
-    .card {
-        width: 95%;
-        margin: 20px auto;
-    }
-
-    h4 {
-        margin-left: 40px;
-    }
-</style>
 <h4>Supplier Management</h4>
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-
     <div class="card-header  ">
-
-        <a href="<?php echo site_url('main/add_supplier'); ?>" class="btn btn-dark btn-sm "><i class="fas fa-truck"></i> Add Supplier </a>
-
-
+        <a href="<?php echo site_url('main/add_supplier'); ?>" class="btn btn-success btn-sm "><i class="fas fa-truck"></i> Add Supplier </a>
     </div>
     <div class="card-body">
         <div class="table-responsive">

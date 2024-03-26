@@ -1,6 +1,6 @@
 <div class="row mb-2">
     <div class="col-sm-6">
-        <h1 class="m-0 text-dark">Add Branch</h1>
+        <h4>Add Branch</h4>
     </div><!-- /.col -->
     <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
@@ -20,7 +20,7 @@
             <?php echo form_error('branch'); ?>
         </div></br>
         <div>
-            <button type="submit" name="submit" class="btn btaan-primary btn-sm" class="form-submit"><i class="fas fa-save"></i> Submit</button>
+            <button type="submit" name="submit" class="btn btn-primary btn-sm" class="form-submit"><i class="fas fa-save"></i> Submit</button>
             <button type="reset" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Clear</button>
             <a class="btn btn-secondary btn-sm" href="<?= base_url('main/branch') ?>"><i class="fas fa-reply"></i> back</a>
         </div>
