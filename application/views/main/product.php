@@ -198,6 +198,16 @@
   #scrollToTopButton:hover {
     background-color: #0056b3;
   }
+
+  #editbtn {
+    background-color: #0000;
+  }
+
+  .test {
+    background-color: DodgerBlue;
+    width: 100%;
+
+  }
 </style>
 <h4>Product Management</h4>
 <div class="row mb-2">
@@ -244,7 +254,10 @@
                 <img src="<?php echo base_url('assets/images/' . $product_image); ?>" class="card-img-top" alt="Product Image" style="max-height: 300px;">
                 <div class="card-body">
                   <div class="card-body-content">
-                    <h5 class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
+                    <div class="container" id="test">
+                      <h5 id="change" class="card-title"><?php echo ucfirst($row->product_name); ?></h5>
+                    </div>
+
                     <p class="card-text">Product Code: <?php echo $row->product_code; ?></p>
                     <p class="card-text">Price: ₱<?php echo $row->product_price; ?></p>
                     <div class="btn-group">

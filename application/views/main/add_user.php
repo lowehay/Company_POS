@@ -94,7 +94,7 @@
 							<option value="inventory clerk">Inventory Clerk</option>
 							<option value="cashier">Cashier</option>
 							<option value="branch supervisor">Branch Supervisor</option>
-							<option value="finance">Fianance</option>
+							<option value="finance">Finance</option>
 							<option value="accounting">Accounting</option>
 							<option value="branch clerk">Branch clerk</option>
 							<option value="warehouse clerk">Warehouse Clerk</option>

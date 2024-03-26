@@ -52,7 +52,7 @@
             <div class="card-header">
 
                 <div class="card-body" style="color: dark;">
-4
+
                     <table class="table" id="user-datatables-module1">
 
                         <thead>
@@ -62,7 +62,6 @@
                                 <th>Date Created</th>
                                 <th>Total Cost</th>
                                 <th>Status</th>
-
                                 <th>Action</th>
                             </tr>
                         </thead>

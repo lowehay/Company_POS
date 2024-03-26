@@ -84,8 +84,8 @@ class Purchase_order_model extends CI_Model
                 'unit' => $arr_unit,
                 'quantity' => $arr_quant,
                 'price' => $arr_price,
-                'activity' => 'Purchased', // Adjust based on your activity types
-                'date_posted' => date('Y-m-d'), // Adjust based on your date format
+                'activity' => 'Purchased',
+                'date_posted' => date('Y-m-d'),
             ];
 
             $this->db->insert('inventory_ledger', $data_inventory_ledger);
@@ -241,12 +241,13 @@ class Purchase_order_model extends CI_Model
 
     public function approved_po($id)
     {
-        var_dump($_POST);
+
 
         $data = array(
             'status' => 'To Be Received'
         );
         $this->db->where('purchase_order_no_id', $id);
+        var_dump($data);
         $response = $this->db->update('purchase_order_no', $data);
 
 
@@ -255,10 +256,10 @@ class Purchase_order_model extends CI_Model
             $product_name = $this->input->post('product_name');
             $product_units = $this->input->post('product_unit');
             $net_product_costs = $this->input->post('net_product_cost');
+            $vat_type = $this->input->post('product_vat');
+            $vat_amount = $this->input->post('tax_amount');
 
-            var_dump($product_name);
-            var_dump($product_units);
-            var_dump($net_product_costs);
+
 
             foreach ($product_name as $index => $name) {
                 $current_product_name = $name;
@@ -311,8 +312,6 @@ class Purchase_order_model extends CI_Model
     }
     public function getReceivedPurchaseOrderCount()
     {
-        // Assuming you have a column in your database table to indicate received orders, let's call it 'status'
-        // You might want to adjust the column name accordingly
         $this->db->where('status', 'received');
         $this->db->from('purchase_order_no');
         return $this->db->count_all_results();

@@ -90,16 +90,6 @@ class Product_model extends CI_Model
 	}
 
 
-
-
-	function get_all_product()
-	{
-		$this->db->where('isDelete', 'no');
-		$query = $this->db->get('product');
-		$result = $query->result();
-
-		return $result;
-	}
 	function get_product($product_id)
 	{
 		$this->db->where('product_id', $product_id);
@@ -285,23 +275,6 @@ class Product_model extends CI_Model
 		}
 	}
 
-	function get_barcode($id)
-	{
-		$this->db->select('*');
-		$this->db->from('barcode AS bar');
-		$this->db->join('product AS pro', 'bar.product_id = pro.product_id', 'left');
-		$this->db->where('pro.product_id', $id);
-		$query = $this->db->get()->row();
-		return $query;
-	}
-
-	function get_all_barcode()
-	{
-		$this->db->select('*');
-		$this->db->from('barcode');
-		$query = $this->db->get()->result();
-		return $query;
-	}
 	function get_all_product_category()
 	{
 		$this->db->where('isCancel', 'no');
@@ -384,19 +357,7 @@ class Product_model extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	function get_product($product_id)
-	{
-		$this->db->where('product_id', $product_id);
-		$query = $this->db->get('product');
 
-	function get_all_product_category()
-	{
-		$this->db->where('isCancel', 'no');
-		$query = $this->db->get('product_category');
-		$procat = $query->result();
-
-		return $procat;
-	}
 	public function insert_added_product_category()
 	{
 		$product_category = (string) $this->input->post('product_category');
@@ -455,5 +416,4 @@ class Product_model extends CI_Model
 			return false;
 		}
 	}
-
 }

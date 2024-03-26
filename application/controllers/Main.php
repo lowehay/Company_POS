@@ -779,7 +779,6 @@ class Main extends CI_Controller
 
 	function add_product_category()
 	{
-
 		$this->add_product_category_submit();
 		$this->load->view('main/header');
 		$this->load->view('main/add_product_category');
@@ -1561,5 +1560,4 @@ class Main extends CI_Controller
 
 		redirect('main/unit/');
 	}
-
 }

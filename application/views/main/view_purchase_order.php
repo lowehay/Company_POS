@@ -1,50 +1,49 @@
-
 <div class="container">
     <h4 class="text-white">View Purchase Request</h4>
 
-<style>
-    .container {
-        padding-top: 5px;
-        padding-bottom: 20px;
-        width: 2000px;
-    }
+    <style>
+        .container {
+            padding-top: 5px;
+            padding-bottom: 20px;
+            width: 2000px;
+        }
 
-    .container h1 {
-        font-size: 70px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+        .container h1 {
+            font-size: 70px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-    .form-label {
-        font-size: 16px;
-    }
+        .form-label {
+            font-size: 16px;
+        }
 
-    .form-control {
-        font-size: 16px;
-    }
+        .form-control {
+            font-size: 16px;
+        }
 
-    .table {
-        font-size: 16px;
-    }
+        .table {
+            font-size: 16px;
+        }
 
-    .table th,
-    .table td {
-        padding: 10px;
-    }
+        .table th,
+        .table td {
+            padding: 10px;
+        }
 
-    .card-body {
-        overflow: auto;
-        /* Add this line to make the card body scrollable */
-    }
+        .card-body {
+            overflow: auto;
+            /* Add this line to make the card body scrollable */
+        }
 
-    .btn-sm {
-        font-size: 16px;
-    }
+        .btn-sm {
+            font-size: 16px;
+        }
 
-    .total-cost {
-        font-weight: bold;
-    }
-</style>
+        .total-cost {
+            font-weight: bold;
+        }
+    </style>
 
     <form action="" method="post" onsubmit="return confirm('Are you sure you want to add this purchase order?')">
 
@@ -134,41 +133,41 @@
             </div>
         </div>
     </form>
-    </div>
-    <script>
-        function calculateNetTotalCost(row) {
-            const cost = parseFloat(row.querySelector('input[name="product_cost"]').value);
-            const taxAmount = parseFloat(row.querySelector('input[name="tax_amount[]"]').value);
-            const taxType = row.querySelector('select[name="product_vat[]"]').value;
-            const netproductcost = row.querySelector('input[name="net_product_cost[]"]'); // Change this line
+</div>
+<script>
+    function calculateNetTotalCost(row) {
+        const cost = parseFloat(row.querySelector('input[name="product_cost"]').value);
+        const taxAmount = parseFloat(row.querySelector('input[name="tax_amount[]"]').value);
+        const taxType = row.querySelector('select[name="product_vat[]"]').value;
+        const netproductcost = row.querySelector('input[name="net_product_cost[]"]'); // Change this line
 
-            if (taxType == "VAT Exclusive" && !isNaN(taxAmount)) {
-                const percentage = taxAmount / 100;
-                const result = cost + (cost * percentage);
-                netproductcost.value = result.toFixed(2); // Change this line
-            } else if (taxType == "VAT Inclusive" && !isNaN(taxAmount)) {
-                const percentage = taxAmount / 100;
-                const result = cost - (cost * percentage);
-                netproductcost.value = result.toFixed(2); // Change this line
-            } else if (taxType == "VAT Exempt" && !isNaN(taxAmount)) {
-                netproductcost.value = cost.toFixed(2); // Change this line
-            }
+        if (taxType == "VAT Exclusive" && !isNaN(taxAmount)) {
+            const percentage = taxAmount / 100;
+            const result = cost + (cost * percentage);
+            netproductcost.value = result.toFixed(2); // Change this line
+        } else if (taxType == "VAT Inclusive" && !isNaN(taxAmount)) {
+            const percentage = taxAmount / 100;
+            const result = cost - (cost * percentage);
+            netproductcost.value = result.toFixed(2); // Change this line
+        } else if (taxType == "VAT Exempt" && !isNaN(taxAmount)) {
+            netproductcost.value = cost.toFixed(2); // Change this line
         }
+    }
 
-        const taxAmountFields = document.querySelectorAll('input[name="tax_amount[]"]');
-        const taxTypeFields = document.querySelectorAll('select[name="product_vat[]"]');
+    const taxAmountFields = document.querySelectorAll('input[name="tax_amount[]"]');
+    const taxTypeFields = document.querySelectorAll('select[name="product_vat[]"]');
 
-        taxAmountFields.forEach(function(element) {
-            element.addEventListener('input', function() {
-                const row = element.closest('tr');
-                calculateNetTotalCost(row);
-            });
+    taxAmountFields.forEach(function(element) {
+        element.addEventListener('input', function() {
+            const row = element.closest('tr');
+            calculateNetTotalCost(row);
         });
+    });
 
-        taxTypeFields.forEach(function(element) {
-            element.addEventListener('input', function() {
-                const row = element.closest('tr');
-                calculateNetTotalCost(row);
-            });
+    taxTypeFields.forEach(function(element) {
+        element.addEventListener('input', function() {
+            const row = element.closest('tr');
+            calculateNetTotalCost(row);
         });
-    </script>
+    });
+</script>

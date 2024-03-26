@@ -90,7 +90,7 @@ class Supplier_model extends CI_Model
   public function deactivate_supplier($supplier_id)
   {
     $data = array(
-      'status' => 'deactivated',
+      'status_supplier' => 'deactivated',
     );
 
     $this->db->where('supplier_id', $supplier_id);
@@ -107,7 +107,7 @@ class Supplier_model extends CI_Model
   public function reactivate_supplier($supplier_id)
   {
     $data = array(
-      'status' => 'active',
+      'status_supplier' => 'active',
     );
 
     $this->db->where('supplier_id', $supplier_id);
