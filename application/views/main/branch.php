@@ -1,9 +1,9 @@
-<h1>Branch </h1>
+<h4>Branch </h4>
 
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
 
-        <a href="<?php echo site_url('main/add_branch'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-plus"></i> Add Branch</a>
+        <a href="<?php echo site_url('main/add_branch'); ?>" class="btn btn-success btn-sm "><i class="fas fa-plus"></i> Add Branch</a>
 
         <div class="float-right">
         </div>

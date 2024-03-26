@@ -1,13 +1,12 @@
-<h1>Unit Management </h1>
+<h4>Unit Management </h4>
 <h1 class="m-0 text-dark">
-    <a href="<?php echo site_url('main/product'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-boxes"></i> Products</a>
-    <a href="<?php echo site_url('main/product_category'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-list"></i> Product Category</a>
-    <a href="<?php echo site_url('main/unit'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-barcode"></i> Unit Management</a>
+    <a href="<?php echo site_url('main/product'); ?>" class="btn btn-success btn-sm"><i class="fas fa-boxes"></i> Products</a>
+    <a href="<?php echo site_url('main/unit'); ?>" class="btn btn-success btn-sm"><i class="fas fa-barcode"></i> Unit Management</a>
 </h1>
 <div class="card card-outline card-success" style="max-width:100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
     <div class="card-header  ">
 
-        <a href="<?php echo site_url('main/add_unit'); ?>" class="btn btn-primary btn-sm "><i class="fas fa-plus"></i> Add New Unit</a>
+        <a href="<?php echo site_url('main/add_unit'); ?>" class="btn btn-success btn-sm "><i class="fas fa-plus"></i> Add New Unit</a>
 
         <div class="float-right">
         </div>
