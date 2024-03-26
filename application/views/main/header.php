@@ -86,6 +86,7 @@
       <img src="<?= base_url('assets/images/gf.png'); ?>" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: 10.0; max-width: 90%; max-height: 65px" />
     </a>
 
+
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!">
       <i class="fas fa-bars text-dark"></i>
@@ -186,3 +187,4 @@
     <div id="layoutSidenav_content">
       <main>
         <div class="container-fluid px-4">
+

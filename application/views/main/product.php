@@ -1,5 +1,7 @@
 <h4>Product Management</h4>
+
 <div class="col-sm-6">
+
 </div>
 <h1 class="m-0 text-dark">
   <a href="<?php echo site_url('main/product'); ?>" class="btn btn-primary btn-sm btn-success"><i class="fas fa-boxes"></i> Products</a>
@@ -9,11 +11,14 @@
   <div class="card-header">
     <div class="row align-items-center">
       <div class="col-sm-6">
+
         <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-success btn-sm"><i class="fas fa-box"></i> Add Product</a>
+
       </div>
     </div>
   </div>
   <div class="card-body">
+
     <table id="productTable" class="table table-striped table-bordered" style="width:100%">
       <thead>
         <tr>
@@ -44,6 +49,7 @@
             </tr>
         <?php
           }
+
         }
         ?>
       </tbody>

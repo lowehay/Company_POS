@@ -43,27 +43,24 @@
 					<input type="password" id="password" placeholder="Password" name="password" value="<?php echo set_value('password'); ?>" class="form-control <?php echo form_error('password') ? 'is-invalid' : ''; ?>">
 				</div>
 
-				<div class="form-group">
-					<label for="password1" class="bold-label">Confirm Password</label>
-					<input type="password" id="password1" placeholder="Confirm Password" name="password1" class="form-control <?php echo form_error('password1') ? 'is-invalid' : ''; ?>">
-					<span style="color: red;"><?php echo form_error('password1'); ?></span>
-				</div>
 
-				<div class="form-group">
+						<label for="warehouse" class="bold-label">Warehouse</label><br>
+						<select name="warehouse" id="warehouse-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="form-control <?php echo form_error('warehouse') ? 'is-invalid' : ''; ?>">
+							<option selected hidden>Select Warehouse</option>
+							<option value="super-admin">Warehouse 1</option>
 
-					<label for="branch" class="bold-label">Branch</label><br>
+						</select>
 
-					<select name="branch" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
-						<?php foreach ($branch as $br) { ?>
-
-							<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
-
-						<?php } ?>
+						<span class="text-danger"><?php echo form_error('warehouse'); ?></span>
+					</div>
 
 
-					</select>
-					<span class="text-danger"><?php echo form_error('branch'); ?></span>
-				</div>
+
+
+							<option value="admin">Admin</option>
+							<option value="inbound user">Inbound User</option>
+							<option value="outbound user">Outbound User</option>
+
 
 				<div class="form-group">
 					<label for="role" class="bold-label">Roles</label><br>
