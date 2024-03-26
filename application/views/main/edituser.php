@@ -4,7 +4,7 @@
 		/* Adjust the width as needed */
 	}
 
-	h1 {
+	h4 {
 		text-align: center;
 	}
 
@@ -16,7 +16,7 @@
 </style>
 
 <div class="container mt-2">
-	<h1>Edit User</h1>
+	<h4>Edit User</h4>
 
 	<!-- Flash Messages -->
 	<?= $this->session->flashdata('add_user_submit'); ?>
@@ -58,12 +58,38 @@
 					</div>
 
 					<div class="form-group">
-						<label for="role" class="bold-label">Roles</label>
-						<select name="role" id="role-select" class="form-control <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
+
+						<label for="branch" class="bold-label">Branch</label><br>
+						<select name="branch" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('branch') ? 'is-invalid' : ''; ?>">
+							<option class="text-info invisible" value="<?= $select->branch ?>"><?= ucfirst($select->branch) ?></option>
+							<?php foreach ($branch as $br) { ?>
+
+								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
+
+							<?php } ?>
+
+
+
+						</select>
+						<?php echo form_error('role'); ?>
+					</div>
+
+					<div class="form-group">
+
+						<label for="role" class="bold-label">Roles</label><br>
+						<select name="role" id="role-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
 							<option class="text-info invisible" value="<?= $user->role ?>"><?= ucfirst($user->role) ?></option>
-							<option value="encoder">Encoder</option>
+							<option value="super-admin">Admin</option>
+							<option value="branch admin">Branch Admin</option>
+							<option value="inventory clerk">Inventory Clerk</option>
 							<option value="cashier">Cashier</option>
-							<option value="auditor">Auditor</option>
+							<option value="branch supervisor">Branch Supervisor</option>
+							<option value="finance">Fianance</option>
+							<option value="accounting">Accounting</option>
+							<option value="branch clerk">Branch clerk</option>
+							<option value="warehouse clerk">Warehouse Clerk</option>
+							<option value="warehouse supervisor">Warehouse Supervisor</option>
+
 						</select>
 						<?php echo form_error('role'); ?>
 					</div>

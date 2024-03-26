@@ -22,6 +22,7 @@ class User_model extends CI_Model
 		$first_name = (string) $this->input->post('first_name');
 		$last_name = (string) $this->input->post('last_name');
 		$password = (string) $this->input->post('password');
+		$branch = (string) $this->input->post('branch');
 		$role = (string) $this->input->post('role');
 
 		$data = array(
@@ -29,8 +30,9 @@ class User_model extends CI_Model
 			'first_name' => $first_name,
 			'last_name' => $last_name,
 			'password' => sha1($password),
+			'branch' => $branch,
 			'role' => $role,
-			'status' => '1'
+			'status' => 'active'
 		);
 
 		$response = $this->db->insert('user', $data);
@@ -57,6 +59,7 @@ class User_model extends CI_Model
 		$first_name = (string) $this->input->post('first_name');
 		$last_name = (string) $this->input->post('last_name');
 		$password = (string) $this->input->post('password');
+		$branch = (string) $this->input->post('branch');
 		$role = (string) $this->input->post('role');
 
 
@@ -65,6 +68,7 @@ class User_model extends CI_Model
 			'first_name' => $first_name,
 			'last_name' => $last_name,
 			'password' => sha1($password),
+			'branch' => $branch,
 			'role' => $role,
 		);
 
@@ -78,26 +82,63 @@ class User_model extends CI_Model
 			return FALSE;
 		}
 	}
-	public function delete_user($id)
-	{
-		$data = array(
-			'isDelete' => 'yes'
-		);
-		$this->db->where('user_id', $id);
-		$response = $this->db->update('user', $data);
-		if ($response) {
-			return $id;
-		} else {
-			return false;
-		}
-	}
+
 	function checkPassword($password, $username)
 	{
-		$query = $this->db->query("SELECT * FROM user WHERE password='$password' AND username='$username' AND status='1'");
+		$this->db->select('*');
+		$this->db->from('user');
+		$this->db->where('password', $password);
+		$this->db->where('username', $username);
+		$this->db->where('status', 'active');
+		$query = $this->db->get();
+
 		if ($query->num_rows() == 1) {
 			return $query->row();
 		} else {
 			return false;
 		}
+	}
+	public function deactivate_user($user_id)
+	{
+		$data = array(
+			'status' => 'deactivated',
+		);
+
+		$this->db->where('user_id', $user_id);
+
+		$response = $this->db->update('user', $data);
+
+		if ($response) {
+			return $user_id;
+		} else {
+			return FALSE;
+		}
+	}
+
+	public function reactivate_user($user_id)
+	{
+		$data = array(
+			'status' => 'active',
+		);
+
+		$this->db->where('user_id', $user_id);
+
+		$response = $this->db->update('user', $data);
+
+		if ($response) {
+			return $user_id;
+		} else {
+			return FALSE;
+		}
+	}
+
+	function Select_one($id)
+	{
+		$this->db->select('*');
+		$this->db->from('user AS use');
+		$this->db->join('branch AS br', 'use.branch= br.branch_id', 'left');
+		$this->db->where('use.user_id', $id);
+		$query = $this->db->get()->row();
+		return $query;
 	}
 }

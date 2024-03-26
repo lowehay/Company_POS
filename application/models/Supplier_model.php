@@ -6,7 +6,7 @@ class Supplier_model extends CI_Model
 
   function get_all_suppliers()
   {
-    $this->db->where('isCancel', 'no');
+    $this->db->where('isDelete', 'no');
     $query = $this->db->get('suppliers');
     $supplier = $query->result();
 
@@ -77,19 +77,7 @@ class Supplier_model extends CI_Model
       return FALSE;
     }
   }
-  public function delete_supplier($id)
-  {
-    $data = array(
-      'isCancel' => 'yes'
-    );
-    $this->db->where('supplier_id', $id);
-    $response = $this->db->update('suppliers', $data);
-    if ($response) {
-      return $id;
-    } else {
-      return false;
-    }
-  }
+
   public function get_supplier($supplier_id)
   {
     $this->db->where('supplier_id', $supplier_id);
@@ -97,5 +85,39 @@ class Supplier_model extends CI_Model
     $row = $query->row();
 
     return $row;
+  }
+
+  public function deactivate_supplier($supplier_id)
+  {
+    $data = array(
+      'status_supplier' => 'deactivated',
+    );
+
+    $this->db->where('supplier_id', $supplier_id);
+
+    $response = $this->db->update('suppliers', $data);
+
+    if ($response) {
+      return $supplier_id;
+    } else {
+      return FALSE;
+    }
+  }
+
+  public function reactivate_supplier($supplier_id)
+  {
+    $data = array(
+      'status_supplier' => 'active',
+    );
+
+    $this->db->where('supplier_id', $supplier_id);
+
+    $response = $this->db->update('suppliers', $data);
+
+    if ($response) {
+      return $supplier_id;
+    } else {
+      return FALSE;
+    }
   }
 }

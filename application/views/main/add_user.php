@@ -3,7 +3,7 @@
 		font-weight: bold;
 	}
 
-	h1 {
+	h4 {
 		text-align: center;
 	}
 
@@ -14,8 +14,12 @@
 	}
 </style>
 
+
+
 <div class="container mt-2">
-	<h1>Add User</h1>
+	<h4>Add User</h4>
+
+
 	<div class="row justify-content-center">
 		<div class="col-md-8">
 			<?php if ($this->session->flashdata('add_user_submit')) : ?>
@@ -47,23 +51,55 @@
 
 					<div class="form-group">
 						<label for="last_name" class="bold-label">Last Name</label>
-						<input type="text" id="last_name" name "last_name" placeholder="Last Name" class="form-control <?php echo form_error('last_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('last_name'); ?>">
+
+						<input type="text" id="last_name" name="last_name" placeholder="Last Name" class="form-control <?php echo form_error('last_name') ? 'is-invalid' : ''; ?>" value="<?php echo set_value('last_name'); ?>">
+
 						<span class="text-danger"><?php echo form_error('last_name'); ?></span>
 					</div>
 
 					<div class="form-group">
 						<label for="password" class="bold-label">Password</label>
-						<input type="password" id="password" name="password" placeholder="Password" class="form-control <?php echo form_error('password') ? 'is-invalid' : ''; ?>">
-						<span class="text-danger"><?php echo form_error('password'); ?></span>
+						<input type="password" id="password" placeholder="Password" name="password" value="<?php echo set_value('password'); ?>" class="form-control <?php echo form_error('password') ? 'is-invalid' : ''; ?>">
 					</div>
 
 					<div class="form-group">
-						<label for="role" class="bold-label">Roles</label>
-						<select class="form-select" id="role" name="role" aria-label="Default select example">
+						<label for="password1" class="bold-label">Confirm Password</label>
+						<input type="password" id="password1" placeholder="Confirm Password" name="password1" class="form-control <?php echo form_error('password1') ? 'is-invalid' : ''; ?>">
+						<span style="color: red;"><?php echo form_error('password1'); ?></span>
+					</div>
+
+					<div class="form-group">
+
+						<label for="branch" class="bold-label">Branch</label><br>
+
+						<select name="branch" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
+							<?php foreach ($branch as $br) { ?>
+
+								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
+
+							<?php } ?>
+
+
+						</select>
+						<span class="text-danger"><?php echo form_error('branch'); ?></span>
+					</div>
+
+					<div class="form-group">
+						<label for="role" class="bold-label">Roles</label><br>
+						<select name="role" id="role-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="form-control <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
 							<option selected hidden>Select Role</option>
-							<option value="encoder">Encoder</option>
+
+							<option value="super-admin">Admin</option>
+							<option value="branch admin">Branch Admin</option>
+							<option value="inventory clerk">Inventory Clerk</option>
 							<option value="cashier">Cashier</option>
-							<option value="auditor">Auditor</option>
+							<option value="branch supervisor">Branch Supervisor</option>
+							<option value="finance">Finance</option>
+							<option value="accounting">Accounting</option>
+							<option value="branch clerk">Branch clerk</option>
+							<option value="warehouse clerk">Warehouse Clerk</option>
+							<option value="warehouse supervisor">Warehouse Supervisor</option>
+
 						</select>
 						<span class="text-danger"><?php echo form_error('role'); ?></span>
 					</div>
