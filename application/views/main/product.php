@@ -215,7 +215,6 @@
   </div>
   <h1 class="m-0 text-dark">
     <a href="<?php echo site_url('main/product'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-boxes"></i> Products</a>
-    <a href="<?php echo site_url('main/product_category'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-list"></i> Product Category</a>
     <a href="<?php echo site_url('main/unit'); ?>" class="btn btn-primary btn-sm btn-dark"><i class="fas fa-barcode"></i> Unit Management</a>
   </h1>
 
@@ -224,7 +223,7 @@
   <div class="card-header" style="padding-top: 0;">
     <div class="row align-items-center">
       <div class="col-sm-6">
-        <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-dark btn-sm"><i class="fas fa-box"></i> Add Product 1</a>
+        <a href="<?php echo site_url('main/add_product'); ?>" class="btn btn-dark btn-sm"><i class="fas fa-box"></i> Add Product</a>
       </div>
       <div class="col-sm-6 d-flex justify-content-end align-items-center">
         <a id="switchLayoutButton" class="btn btn-secondary btn-sm text-white"><i class="fas fa-list"></i></a>
@@ -266,7 +265,6 @@
                     </div>
                   </div>
                 </div>
-
               </div>
             </a>
           </div>

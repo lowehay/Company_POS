@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -289,7 +288,7 @@
     <a href="<?= base_url('main/supplier') ?>"><i class="fas fa-truck"></i> Supplier</a>
     <a href="<?= base_url('main/product') ?>"><i class="fas fa-box"></i> Product</a>
 
-    <!-- Purchase Dropdown -->
+    <!-- Purchase Dropdown 
     <div class="custom-dropdown" id="purchaseDropdown">
       <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="">
         <i class="fas fa-shopping-cart"></i> Purchase
@@ -300,7 +299,7 @@
         <a class="dropdown-item text-white" href="<?= base_url('main/goods_received') ?>">Goods Received</a>
         <a class="dropdown-item text-white" href="<?= base_url('main/goods_return') ?>">Goods Return</a>
       </div>
-    </div>
+    </div> -->
 
     <!-- Inventory Dropdown -->
     <div class="custom-dropdown" id="inventoryDropdown">
@@ -314,8 +313,8 @@
       </div>
     </div>
 
-    <a href="<?= base_url('main/stock_requisition') ?>"><i class="fas fa-clipboard-list"></i> Stock Requisition</a>
-    <a href="<?= base_url('main/sales') ?>"><i class="fas fa-shopping-basket"></i> Sales</a>
+    <!--a href="<?= base_url('main/stock_requisition') ?>"><i class="fas fa-clipboard-list"></i> Stock Requisition</a-->
+    <!--a href="<?= base_url('main/sales') ?>"><i class="fas fa-shopping-basket"></i> Sales</a-->
     <a href="<?= base_url('main/pos') ?>"><i class="fas fa-cash-register"></i> POS</a>
     <a href="<?= base_url('main/reports') ?>"><i class="fas fa-chart-bar"></i> Reports</a>
     <a href="<?= base_url('main/backup') ?>"><i class="fas fa-database"></i> Backup & Restore</a>

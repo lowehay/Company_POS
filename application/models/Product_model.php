@@ -3,7 +3,7 @@
 class Product_model extends CI_Model
 {
 
-	function product_code()
+	/*function product_code()
 	{
 		$year = date('Y');
 
@@ -19,70 +19,39 @@ class Product_model extends CI_Model
 			$next_product_code = $prefix . '0001';
 		}
 		return $next_product_code;
-	}
+	}*/
 
 	function insert_product($image_file_name)
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
-		$product_margin = (float) $this->input->post('product_margin'); // Convert to float for calculations
-		$product_vat = (string) $this->input->post('product_vat');
+		$product_brand =  $this->input->post('product_brand');
 		$product_category = (string) $this->input->post('product_category');
 		$supplier_id = (string) $this->input->post('supplier_id');
-		$product_inbound_threshold = (string) $this->input->post('product_inbound_threshold');
-		$product_shelf_life = (string) $this->input->post('product_shelf_life');
-		$product_recall_threshold = (string) $this->input->post('product_recall_threshold');
 		$product_minimum_quantity = (string) $this->input->post('product_minimum_quantity');
-		$product_required_quantity = (string) $this->input->post('product_required_quantity');
-		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
-		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
-
-
-		$product_unit =  $this->input->post('product_unit');
+		$product_uom_value =  $this->input->post('product_uom_value');
+		$product_uom =  $this->input->post('product_uom');
 		$product_barcode =  $this->input->post('product_barcode');
-
-
-
-		$product_unit =  $this->input->post('product_unit[]');
-		$product_barcode =  $this->input->post('product_barcode[]');
+		$product_price =  $this->input->post('product_price');
 
 		$data = array(
 			'product_code' => $product_code,
+			'product_brand' => $product_brand,
 			'product_name' => $product_name,
 			'product_dateadded' => date('Y-m-d H:i:s'),
-			'product_margin' => $product_margin,
-			'product_vat' => $product_vat,
 			'product_category' => $product_category,
+			'product_uom_value' => $product_uom_value,
+			'product_uom' => $product_uom,
 			'supplier_id' => $supplier_id,
-			'product_inbound_threshold' => $product_inbound_threshold,
-			'product_shelf_life' => $product_shelf_life,
-			'product_recall_threshold' => $product_recall_threshold,
+			'product_barcode' => $product_barcode,
 			'product_minimum_quantity' => $product_minimum_quantity,
-			'product_required_quantity' => $product_required_quantity,
-			'product_maximum_quantity' => $product_maximum_quantity,
-			'product_minimum_order_quantity' => $product_minimum_order_quantity,
+			'product_price' => $product_price,
 			'product_image' => $image_file_name,
 		);
 
 		$response = $this->db->insert('product', $data);
 
 		if ($response) {
-			$last_product_id = $this->db->insert_id();
-
-			foreach ($product_unit as $index => $product_unit) {
-				$arr_unit = $product_unit;
-				$arr_barcode = $product_barcode[$index];
-
-				// Insert data into barcode table
-				$data_barcode = [
-
-					'unit' => $arr_unit,
-					'product_id' => $last_product_id,
-					'product_name' => $product_name,
-					'barcode' => $arr_barcode,
-				];
-				$this->db->insert('barcode', $data_barcode);
-			}
 			return $this->db->insert_id();
 		} else {
 			return FALSE;
@@ -104,23 +73,14 @@ class Product_model extends CI_Model
 	{
 		$product_code = (string) $this->input->post('product_code');
 		$product_name = (string) $this->input->post('product_name');
-		$supplier_id = (string) $this->input->post('supplier_id');
+		$product_brand =  $this->input->post('product_brand');
 		$product_category = (string) $this->input->post('product_category');
-		$product_margin = (string) $this->input->post('product_margin');
-		$product_vat = (string) $this->input->post('product_vat');
-		$product_inbound_threshold = (string) $this->input->post('product_inbound_threshold');
-		$product_shelf_life = (string) $this->input->post('product_shelf_life');
-		$product_recall_threshold = (string) $this->input->post('product_recall_threshold');
+		$supplier_id = (string) $this->input->post('supplier_id');
 		$product_minimum_quantity = (string) $this->input->post('product_minimum_quantity');
-		$product_required_quantity = (string) $this->input->post('product_required_quantity');
-		$product_maximum_quantity = (string) $this->input->post('product_maximum_quantity');
-		$product_dateadded = (string) $this->input->post('product_dateadded');
-		$product_minimum_order_quantity = (string) $this->input->post('product_minimum_order_quantity');
-
-
-		$product_unit = $this->input->post('product_unit');
-		$product_barcode = $this->input->post('product_barcode');
-
+		$product_uom_value =  $this->input->post('product_uom_value');
+		$product_uom =  $this->input->post('product_uom');
+		$product_barcode =  $this->input->post('product_barcode');
+		$product_price =  $this->input->post('product_price');
 
 		// Initialize the product_image variable
 		$product_image = '';
@@ -168,56 +128,24 @@ class Product_model extends CI_Model
 		// Update product data in the database
 		$data = array(
 			'product_code' => $product_code,
+			'product_brand' => $product_brand,
 			'product_name' => $product_name,
-			'supplier_id' => $supplier_id,
+			'product_dateadded' => date('Y-m-d H:i:s'),
 			'product_category' => $product_category,
-			'product_margin' => $product_margin,
-			'product_vat' => $product_vat,
-			'product_inbound_threshold' => $product_inbound_threshold,
-			'product_shelf_life' => $product_shelf_life,
-			'product_recall_threshold' => $product_recall_threshold,
+			'product_uom' => $product_uom,
+			'product_uom_value' => $product_uom_value,
+			'supplier_id' => $supplier_id,
+			'product_barcode' => $product_barcode,
 			'product_minimum_quantity' => $product_minimum_quantity,
-			'product_required_quantity' => $product_required_quantity,
-			'product_maximum_quantity' => $product_maximum_quantity,
-			'product_minimum_order_quantity' => $product_minimum_order_quantity,
-			'product_dateadded' => $product_dateadded,
-			'product_image' => $product_image, // Update the product image filename
+			'product_price' => $product_price,
+			'product_image' => $product_image,
 		);
+
 		// Update product data
 		$this->db->where('product_id', $product_id);
 		$response = $this->db->update('product', $data);
 
 		if ($response) {
-			foreach ($product_unit as $index => $product_unit) {
-				$arr_unit = $product_unit;
-				$arr_barcode = $product_barcode[$index];
-
-				// Check if the barcode already exists for the given product_id and unit
-				$existing_record = $this->db->get_where('barcode', array('product_id' => $product_id, 'unit' => $arr_unit))->row();
-
-				if ($existing_record) {
-					// If the record exists, update it
-					$data_barcode = [
-						'barcode' => $arr_barcode,
-						'product_name' => $product_name,
-					];
-
-					$this->db->where('barcode_id', $existing_record->barcode_id);
-					$this->db->update('barcode', $data_barcode);
-				} else {
-					// If the record does not exist, insert a new one
-					$data_barcode = [
-						'unit' => $arr_unit,
-						'product_id' => $product_id,
-						'product_name' => $product_name,
-						'barcode' => $arr_barcode,
-					];
-
-					$this->db->insert('barcode', $data_barcode);
-				}
-			}
-
-			// Move the return statement outside the foreach loop
 			return $product_id;
 		} else {
 			return FALSE;

@@ -35,20 +35,18 @@ class Main extends CI_Controller
 	function add_user()
 	{
 		$this->add_user_submit();
-		$this->load->model('branch_model');
-		$this->data['branch'] = $this->branch_model->get_all_branch();
 		$this->load->view('main/header');
-		$this->load->view('main/add_user', $this->data);
+		$this->load->view('main/add_user');
 		$this->load->view('main/footer');
 	}
 	function add_user_submit()
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->form_validation->set_rules('username', 'username', 'trim|required|is_unique[user.username]');
-			$this->form_validation->set_rules('first_name', 'first_name', 'trim|required|is_unique[user.first_name]', array('is_unique' => 'The username is already taken.'));
-			$this->form_validation->set_rules('last_name', 'last_name', 'trim|required|is_unique[user.last_name]');
+			$this->form_validation->set_rules('username', 'username', 'trim|required|is_unique[user.username]', array('is_unique' => 'The username is already taken.'));
+			$this->form_validation->set_rules('first_name', 'first_name', 'trim|required');
+			$this->form_validation->set_rules('last_name', 'last_name', 'trim|required');
 			$this->form_validation->set_rules('password', 'password', 'trim|required');
-			$this->form_validation->set_rules('branch', 'branch', 'trim|required');
+			$this->form_validation->set_rules('warehouse', 'warehouse', 'trim|required');
 			$this->form_validation->set_rules('role', 'role', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
@@ -161,13 +159,13 @@ class Main extends CI_Controller
 	{
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->form_validation->set_rules('supplier_name', 'Supplier', 'trim|required|is_unique[suppliers.supplier_name]');
-			$this->form_validation->set_rules('company_name', 'Company', 'trim|required|is_unique[suppliers.company_name]');
-			$this->form_validation->set_rules('supplier_contact', 'Contact', 'trim|required|is_unique[suppliers.supplier_contact]');
-			$this->form_validation->set_rules('supplier_street', 'Street', 'trim|required');
-			$this->form_validation->set_rules('supplier_barangay', 'Barangay', 'trim|required');
-			$this->form_validation->set_rules('supplier_city', 'City', 'trim|required');
-			$this->form_validation->set_rules('supplier_province', 'Province', 'trim|required');
+			$this->form_validation->set_rules('supplier_name', 'Supplier', 'trim|is_unique[suppliers.supplier_name]');
+			$this->form_validation->set_rules('company_name', 'Company', 'trim|is_unique[suppliers.company_name]');
+			$this->form_validation->set_rules('supplier_contact', 'Contact', 'trim|is_unique[suppliers.supplier_contact]');
+			$this->form_validation->set_rules('supplier_street', 'Street', 'trim');
+			$this->form_validation->set_rules('supplier_barangay', 'Barangay', 'trim');
+			$this->form_validation->set_rules('supplier_city', 'City', 'trim');
+			$this->form_validation->set_rules('supplier_province', 'Province', 'trim');
 
 			if ($this->form_validation->run() != FALSE) {
 				$this->load->model('supplier_model');
@@ -209,13 +207,13 @@ class Main extends CI_Controller
 	{
 
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$this->form_validation->set_rules('supplier_name', 'Supplier Name', 'trim|required');
-			$this->form_validation->set_rules('company_name', 'Company Name', 'trim|required');
-			$this->form_validation->set_rules('supplier_contact', 'Supplier Contact', 'trim|required');
-			$this->form_validation->set_rules('supplier_street', 'Supplier Street', 'trim|required');
-			$this->form_validation->set_rules('supplier_barangay', 'Supplier Barangay', 'trim|required');
-			$this->form_validation->set_rules('supplier_city', 'Supplier City', 'trim|required');
-			$this->form_validation->set_rules('supplier_province', 'Supplier Province', 'trim|required');
+			$this->form_validation->set_rules('supplier_name', 'Supplier Name', 'trim');
+			$this->form_validation->set_rules('company_name', 'Company Name', 'trim');
+			$this->form_validation->set_rules('supplier_contact', 'Supplier Contact', 'trim');
+			$this->form_validation->set_rules('supplier_street', 'Supplier Street', 'trim');
+			$this->form_validation->set_rules('supplier_barangay', 'Supplier Barangay', 'trim');
+			$this->form_validation->set_rules('supplier_city', 'Supplier City', 'trim');
+			$this->form_validation->set_rules('supplier_province', 'Supplier Province', 'trim');
 
 			if ($this->form_validation->run() != FALSE) {
 				$this->load->model('supplier_model');
@@ -570,13 +568,9 @@ class Main extends CI_Controller
 
 	function add_product()
 	{
-
 		$this->add_product_submit();
-		$this->load->model('product_model');
-		$this->data['product_code'] = $this->product_model->product_code();
 		$this->load->model('supplier_model');
 		$this->data['suppliers'] = $this->supplier_model->get_all_suppliers();
-		$this->data['procat'] = $this->product_model->get_all_product_category();
 		$this->load->model('unit_model');
 		$this->data['unit'] = $this->unit_model->get_all_unit();
 		$this->load->view('main/header');
@@ -588,20 +582,14 @@ class Main extends CI_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required|is_unique[product.product_code]');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required|is_unique[product.product_name]', array('is_unique' => 'The Product Name is already taken.'));
+			$this->form_validation->set_rules('product_brand', 'Product Brand', 'trim|required');
 			$this->form_validation->set_rules('supplier_id', 'Supplier', 'trim|required');
 			$this->form_validation->set_rules('product_category', 'Product Category', 'trim|required');
-			$this->form_validation->set_rules('product_margin', 'Product Margin', 'trim|required');
-			$this->form_validation->set_rules('product_vat', 'Product VAT', 'trim|required');
-			$this->form_validation->set_rules('product_inbound_threshold', 'Product Inbound Threshold', 'trim|required');
-			$this->form_validation->set_rules('product_shelf_life', 'Product Shelf Life', 'trim|required');
-			$this->form_validation->set_rules('product_recall_threshold', 'Product Recall Threshold', 'trim|required');
 			$this->form_validation->set_rules('product_minimum_quantity', 'Product Miminum Quantity', 'trim|required');
-			$this->form_validation->set_rules('product_required_quantity', 'Product Required Quantity', 'trim|required');
-			$this->form_validation->set_rules('product_maximum_quantity', 'Product Maximum Quantity', 'trim|required');
-			$this->form_validation->set_rules('product_minimum_order_quantity', 'Product Miminum Order Quantity', 'trim|required');
-
-			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
-			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_uom', 'Product UoM', 'trim|required');
+			$this->form_validation->set_rules('product_uom_value', 'Product UoM Value', 'trim');
+			$this->form_validation->set_rules('product_barcode', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
 				$config['upload_path'] = './assets/images/'; // Set the upload directory
@@ -655,11 +643,8 @@ class Main extends CI_Controller
 		$this->load->model('product_model');
 		$this->data['product'] = $this->product_model->get_product($product_id);
 		$this->data['select'] = $this->product_model->select_one($product_id);
-		$this->data['barcode'] = $this->product_model->get_barcode($product_id);
-		$this->data['barcodes'] = $this->product_model->get_all_barcode();
 		$this->load->model('supplier_model');
 		$this->data['supplier'] = $this->supplier_model->get_all_suppliers();
-		$this->data['procat'] = $this->product_model->get_all_product_category();
 		$this->load->model('unit_model');
 		$this->data['unit'] = $this->unit_model->get_all_unit();
 		$this->load->view('main/header');
@@ -672,22 +657,14 @@ class Main extends CI_Controller
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$this->form_validation->set_rules('product_code', 'Product Code', 'trim|required');
 			$this->form_validation->set_rules('product_name', 'Product Name', 'trim|required');
+			$this->form_validation->set_rules('product_brand', 'Product Brand', 'trim|required');
 			$this->form_validation->set_rules('supplier_id', 'Supplier', 'trim|required');
 			$this->form_validation->set_rules('product_category', 'Product Category', 'trim|required');
-			$this->form_validation->set_rules('product_margin', 'Product Margin', 'trim|required');
-			$this->form_validation->set_rules('product_vat', 'Product VAT', 'trim|required');
-			$this->form_validation->set_rules('product_inbound_threshold', 'Product Inbound Threshold', 'trim|required');
-			$this->form_validation->set_rules('product_shelf_life', 'Product Shelf Life', 'trim|required');
-			$this->form_validation->set_rules('product_recall_threshold', 'Product Recall Threshold', 'trim|required');
-			$this->form_validation->set_rules('product_minimum_quantity', 'Product Minimum Quantity', 'trim|required');
-			$this->form_validation->set_rules('product_required_quantity', 'Product Required Quantity', 'trim|required');
-			$this->form_validation->set_rules('product_maximum_quantity', 'Product Maximum Quantityr', 'trim|required');
-			$this->form_validation->set_rules('product_minimum_order_quantity', 'Product Minimum Order Quantity', 'trim|required');
-
-			$this->form_validation->set_rules('product_unit[]', 'Product Unit', 'trim|required');
-			$this->form_validation->set_rules('product_barcode[]', 'Product Barcode', 'trim|required');
-
-
+			$this->form_validation->set_rules('product_minimum_quantity', 'Product Miminum Quantity', 'trim|required');
+			$this->form_validation->set_rules('product_uom', 'Product UoM', 'trim|required');
+			$this->form_validation->set_rules('product_uom_value', 'Product UoM Value', 'trim');
+			$this->form_validation->set_rules('product_barcode', 'Product Barcode', 'trim|required');
+			$this->form_validation->set_rules('product_price', 'Product Price', 'trim|required');
 
 			if ($this->form_validation->run() != FALSE) {
 				$this->load->model('product_model');
@@ -1559,5 +1536,34 @@ class Main extends CI_Controller
 		}
 
 		redirect('main/unit/');
+	}
+
+	function receive_quantity($product_id)
+	{
+		$this->receive_quantity_submit();
+		$this->load->model('product_model');
+		$this->data['product'] = $this->product_model->get_product($product_id);
+		$this->load->view('main/receiving', $this->data);
+	}
+
+	function receive_quantity_submit()
+	{
+
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$this->form_validation->set_rules('product_quantity', 'Product Quantity', 'trim|required');
+
+			if ($this->form_validation->run() != FALSE) {
+				$this->load->model('product_model');
+				$response = $this->product_model->insert_received_quantity();
+				if ($response) {
+					$success_message = 'Quantity added successfully.';
+					$this->session->set_flashdata('success', $success_message);
+				} else {
+					$error_message = 'Quantity was not added successfully.';
+					$this->session->set_flashdata('error', $error_message);
+				}
+				redirect('main/product');
+			}
+		}
 	}
 }

@@ -70,18 +70,14 @@
 
 					<div class="form-group">
 
-						<label for="branch" class="bold-label">Branch</label><br>
-
-						<select name="branch" id="branch-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="selectpicker <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
-							<?php foreach ($branch as $br) { ?>
-
-								<option value="<?= $br->branch_id ?>"><?= $br->branch ?></option>
-
-							<?php } ?>
-
+						<label for="warehouse" class="bold-label">Warehouse</label><br>
+						<select name="warehouse" id="warehouse-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="form-control <?php echo form_error('warehouse') ? 'is-invalid' : ''; ?>">
+							<option selected hidden>Select Warehouse</option>
+							<option value="super-admin">Warehouse 1</option>
 
 						</select>
-						<span class="text-danger"><?php echo form_error('branch'); ?></span>
+
+						<span class="text-danger"><?php echo form_error('warehouse'); ?></span>
 					</div>
 
 					<div class="form-group">
@@ -89,16 +85,9 @@
 						<select name="role" id="role-select" data-live-search="true" data-style="btn-sm btn-outline-secondary" class="form-control <?php echo form_error('role') ? 'is-invalid' : ''; ?>">
 							<option selected hidden>Select Role</option>
 
-							<option value="super-admin">Admin</option>
-							<option value="branch admin">Branch Admin</option>
-							<option value="inventory clerk">Inventory Clerk</option>
-							<option value="cashier">Cashier</option>
-							<option value="branch supervisor">Branch Supervisor</option>
-							<option value="finance">Finance</option>
-							<option value="accounting">Accounting</option>
-							<option value="branch clerk">Branch clerk</option>
-							<option value="warehouse clerk">Warehouse Clerk</option>
-							<option value="warehouse supervisor">Warehouse Supervisor</option>
+							<option value="admin">Admin</option>
+							<option value="inbound user">Inbound User</option>
+							<option value="outbound user">Outbound User</option>
 
 						</select>
 						<span class="text-danger"><?php echo form_error('role'); ?></span>
